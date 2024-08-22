@@ -9,8 +9,10 @@
     "scripts": {
         "dev": "vite",
         "product": "NODE_ENV='production' vite build",
-        "build": "yarn run rollup -c",
-        "start": "yarn run rollup -c -w",
+        "build": "vite build",
+        "eslint": "eslint --config eslint.config.js ./src",
+        "prettier": "prettier --write '**/*.{js,mjs,cjs,jsx,ts,tsx}'",
+        "prettier:check": "prettier --check '**/*.{js,mjs,cjs,jsx,ts,tsx}'",
         "test": "echo \"Error: no test specified yet\" && exit 1"
     },
     "repository": {

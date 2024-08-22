@@ -1,5 +1,5 @@
 import "./scss/index.scss";
-import ReactDocViewer from "./ReactOfficeViewer";
+import ReactDocViewer from "./ReactDocumentViewer";
 
 if (process.env.NODE_ENV !== "production") {
     window.addEventListener("load", () => {

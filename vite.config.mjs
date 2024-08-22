@@ -19,7 +19,7 @@ export default defineConfig(({ command, mode }) => ({
                     {
                         src: './src/scss/index.scss',
                         dest: '',
-                        rename: (name, extension, fullPath) => `pdf.${extension}`
+                        rename: (name, extension, fullPath) => `doc_viewer.${extension}`
                     }, {
                         src: './node_modules/pdfjs-dist/build/pdf.worker.mjs',
                         dest: '',
