@@ -176,7 +176,8 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
     const resetThumbnail = () => {
         selectedPageRef.current = null;
         viewportRef.current = null;
-        sidebarRef.current.innerHTML = "";
+        if(sidebarRef.current)
+            sidebarRef.current.innerHTML = "";
     };
 
     return (

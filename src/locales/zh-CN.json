@@ -28,5 +28,6 @@
     "msexcelGenericError": "未知MS Excel插件错误",
     "noFileSelected": "未选择任何文件",
     "somethingWrong": "出错了",
-    "imgLoadError": "图片加载失败"
+    "imgLoadError": "图片加载失败",
+    "pluginDisabled": "无法打开该文件。以下插件被禁用: {{plugins}}"
 }

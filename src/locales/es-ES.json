@@ -28,5 +28,6 @@
     "msexcelGenericError": "Error desconocido del complemento MS Excel",
     "noFileSelected": "No se ha seleccionado nningun archivo",
     "somethingWrong": "Algo salio mal",
-    "imgLoadError": "Error al cargar la imagen"
+    "imgLoadError": "Error al cargar la imagen",
+    "pluginDisabled": "No se puede abrir este archivo. Los siguientes complementos están deshabilitados: {{plugins}}"
 }

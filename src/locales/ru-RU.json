@@ -28,5 +28,6 @@
     "msexcelGenericError": "Неизвестная ошибка MS Excel плагина",
     "noFileSelected": "Файл не загружен",
     "somethingWrong": "Что-то пошло не так",
-    "imgLoadError": "Не удалось загрузить изображение"
+    "imgLoadError": "Не удалось загрузить изображение",
+    "pluginDisabled": "Невозможно открыть этот файл. Следующие плагины отключены: {{plugins}}"
 }

@@ -334,6 +334,8 @@ interface UnifiedViewerProps extends CommonProps {
     downloadTimeout: number;
     // makes "Open File" button available
     allowOpenFile?: boolean;
+    // disable one or few plugins
+    disablePlugins?: ['pdf'?, 'msexcel'?, 'excel'?, 'msword'?, 'images'?]
 }
 
 export default UnifiedViewerProps;

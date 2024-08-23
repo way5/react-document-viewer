@@ -70,7 +70,7 @@ export default (props: ViewerPluginProps) => {
         showError = (s) => {},
         setOnHideError = (f) => {},
         errorMessage = (m) => { },
-        setFileOpen = () => {},
+        // setFileOpen = () => {},
     } = props;
 
     const initialState: ImageViewerCoreState = {
@@ -143,7 +143,7 @@ export default (props: ViewerPluginProps) => {
     useEffect(() => {
         if (state.startLoading) {
             currentIndex.current = state.activeIndex;
-            setFileOpen(true);
+            // setFileOpen(true);
             loadImg(state.activeIndex);
         }
     }, [state.startLoading]);

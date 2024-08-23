@@ -65,7 +65,7 @@ export default defineConfig(({ command, mode }) => ({
                     // },
                     assetFileNames: (a) => {
                         if (a.name === "index.css") return "doc_viewer.css";
-                        else if (a.name === "main.js") return "doc_viewer.js";
+                        else if (a.name === "index.js") return "doc_viewer.js";
                         else if (a.name === "app.scss")
                             return "doc_viewer.scss";
                         else return a.name;

@@ -22,7 +22,7 @@ export default (props: ViewerPluginProps) => {
         setOnHideError = (f) => { },
         setOnShowError = (f) => {},
         errorMessage = (m) => { },
-        setFileOpen = () => {},
+        // setFileOpen = () => {},
     } = props;
     const [data, setData] = useState<Record<string, any>>({});
     const [file, setFile] = useState(fileBuffer);
@@ -84,7 +84,7 @@ export default (props: ViewerPluginProps) => {
             });
         });
         showLoader(false);
-        setFileOpen(true);
+        // setFileOpen(true);
     };
 
     const onChangeTab = (e: React.MouseEvent<Element, MouseEvent>, subDivId: string) => {

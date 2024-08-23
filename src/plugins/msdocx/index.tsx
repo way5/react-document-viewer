@@ -21,7 +21,7 @@ export default (props: ViewerPluginProps) => {
         showError = (s) => {},
         setOnHideError = (f) => {},
         errorMessage = (m) => {},
-        setFileOpen = () => {},
+        // setFileOpen = () => {},
     } = props;
 
     const [docHtmlStr, setDocHtmlStr] = useState<string>("");
@@ -61,10 +61,10 @@ export default (props: ViewerPluginProps) => {
         } catch (e) {
             errorMessage(`(!) error loading document: ${e}`);
             showError(true);
-            setFileOpen(false);
+            // setFileOpen(false);
         } finally {
             showLoader(false);
-            setFileOpen(true);
+            // setFileOpen(true);
         }
     };
 

@@ -2,21 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PDFjs Viewer</title>
+    <title>React Document Viewer</title>
     <style>
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            /*writing-mode: vertical-lr;*/
         }
         body {
             margin: 0;
             padding: 0;
-            /* in order to prevent child's margin:auto collapse (become) parent's margins */
             display: flex;
             font-family: sans-serif;
         }
@@ -39,18 +37,7 @@
             background: #636363;
             position: relative;
             overflow: auto;
-            /*writing-mode: horizontal-tb;*/
         }
-
-        /* used to check that such "default" styles are overridden for the viewer */
-        /* :where(#root) *, :where(#root) ::before, :where(#root) ::after {
-            background: red;
-            padding: 100em;
-            margin: 100em;
-            border: 100px solid red;
-            display: block;
-            position: absolute;
-        } */
 
         .mode-switch {
             position: absolute;
@@ -87,7 +74,7 @@
         }
 
     </style>
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/index.js"></script>
     <script>
         window.addEventListener('load', () => {
             const darkModeSwitchButton = document.querySelector('.mode-switch');

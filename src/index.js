@@ -1,16 +1,17 @@
 import "./scss/index.scss";
-import ReactDocViewer from "./ReactDocumentViewer";
+import ReactDocumentViewer from "./ReactDocumentViewer";
 
 if (process.env.NODE_ENV !== "production") {
     window.addEventListener("load", () => {
-        window.ReactDocViewer = new ReactDocViewer({
+        window.ReactDocumentViewer = new ReactDocumentViewer({
             rootElement: document.getElementById("root"),
             // files: [],
             files: [
-                { src: "/test.png", fileName: "Image #1" },
+                { src: "/test.jpg", fileName: "Image #1" },
                 { src: "/test.webp", fileName: "Image #2" },
             ],
             downloadInNewWindow: false,
+            // disablePlugins: ["pdf"],
             // fileIdentification: 'extension',
             // locale: 'es',
             // allowOpenFile: true,
@@ -47,6 +48,6 @@ if (process.env.NODE_ENV !== "production") {
             // showError: (s) => {},
             // pdfWorkerUrl: 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.5.136/pdf.worker.mjs'
         });
-        window.ReactDocViewer.render();
+        window.ReactDocumentViewer.render();
     });
 }

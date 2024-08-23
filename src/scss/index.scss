@@ -51,6 +51,31 @@ div:not(span):where(.doc-viewer),
 .doc-viewer {
     @apply w-full h-full relative p-0;
 
+    /***************************/
+    /****** ERROR MESSAGES *****/
+    /***************************/
+    .error-line {
+        @apply w-full z-40 flex items-center justify-between py-1 box-border
+                absolute bottom-0 left-0 shadow-lg bg-red-600 text-gray-50 opacity-100
+                transition-all duration-1000 max-h-48;
+
+        &.invisible {
+            @apply translate-y-52;
+        }
+
+        & > :first-child {
+            @apply whitespace-break-spaces text-sm overflow-hidden pl-2;
+        }
+
+        & > :last-child {
+            @apply px-2 flex items-center justify-center;
+
+            svg {
+                @apply p-1 bg-transparent border-none cursor-pointer;
+            }
+        }
+    }
+
     /**********************/
     /****** OPEN FILE *****/
     /**********************/
@@ -106,31 +131,6 @@ div:not(span):where(.doc-viewer),
 
                 svg {
                     @apply animate-spin animate-duration-1000 animate-infinite;
-                }
-            }
-        }
-
-        /***************************/
-        /****** ERROR MESSAGES *****/
-        /***************************/
-        .error-line {
-            @apply w-full z-40 flex items-center justify-between py-1 box-border
-                absolute bottom-0 left-0 shadow-lg bg-red-600 text-gray-50 opacity-100
-                transition-all duration-1000 max-h-48;
-
-            &.invisible {
-                @apply translate-y-52;
-            }
-
-            & > :first-child {
-                @apply whitespace-break-spaces text-sm overflow-hidden pl-2;
-            }
-
-            & > :last-child {
-                @apply px-2 flex items-center justify-center;
-
-                svg {
-                    @apply p-1 bg-transparent border-none cursor-pointer;
                 }
             }
         }
@@ -261,8 +261,7 @@ div:not(span):where(.doc-viewer),
 
                         .image-transition {
                             @apply duration-300 ease-out;
-                            transition-property: width, height, margin,
-                                transform;
+                            transition-property: width, height, margin, transform;
                         }
 
                         &.list-transition {
@@ -348,7 +347,7 @@ div:not(span):where(.doc-viewer),
                     -webkit-appearance: none;
                 }
 
-                input[type="number"] {
+                input[type='number'] {
                     @apply appearance-auto;
                     -moz-appearance: textfield;
                 }
@@ -380,7 +379,7 @@ div:not(span):where(.doc-viewer),
                                 }
                             }
 
-                            input[type="number"],
+                            input[type='number'],
                             select {
                                 @apply rounded bg-gray-200 border-solid border outline-none focus:outline-none
                                             text-base py-0 leading-4;
@@ -553,10 +552,7 @@ div:not(span):where(.doc-viewer),
 
                         table {
                             @apply grid w-full break-all border-collapse border border-solid border-gray-200 table-fixed;
-                            grid-template-columns: repeat(
-                                auto-fit,
-                                minmax(250px, 1fr)
-                            );
+                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 
                             tr {
                                 @apply table-row;
@@ -749,7 +745,7 @@ div:not(span):where(.doc-viewer),
                         }
 
                         br:before {
-                            content: "\A";
+                            content: '\A';
                             white-space: pre-line;
                         }
 

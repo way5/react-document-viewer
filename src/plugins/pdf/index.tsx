@@ -34,7 +34,7 @@ export default (props: ViewerPluginProps) => {
         showError = (b) => {},
         setOnHideError,
         errorMessage = (m) => {},
-        setFileOpen = () => {},
+        // setFileOpen = () => {},
     } = props;
 
     const [inputFile, setInputFile] = useState(fileBuffer);
@@ -100,7 +100,7 @@ export default (props: ViewerPluginProps) => {
             // Initialize page proportion data
             refreshScaleMap(pdfPage);
         });
-        setFileOpen(true);
+        // setFileOpen(true);
     }
 
     function onDocumentLoadFail(info: any) {

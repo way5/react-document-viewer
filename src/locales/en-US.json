@@ -28,5 +28,6 @@
     "msexcelGenericError": "Unknown MS Excel plugin error",
     "noFileSelected": "No file selected",
     "somethingWrong": "Something went wrong",
-    "imgLoadError": "Unable to load image"
+    "imgLoadError": "Unable to load image",
+    "pluginDisabled": "Unable to open this file. The followind plugins are disabled: {{plugins}}"
 }
