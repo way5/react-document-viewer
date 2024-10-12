@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { TbCircleLetterX } from 'react-icons/tb';
-import { ErrorMessageProps } from '../Definitions';
+import { ErrorMessageProps } from '../definitions';
 
 export default function ErrorMessage(props: ErrorMessageProps) {
     const {

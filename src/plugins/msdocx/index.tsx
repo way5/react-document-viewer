@@ -1,9 +1,9 @@
 import mammoth from "mammoth";
 import React, { useEffect, useState } from "react";
 import { ToolbarMS } from "../../components/index";
-import { _getBlobUrlFromBuffer, _download } from "../../Utils";
+import { _getBlobUrlFromBuffer, _download } from "../../utils";
 import { useTranslation } from "react-i18next";
-import { ViewerPluginProps } from "../../Definitions";
+import { ViewerPluginProps } from "../../definitions";
 import { Parser } from "html-to-react";
 
 export default (props: ViewerPluginProps) => {
@@ -69,8 +69,8 @@ export default (props: ViewerPluginProps) => {
     };
 
     const handleDownload = () => {
-        const fileUrl = _getBlobUrlFromBuffer(file, fileType);
-        _download(fileUrl, fileName, fileType);
+        const fileUrl = _getBlobUrlFromBuffer(file, fileType.extension);
+        _download(fileUrl, fileName, fileType.extension);
     };
 
     const onZoomChange = (z: number) => {
@@ -83,7 +83,7 @@ export default (props: ViewerPluginProps) => {
             <ToolbarMS
                 handleDownload={handleDownload}
                 fileName={fileName}
-                fileType={fileType}
+                fileType={fileType.simpleType}
                 disabled={!file}
                 showFileName={showFileName}
                 onZoom={onZoomChange}

@@ -1,4 +1,4 @@
-export { default as Loading } from "./Loading";
-export { default as ToolbarMS } from "./ToolbarMS";
-export { default as ErrorMessage } from "./ErrorMessage";
-export { default as DownloadFile } from "./Downloader";
+export { default as Loading } from "./loading";
+export { default as ToolbarMS } from "./toolbarMS";
+export { default as ErrorMessage } from "./errorMessage";
+export { default as DownloadFile } from "./downloader";

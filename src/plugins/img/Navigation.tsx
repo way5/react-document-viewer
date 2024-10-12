@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ImageViewerNavProps } from "../../Definitions";
+import { ImageViewerNavProps } from "../../definitions";
 
 /**
  * Navigation block

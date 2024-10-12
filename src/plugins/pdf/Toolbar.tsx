@@ -5,8 +5,8 @@ import React, {
     useImperativeHandle,
     forwardRef
 } from "react";
-import { default as ThumbnailView } from "./ThumbnailView";
-import printView from "./PrintView";
+import { default as ThumbnailView } from "./thumbnailView";
+import printView from "./printView";
 import { useTranslation } from "react-i18next";
 import {
     TbArrowLeft,
@@ -19,7 +19,7 @@ import {
     TbZoomIn,
     TbZoomOut,
 } from "react-icons/tb";
-import { PDFToolbarProps } from "../../Definitions";
+import { PDFToolbarProps } from "../../definitions";
 
 /**
  * PDF Viewer toolbar

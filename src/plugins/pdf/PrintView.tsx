@@ -1,4 +1,4 @@
-import { _getObjectUrl } from "../../Utils";
+import { _getObjectUrl } from "../../utils";
 
 /**
  * PDF Viewer Print View

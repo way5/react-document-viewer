@@ -4,8 +4,8 @@ import React, {
     useImperativeHandle,
     forwardRef,
 } from "react";
-import { _getObjectUrl } from "../../Utils";
-import { PDFThumbsProps } from "../../Definitions";
+import { _getObjectUrl } from "../../utils";
+import { PDFThumbsProps } from "../../definitions";
 
 const THUMBNAIL_WIDTH = 98;
 

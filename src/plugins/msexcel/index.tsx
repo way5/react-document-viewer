@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { HotTable } from "@handsontable/react";
 import { ToolbarMS } from "../../components/index";
-import { _getBlobUrlFromBuffer, _download } from "../../Utils";
+import { _getBlobUrlFromBuffer, _download } from "../../utils";
 import { useTranslation } from "react-i18next";
-import { ViewerPluginProps } from "../../Definitions";
+import { ViewerPluginProps } from "../../definitions";
 
 
 export default (props: ViewerPluginProps) => {
@@ -93,15 +93,15 @@ export default (props: ViewerPluginProps) => {
     };
 
     const handleDownload = () => {
-        const fileUrl = _getBlobUrlFromBuffer(file, fileType);
-        _download(fileUrl, fileName, fileType);
+        const fileUrl = _getBlobUrlFromBuffer(file, fileType.extension);
+        _download(fileUrl, fileName, fileType.extension);
     };
 
     return (
         <div id='wbSheets_wrapper_id' className='wbsheets-document'>
             <ToolbarMS
                 fileName={fileName}
-                fileType={fileType}
+                fileType={fileType.simpleType}
                 showFileName={showFileName}
                 handleDownload={handleDownload}
                 disabled={!file}

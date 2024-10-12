@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { ImageViewerCanvasProps } from "../../Definitions";
+import { ImageViewerCanvasProps } from "../../definitions";
 
 /**
  * Canvas block

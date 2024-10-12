@@ -4,13 +4,14 @@ import _PdfViewer from './plugins/pdf';
 import _SheetViewer from './plugins/msexcel';
 import _DocxViewer from './plugins/msdocx';
 import _ImgViewer from './plugins/img';
-import { KnownFileTypes, getFileTypeFromArrayBuffer, getFileTypeFromFileName } from './Utils.js';
+import _EbookViewer from './plugins/epub';
+import { getfileTypeExtesions, getFileType } from './utils.js';
 import { useTranslation } from 'react-i18next';
-import i18nInit from './Locales';
+import i18nInit from './locales';
 import { ErrorMessage } from './components/index';
-import UnifiedViewerProps, { FileDescriptor } from './Definitions.js';
-import DownloadFile from './components/Downloader.js';
-import Loading from './components/Loading.js';
+import UnifiedViewerProps, { FileDescriptor, FileType } from './definitions.js';
+import DownloadFile from './components/downloader.js';
+import Loading from './components/loading.js';
 import { TbBomb, TbBookOff, TbCloudUpload } from 'react-icons/tb';
 
 /**
@@ -28,7 +29,6 @@ document.oncontextmenu = document.body.oncontextmenu = function () {
  */
 const _AllViewers = (props: UnifiedViewerProps) => {
     const defs: UnifiedViewerProps = {
-        fileIdentification: 'contents',
         activeIndex: 0,
         rootElement: props.rootElement,
         downloadTimeout: 10000,
@@ -50,7 +50,6 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         activeIndex: index,
         allowOpenFile,
         allowDownloadFile,
-        fileIdentification,
         showFileName,
         disablePlugins,
     } = p;
@@ -60,7 +59,10 @@ const _AllViewers = (props: UnifiedViewerProps) => {
     let plugin = null;
     let pdfWorker = props.pdfWorkerUrl;
     if (!pdfWorker || pdfWorker == '') {
-        pdfWorker = new URL('/node_modules/pdfjs-dist/build/pdf.worker.mjs', import.meta.url).toString() as string;
+        pdfWorker = new URL(
+            '/node_modules/pdfjs-dist/build/pdf.worker.mjs',
+            import.meta.url
+        ).toString() as string;
     }
     // ErrorMessages
     const [showError, setShowError] = useState(false);
@@ -71,7 +73,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
     const [file, setFile] = useState<File | null>();
     const [fileBuffer, setFileBuffer] = useState<Uint8Array | null>(null);
     const [fileIsOpen, setFileIsOpen] = useState<boolean>(false);
-    const [fileType, setFileType] = useState<string>('');
+    const [fileType, setFileType] = useState<FileType>();
     const [fileDescriptor, setFileDescriptor] = useState<FileDescriptor>(files[0] || { src: '', fileName: '' });
     const { t } = useTranslation();
     // switching between files
@@ -80,45 +82,36 @@ const _AllViewers = (props: UnifiedViewerProps) => {
     const [showLoading, setShowLoading] = useState<boolean>(true);
 
     useEffect(() => {
+        // if inputFiles has changed
+        setFileIsOpen(true);
+        setShowLoading(true);
+
         if (file instanceof File) {
-            // if a new file has been uploaded
-            setFileIsOpen(true);
-            setShowLoading(true);
             file.arrayBuffer()
                 .then((bytes) => {
                     const arrBuffer = new Uint8Array(bytes);
-                    const fileType = (
-                        fileIdentification === 'contents'
-                            ? getFileTypeFromArrayBuffer(bytes, null)
-                            : getFileTypeFromFileName(file.name)
-                    ) as string;
-                    setFileType(fileType);
+                    setFileType(getFileType(arrBuffer, file.name, file.type));
                     setFileBuffer(arrBuffer);
                     setFileDescriptor({ src: '', fileName: file.name });
                 })
                 .catch((err) => {
-                    setFileType('');
                     setFileIsOpen(false);
                     setFile(null);
                     setFileBuffer(null);
                     setShowLoading(false);
                 });
         } else if (files.length) {
-            // if inputFiles has changed
-            setFileIsOpen(true);
-            setShowLoading(true);
             setFileDescriptor(files[activeIndex]);
             DownloadFile({
                 files: files,
-                fileIdentification: fileIdentification,
                 activeIndex: activeIndex,
                 downloadTimeout: downloadTimeout,
-                onLoad: (arrBuffer, fileType) => {
-                    setFileType(fileType);
+                onLoadend(arrBuffer, name, type, event) {
+                    setFileType(getFileType(arrBuffer, name, type));
                     setFileBuffer(arrBuffer);
                 },
                 onError: (err) => {
-                    setFileType('');
+                    // setFileType('');
                     setFileIsOpen(false);
                     setFile(null);
                     setFileBuffer(null);
@@ -137,15 +130,15 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         setFile(inputFileObj);
     };
 
-    if (fileType == 'doc' || fileType == 'file2003') {
+    if (fileType?.simpleType == 'doc' || fileType?.simpleType == 'file2003') {
         errInfo = t('formatInfoDocx');
-    } else if (fileType == 'ppt' || fileType == 'pptx') {
+    } else if (fileType?.simpleType == 'ppt' || fileType?.simpleType == 'pptx') {
         errInfo = t('formatInfoPPTx');
-    } else if (fileType == 'other' || (!Object.values(KnownFileTypes).includes(fileType as any) && fileType !== '')) {
+    } else if (fileType?.simpleType == 'other' || (!getfileTypeExtesions(fileType?.extension) && fileType?.simpleType)) {
         errInfo = t('supportFileTypes');
     }
 
-    if (fileType == 'pdf' && !disablePlugins?.includes('pdf')) {
+    if (fileType?.simpleType == 'pdf' && !disablePlugins?.includes('pdf')) {
         plugin = (
             <_PdfViewer
                 fileBuffer={fileBuffer}
@@ -166,8 +159,8 @@ const _AllViewers = (props: UnifiedViewerProps) => {
             />
         );
     } else if (
-        (fileType == 'xlsx' && !disablePlugins?.includes('msexcel')) ||
-        (fileType == 'xls' && !disablePlugins?.includes('excel'))
+        (fileType?.simpleType == 'xlsx' && !disablePlugins?.includes('msexcel')) ||
+        (fileType?.simpleType == 'xls' && !disablePlugins?.includes('excel'))
     ) {
         plugin = (
             <_SheetViewer
@@ -187,7 +180,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                 setFileOpen={setFileIsOpen}
             />
         );
-    } else if (fileType == 'image' && !disablePlugins?.includes('images')) {
+    } else if (fileType?.simpleType == 'image' && !disablePlugins?.includes('images')) {
         plugin = (
             <_ImgViewer
                 fileBuffer={fileBuffer}
@@ -205,6 +198,8 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                 changeable={props.changeable}
                 customToolbar={props.customToolbar}
                 zoomSpeed={props.zoomSpeed}
+                noNavbar={props.noNavbar}
+                noFooter={props.noFooter}
                 disableKeyboardSupport={props.disableKeyboardSupport}
                 noResetZoomAfterChange={props.noResetZoomAfterChange}
                 noLimitInitializationSize={props.noLimitInitializationSize}
@@ -225,9 +220,28 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                 setFileOpen={setFileIsOpen}
             />
         );
-    } else if (fileType == 'docx' && !disablePlugins?.includes('msword')) {
+    } else if (fileType?.simpleType == 'docx' && !disablePlugins?.includes('msword')) {
         plugin = (
             <_DocxViewer
+                fileBuffer={fileBuffer}
+                fileType={fileType}
+                filesTotal={files.length}
+                activeFile={fileDescriptor}
+                activeIndex={activeIndex}
+                changeHandler={setActiveIndex}
+                showLoader={setShowLoading}
+                showFileName={showFileName}
+                allowDownloadFile={allowDownloadFile}
+                setOnShowError={setOnShowError}
+                setOnHideError={setOnHideError}
+                errorMessage={setErrorInfo}
+                showError={setShowError}
+                setFileOpen={setFileIsOpen}
+            />
+        );
+    } else if (fileType?.simpleType == 'ebook' && !disablePlugins?.includes('ebook')) {
+        plugin = (
+            <_EbookViewer
                 fileBuffer={fileBuffer}
                 fileType={fileType}
                 filesTotal={files.length}

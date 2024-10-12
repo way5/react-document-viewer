@@ -1,16 +1,15 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+    TbBook2,
     TbCloudDownload,
-    TbFileTypeDoc,
-    TbFileTypeTxt,
-    TbFileTypeXls,
-    TbFileUnknown,
-    TbZoomIn,
-    TbZoomOut,
-    TbZoomReset,
+    TbLayoutSidebarLeftCollapseFilled,
+    TbLayoutSidebarLeftExpandFilled,
+    // TbZoomIn,
+    // TbZoomOut,
+    // TbZoomReset,
 } from 'react-icons/tb';
-import { ToolbarMSProps } from '../definitions';
+import { ActionType, EpubToolbarProps } from '../../definitions';
 
 /**
  * Description placeholder
@@ -19,16 +18,16 @@ import { ToolbarMSProps } from '../definitions';
  * @param {*} props
  * @returns {*}
  */
-export default function ToolbarMS(props: ToolbarMSProps) {
+export default function EbookViewerToolbar(props: EpubToolbarProps) {
     const {
+        onAction,
         fileName,
         fileType,
-        handleDownload,
         disabled,
-        zoom,
-        onZoom,
         showFileName,
-        zoomLevel,
+        showSidebar = true,
+        // zoom,
+        // zoomLevel,
         showDownloadButton = true,
     } = props;
 
@@ -36,45 +35,53 @@ export default function ToolbarMS(props: ToolbarMSProps) {
 
     return (
         <div className='toolbar'>
+            <div className='controls'>
+                {showSidebar ?
+                    (<TbLayoutSidebarLeftCollapseFilled onClick={() => {
+                            onAction({ key: 'toc', actionType: ActionType.hide })
+                        }}
+                        title={t("sidebarToggle")}
+                    />) :
+                    (<TbLayoutSidebarLeftExpandFilled onClick={() => {
+                            onAction({ key: 'toc', actionType: ActionType.show })
+                        }}
+                        title={t("sidebarToggle")}
+                    />)
+                }
+            </div>
             {showFileName && (
                 <div className='file-name'>
-                    {fileType === 'file2003' ? (
-                        <TbFileTypeDoc />
-                    ) : (fileType === 'file2007' ? (
-                        <TbFileTypeXls />
-                    ) : (
-                        <TbFileUnknown />
-                    ))}
+                    <TbBook2 />
                     <span>
                         {fileName}
                     </span>
                 </div>
             )}
             <div className='controls'>
-                {zoom && (
+                {/* {zoom && (
                     <div className='zoom-controls'>
                         <TbZoomReset
                             title={t('resetView')}
-                            onClick={() => onZoom(1)}
+                            onClick={() => onAction({ key: 'zoom', actionType: ActionType.reset })}
                         />
                         <TbZoomOut
                             title={t('zoomOut')}
-                            onClick={() => onZoom(zoomLevel - 0.1)}
+                            onClick={() => onAction({ key: 'zoom', actionType: ActionType.zoomOut })}
                         />
                         <div className='zoom-level'>
                             {Math.trunc(zoomLevel * 100)}%
                         </div>
                         <TbZoomIn
                             title={t('zoomIn')}
-                            onClick={() => onZoom(zoomLevel + 0.1)}
+                            onClick={() => onAction({ key: 'zoom', actionType: ActionType.zoomIn })}
                         />
                     </div>
-                )}
+                )} */}
                 {showDownloadButton && (
                     <TbCloudDownload
                         className={`download${disabled ? ' disabled' : ''}`}
                         title={t('downloadFile')}
-                        onClick={handleDownload}
+                        onClick={() => onAction({ key: 'download', actionType: ActionType.download })}
                     />
                 )}
             </div>

@@ -1,20 +1,38 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as pdfjs from "pdfjs-dist";
-import { usePdf } from "./Viewer";
-import { default as Toolbar } from "./Toolbar";
-import { _download, _getObjectUrl, _getBlobUrl } from "../../Utils";
+import { usePdf } from "./viewer";
+import { default as Toolbar } from "./toolbar";
+import { _download, _getObjectUrl } from "../../utils";
 import { useTranslation } from "react-i18next";
 import {
     PDFViewerProps,
     ViewerPluginProps,
     PDFToolbarElement,
-} from "../../Definitions.js";
+} from "../../definitions.js";
 
 const MAX_SCALE = 4;
 const MIN_SCALE = 0.5;
 const SCALE_STEP = 0.1;
 const FILE_LIMIT = 1024 * 1024 * 50;
 const DEFAULT_SIZE = 1;
+
+/**
+ * Returns pdf object URL
+ *
+ * @export
+ * @async
+ * @param {*} url
+ * @param {*} pdfDocument
+ * @returns {unknown}
+ */
+const _getBlobUrl = async (url: string, pdfDocument: any) => {
+    if (url.indexOf("blob:") == 0) {
+        return url;
+    }
+    let unit8ArrayData = await pdfDocument.getData();
+    let blob = new Blob([unit8ArrayData], { type: "application/pdf" });
+    return _getObjectUrl(blob);
+}
 
 /**
  * PDF Viewer

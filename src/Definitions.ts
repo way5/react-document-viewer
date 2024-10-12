@@ -13,6 +13,16 @@ export enum ActionType {
     scaleX = 9,
     scaleY = 10,
     download = 11,
+    show = 12,
+    hide = 13,
+}
+
+export interface FileType {
+    mimeType: string;
+    extension: string;
+    simpleType: string;
+    contentType: string;
+    isZip: boolean;
 }
 
 export interface ErrorMessageProps {
@@ -51,6 +61,29 @@ export interface ToolbarMSProps {
     showDownloadButton?: boolean;
     onZoom: (z: number) => void;
     handleDownload: () => void;
+}
+
+export interface ToolbarProps {
+    onAction: (config: ImageViewerToolbarConfig) => void;
+    fileName: string;
+    fileType: string;
+    disabled: boolean;
+    zoom: boolean;
+    zoomLevel: number;
+    showFileName: boolean;
+    showDownloadButton?: boolean;
+}
+
+export interface EpubToolbarProps {
+    onAction: (config: ImageViewerToolbarConfig) => void;
+    fileName: string;
+    fileType: string;
+    disabled: boolean;
+    // zoom: boolean;
+    // zoomLevel: number;
+    showSidebar: boolean;
+    showFileName: boolean;
+    showDownloadButton?: boolean;
 }
 
 export const ImageViewerDefaultToolbar: ImageViewerToolbarConfig[] = [
@@ -196,7 +229,6 @@ export interface PDFToolbarProps {
     onPageSearch: (page: number) => void;
     onRotateChange: (isClock: boolean) => void;
     onDownloadFile: () => void;
-    // onUploadFile: (f: any) => void,
     showLoader: (b: boolean) => void;
     showError: (b: boolean) => void;
     errorMessage: (m: string) => void;
@@ -218,14 +250,12 @@ export interface PDFToolbarElement {
 
 export interface DownloadFileProps {
     files: FileDescriptor[];
-    fileIdentification: "extension" | "contents";
     activeIndex: number;
     downloadTimeout: number;
-    onLoad: (
-        buffer: Uint8Array,
-        fileType: string,
+    onLoad?: (
         event: ProgressEvent
     ) => void;
+    onLoadend?: (buffer: Uint8Array, name: string, type:string, event: ProgressEvent) => void;
     onError?: (event: ProgressEvent) => void;
     onAbort?: (event: ProgressEvent) => void;
 }
@@ -289,23 +319,23 @@ interface CommonProps {
     minScale?: number;
     // url of worker, local or remote
     pdfWorkerUrl?: string;
-    // callback for activeIndex change
-    changeHandler?: (activeIndex: number) => void;
-    // callback to display loader
-    showLoader?: (s: boolean) => void;
     // makes download button visible on toolbars
     allowDownloadFile?: boolean;
+    // callback for activeIndex change
+    changeHandler?: (activeIndex: number) => void;
     // Error message setter
     errorMessage?: (m: string) => void;
     // Error flag setter
     showError?: (s: boolean) => void;
+    // callback to display loader
+    showLoader?: (s: boolean) => void;
 }
 
 export interface ViewerPluginProps extends CommonProps {
     // File buffer
     fileBuffer: Uint8Array | null;
     // File type category name
-    fileType: string;
+    fileType: FileType;
     // Currently active file descriptor
     activeFile: FileDescriptor;
     // Total files to browse
@@ -322,10 +352,6 @@ export interface ViewerPluginProps extends CommonProps {
 interface UnifiedViewerProps extends CommonProps {
     // DOM element
     rootElement: HTMLElement;
-    // File identification method 'extension' or 'contents'.
-    // Extension looks at file exttension while contents comprares
-    // file contents with preset magic numbers(byte masks).
-    fileIdentification: "extension" | "contents";
     // array of file descriptors to browse through
     files: FileDescriptor[];
     // locale name (en, ru, zh, es, ...)
@@ -335,7 +361,7 @@ interface UnifiedViewerProps extends CommonProps {
     // makes "Open File" button available
     allowOpenFile?: boolean;
     // disable one or few plugins
-    disablePlugins?: ['pdf'?, 'msexcel'?, 'excel'?, 'msword'?, 'images'?]
+    disablePlugins?: ['pdf'?, 'msexcel'?, 'excel'?, 'msword'?, 'images'?, 'ebook'?]
 }
 
 export default UnifiedViewerProps;

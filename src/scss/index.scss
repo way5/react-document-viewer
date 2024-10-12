@@ -5,6 +5,18 @@ React icons: https://react-icons.github.io/react-icons/search
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .scrollbar-none::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .scrollbar-none {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+}
+
 /*****************/
 /**** GENERAL ****/
 /*****************/
@@ -451,10 +463,11 @@ div:not(span):where(.doc-viewer),
         /****** COMMON TOOLBAR *****/
         /***************************/
         .docx-document,
-        .wbsheets-document {
+        .wbsheets-document,
+        .epub-document {
             .toolbar {
                 @apply flex justify-between items-center w-full box-border
-                        py-2 px-3 text-gray-50;
+                        py-2 px-3 text-gray-50 shadow-lg;
 
                 .file-name {
                     @apply inline-flex gap-x-2 items-center justify-center;
@@ -870,6 +883,117 @@ div:not(span):where(.doc-viewer),
 
                 svg {
                     @apply hover:bg-green-900;
+                }
+            }
+        }
+
+        /************************/
+        /****** EPUB VIEWER *****/
+        /************************/
+        .epub-document {
+            @apply relative flex flex-col items-start justify-start w-full h-full
+            overflow-hidden;
+
+            .toolbar {
+                @apply bg-yellow-700;
+
+                svg {
+                    @apply hover:bg-yellow-900;
+                }
+            }
+
+            .sidebar {
+                @apply w-52 absolute -left-56 top-11 bottom-0 z-20
+                        bg-black opacity-90 transition-all duration-300 p-0
+                        flex flex-col items-center text-gray-300
+                        overflow-hidden px-1 shadow-lg;
+
+                &.visible {
+                    @apply translate-x-56;
+                }
+
+                & > div {
+                    @apply w-full;
+                }
+
+                .header {
+                    @apply py-2 text-center border-solid border-0 border-b border-gray-600;
+                }
+
+                .content {
+                    @apply w-full h-full overflow-x-auto overflow-y-scroll py-1 scrollbar-none;
+
+                    .item {
+                        @apply pl-2;
+
+                        .subitems {
+                            @apply pb-2;
+                        }
+                    }
+
+                    a {
+                        @apply text-gray-300 hover:text-gray-400 no-underline visited:text-gray-300
+                                text-xs inline-flex items-center justify-start gap-x-2;
+                    }
+
+                }
+            }
+
+            .scroll-wrapper {
+                @apply w-full h-full overflow-hidden box-border;
+
+                .scroll {
+                    @apply mr-8 h-full overflow-y-scroll overflow-x-auto
+                            pt-3 pb-8 box-border scrollbar-none;
+
+                        iframe {
+                            @apply w-10/12 max-w-5xl border-none p-0 my-0 mx-auto block bg-white;
+                        }
+                }
+
+                .progress-bar-container {
+                    @apply h-full w-8 z-10 py-3 box-border flex items-center justify-center float-right;
+
+                    .progress-bar-bg {
+                        @apply h-full w-2 bg-black p-1 rounded-full;
+
+                        .progress-bar-inner {
+                            @apply h-full relative flex justify-center;
+
+                            .section-mark {
+                                @apply absolute w-4 h-[1px] -left-2 bg-gray-300 hover:bg-red-500;
+
+                                .tooltip__text {
+                                    @apply relative;
+
+                                    div {
+                                        @apply absolute leading-none right-full min-w-20 top-1/2 transform -translate-y-1/2 mr-2
+                                            px-2 py-2 bg-gray-700 rounded-lg text-center text-white text-sm whitespace-pre
+                                            before:content-[''] before:absolute before:top-1/2 before:-right-1
+                                            before:border-solid before:border-l-transparent before:border-b-transparent before:border-gray-700 before:border-[4px]
+                                            before:-translate-y-1/2 before:rotate-45 before:rounded-none shadow-md before:shadow-md;
+                                    }
+                                }
+                            }
+
+                            .progress-bar__outer {
+                                @apply cursor-pointer flex items-center justify-center
+                                h-full flex-col;
+
+                                .progress-bar__inner {
+                                    @apply bg-white relative rounded-full w-2 min-h-1;
+
+                                    .progress-bar__cursor {
+                                        @apply w-2 h-2 rounded-full absolute bottom-0 left-0 bg-white;
+                                    }
+                                }
+
+                                .progress-bar__mean {
+                                    @apply w-full h-full bg-inherit rounded-b-full;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

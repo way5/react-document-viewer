@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from "react";
-import ImageViewerCanvas from "./Canvas";
-import ImageViewerNavigation from "./Navigation";
-import { default as ImageViewerToolbar } from "./Toolbar";
+import ImageViewerCanvas from "./canvas";
+import ImageViewerNavigation from "./navigation";
+import { default as ImageViewerToolbar } from "./toolbar";
 import {
     ViewerPluginProps,
     ImageViewerToolbarConfig,
     ActionType,
     ImageViewerDefaultToolbar,
     ImageViewerCoreState,
-} from "../../Definitions";
+} from "../../definitions";
 import { useTranslation } from "react-i18next";
-import { _getBlobUrlFromBuffer } from "../../Utils";
+import { _getBlobUrlFromBuffer } from "../../utils";
 
 /**
  * Description placeholder
@@ -71,6 +71,7 @@ export default (props: ViewerPluginProps) => {
         setOnHideError = (f) => {},
         errorMessage = (m) => { },
         // setFileOpen = () => {},
+        noNavbar = false,
     } = props;
 
     const initialState: ImageViewerCoreState = {
@@ -95,7 +96,7 @@ export default (props: ViewerPluginProps) => {
     const currentIndex = React.useRef<number>(0);
     const fileName = activeFile.fileName;
     const containerSize = React.useRef( { width: 0, height: 0 } );
-    const showNavbar = !props.noNavbar && filesTotal > 1;
+    const showNavbar = !noNavbar && filesTotal > 1;
     const [state, dispatch] = React.useReducer<
             (s: any, a: any) => ImageViewerCoreState
             >(reducer, initialState);
@@ -194,7 +195,7 @@ export default (props: ViewerPluginProps) => {
         }
         //
         if (fileBuffer) {
-            const imageUrl = _getBlobUrlFromBuffer(fileBuffer, fileType);
+            const imageUrl = _getBlobUrlFromBuffer(fileBuffer, fileType.extension);
             image.src = imageUrl;
         }
 

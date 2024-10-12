@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import * as pdfjs from "pdfjs-dist";
 import { RenderTask, TextContent } from "pdfjs-dist/types/src/display/api";
-import { PDFViewerProps } from "../../Definitions";
+import { PDFViewerProps } from "../../definitions";
 
 /**
  * PDF viewer

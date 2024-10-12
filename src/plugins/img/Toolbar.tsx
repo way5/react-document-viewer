@@ -3,7 +3,7 @@ import {
     ImageViewerToolbarConfig,
     ActionType,
     ImageToolbarProps,
-} from "../../Definitions";
+} from "../../definitions";
 import {
     TbActivity,
     TbArrowBigLeft,

@@ -1,5 +1,4 @@
-import { DownloadFileProps } from "../Definitions";
-import { getFileTypeFromArrayBuffer, getFileTypeFromFileName } from "../Utils";
+import { DownloadFileProps } from "../definitions";
 
 /**
  * FIle dowwnloader
@@ -14,10 +13,10 @@ export default function DownloadFile(props: DownloadFileProps) {
         files,
         activeIndex,
         downloadTimeout,
-        onLoad,
+        onLoad = () => {},
+        onLoadend = () => {},
         onAbort,
         onError,
-        fileIdentification,
     } = props;
 
     let activeFile = files[0];
@@ -25,10 +24,9 @@ export default function DownloadFile(props: DownloadFileProps) {
         activeFile = files[activeIndex];
     }
 
-    const fileExtension = getFileTypeFromFileName(activeFile.src);
     const req = new XMLHttpRequest();
     req.open("GET", activeFile.src);
-    req.responseType = "arraybuffer";
+    req.responseType = "blob";
 
     const xhrTimeOut = setTimeout(() => {
         req.abort();
@@ -37,14 +35,25 @@ export default function DownloadFile(props: DownloadFileProps) {
     try {
         req.onload = function (e: ProgressEvent) {
             clearTimeout(xhrTimeOut);
-            const fileType = (
-                fileIdentification === "extension"
-                    ? fileExtension
-                    : getFileTypeFromArrayBuffer(req.response, fileExtension)
-            ) as string;
-            const arrBuffer = new Uint8Array(req.response);
-            onLoad(arrBuffer, fileType, e);
+            onLoad(e);
         };
+        req.onloadend = function (e: ProgressEvent) {
+            if (req.response) {
+                const t = async () => {
+                    let buffer = await req.response.arrayBuffer();
+                    const arrBuffer = new Uint8Array(buffer);
+                    onLoadend(
+                        arrBuffer,
+                        activeFile.src.substring(activeFile.src.lastIndexOf("/") + 1),
+                        req.response.type,
+                        e
+                    );
+                }
+                t();
+                // TODO Blob.size
+            } else
+                console.error('(!) the request result is empty');
+        }
         req.onerror = function (e: ProgressEvent) {
             onError && onError(e);
         };
