@@ -74,11 +74,6 @@ export default (props: ViewerPluginProps) => {
         }
     };
 
-    //     const historyPopstateHandler = (detail: any) => {
-    // console.log(detail)
-    //         // history.pushState(target)
-    //     }
-
     useEffect(() => {
         if (fileBuffer) {
             showLoader(true);
@@ -102,10 +97,6 @@ export default (props: ViewerPluginProps) => {
                             splitHref,
                             getFragment,
                         });
-                        // pageProgress = new TOCProgress()
-                        // await pageProgress.init({
-                        //     toc: book.pageList ?? [], ids, splitHref, getFragment
-                        // })
                     }
 
                     // if (book.sections.some((section: any) => section.mediaOverlay)) {
@@ -177,46 +168,6 @@ export default (props: ViewerPluginProps) => {
         })();
     }, [book]);
 
-    // const getFileEntries = async (entry: any) => (entry.isFile ? entry
-    //     : (
-    //         await Promise.all(
-    //             Array.from(
-    //                 await new Promise(
-    //                     (resolve, reject) => entry.createReader()
-    //                     .readEntries(
-    //                         entries => resolve(entries), error => reject(error)
-    //                     )
-    //                 ),
-    //                 getFileEntries
-    //             )
-    //         )
-    //     ).flat()
-    // )
-
-    // const makeDirectoryLoader = async (entry: any) => {
-    //     const entries = await getFileEntries(entry)
-    //     const files = await Promise.all(
-    //         entries.map(entry => new Promise(
-    //             (resolve, reject) =>
-    //                 entry.file(file => resolve([file, entry.fullPath]),
-    //                     error => reject(error))
-    //             )
-    //         )
-    //     )
-    //     const map = new Map(
-    //         files.map(([file, path]) =>
-    //             [path.replace(entry.fullPath + '/', ''), file]
-    //         )
-    //     )
-    //     const decoder = new TextDecoder();
-    //     const decode = (x: ArrayBuffer) => x ? decoder.decode(x) : null;
-    //     const getBuffer = (name: string) => map.get(name)?.arrayBuffer() ?? null;
-    //     const loadText = async (name: string) => decode(await getBuffer(name))
-    //     const loadBlob = (name: string) => map.get(name)
-    //     const getSize = (name: string) => map.get(name)?.size ?? 0
-    //     return { loadText, loadBlob, getSize }
-    // }
-
     const makeZipLoader = async (data: Uint8Array) => {
         zip.configure({ useWebWorkers: false });
         const reader = new zip.ZipReader(new zip.BlobReader(new Blob([data])));
@@ -232,12 +183,6 @@ export default (props: ViewerPluginProps) => {
         const getSize = (name: string) => map.get(name)?.uncompressedSize ?? 0;
         return { entries, loadText, loadBlob, getSize };
     };
-
-    // const dataToBytes = async (dataUrl: string) => {
-    //     const res = await fetch(dataUrl);
-    //     var dec = new TextDecoder();
-    //     return dec.decode(await res.arrayBuffer());
-    // }
 
     const loadContent = async (data: Uint8Array) => {
         let book = null;
@@ -294,14 +239,6 @@ export default (props: ViewerPluginProps) => {
 
     const handleAction = (props: ImageViewerToolbarConfig) => {
         switch (props.key) {
-            // case 'zoom':
-            //     if(props.actionType === ActionType.zoomIn)
-            //          onZoomChange(zoomLevel + 0.1);
-            //     else if(props.actionType === ActionType.zoomOut)
-            //          onZoomChange(zoomLevel - 0.1);
-            //     else if(props.actionType === ActionType.reset)
-            //          onZoomChange(1);
-            //     break;
             case 'download':
                 handleDownload();
                 break;
@@ -359,11 +296,6 @@ export default (props: ViewerPluginProps) => {
             needleDoc?.querySelector(`[id="${anchor[1]}"]`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
-
-    // const onZoomChange = (z: number) => {
-    //     if (z <= 0.5 || z > 2.1) return false;
-    //     setZoomLevel(z);
-    // };
 
     const setSectionLength = (i: number, length: number) => {
         const a = sectionLengths;

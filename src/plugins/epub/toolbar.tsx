@@ -5,9 +5,6 @@ import {
     TbCloudDownload,
     TbLayoutSidebarLeftCollapseFilled,
     TbLayoutSidebarLeftExpandFilled,
-    // TbZoomIn,
-    // TbZoomOut,
-    // TbZoomReset,
 } from 'react-icons/tb';
 import { ActionType, EpubToolbarProps } from '../../definitions';
 
@@ -26,8 +23,6 @@ export default function EbookViewerToolbar(props: EpubToolbarProps) {
         disabled,
         showFileName,
         showSidebar = true,
-        // zoom,
-        // zoomLevel,
         showDownloadButton = true,
     } = props;
 
@@ -58,25 +53,6 @@ export default function EbookViewerToolbar(props: EpubToolbarProps) {
                 </div>
             )}
             <div className='controls'>
-                {/* {zoom && (
-                    <div className='zoom-controls'>
-                        <TbZoomReset
-                            title={t('resetView')}
-                            onClick={() => onAction({ key: 'zoom', actionType: ActionType.reset })}
-                        />
-                        <TbZoomOut
-                            title={t('zoomOut')}
-                            onClick={() => onAction({ key: 'zoom', actionType: ActionType.zoomOut })}
-                        />
-                        <div className='zoom-level'>
-                            {Math.trunc(zoomLevel * 100)}%
-                        </div>
-                        <TbZoomIn
-                            title={t('zoomIn')}
-                            onClick={() => onAction({ key: 'zoom', actionType: ActionType.zoomIn })}
-                        />
-                    </div>
-                )} */}
                 {showDownloadButton && (
                     <TbCloudDownload
                         className={`download${disabled ? ' disabled' : ''}`}

@@ -41,27 +41,6 @@ import { FileType } from "./definitions";
  *
  */
 
-/**
- * Description placeholder
- *
- * @type {{}}
- */
-// export enum KnownFileTypes {
-//     XLSX = 'xlsx',
-//     DOCX = 'docx',
-//     PPTX = 'pptx',
-//     EPUB = 'epub',
-//     FB2 = 'fb2',
-//     PDF = 'pdf',
-//     XLS = 'xls',
-//     DOC = 'doc',
-//     PPT = 'ppt',
-//     FILE2003 = 'file2003',
-//     FILE2007 = 'file2007',
-//     IMAGE = 'image',
-//     OTHER = 'other',
-// }
-
 // See: https://en.wikipedia.org/wiki/List_of_file_signatures
 const formatMap: { [key: string]: string[][] } = {
     pdf: [['25', '50', '44', '46']],
@@ -89,79 +68,6 @@ const formatMap: { [key: string]: string[][] } = {
     webp: [['52', '49', '46', '46']],
     bmp: [['42', '4D']],
 };
-
-// xls is determined by the the file header, and the other two by its tail
-// const pptFormatList = [
-//     '50',
-//     '6f',
-//     '77',
-//     '65',
-//     '72',
-//     '50',
-//     '6f',
-//     '69',
-//     '6e',
-//     '74',
-//     '20',
-//     '44',
-//     '6f',
-//     '63',
-//     '75',
-//     '6d',
-//     '65',
-//     '6e',
-//     '74',
-// ];
-
-// const format2003Map: Record<string, string[]> = {
-//     xls: ['4d', '69', '63', '72', '6f', '73', '6f', '66', '74', '20', '45', '78', '63', '65', '6c'],
-//     doc: ['4d', '69', '63', '72', '6f', '73', '6f', '66', '74', '20', '57', '6f', '72', '64'],
-//     ppt: [
-//         '50',
-//         '00',
-//         '6f',
-//         '00',
-//         '77',
-//         '00',
-//         '65',
-//         '00',
-//         '72',
-//         '00',
-//         '50',
-//         '00',
-//         '6f',
-//         '00',
-//         '69',
-//         '00',
-//         '6e',
-//         '00',
-//         '74',
-//         '00',
-//         '20',
-//         '00',
-//         '44',
-//         '00',
-//         '6f',
-//         '00',
-//         '63',
-//         '00',
-//         '75',
-//         '00',
-//         '6d',
-//         '00',
-//         '65',
-//         '00',
-//         '6e',
-//         '00',
-//         '74',
-//     ],
-// };
-// Decision made by searching keywords at the end of each file
-// const format2007Map: Record<string, string[]> = {
-//     xlsx: ['77', '6f', '72', '6b', '73', '68', '65', '65', '74', '73', '2f'], // worksheets
-//     docx: ['77', '6f', '72', '64', '2f'], // word
-//     pptx: ['70', '70', '74', '2f'], // ppt
-// };
 
 // See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 // Also: https://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types
@@ -288,32 +194,6 @@ export function _download(blobUrl: string, fileName: string, ext: string = 'txt'
     }
 }
 
-/**
- * Description placeholder
- *
- * @export
- * @param {*} fileName
- * @returns {*}
- */
-// export function getFileExtension(fileName: any): string {
-//     const ext = fileName.slice(((fileName.lastIndexOf('.') - 1) >>> 0) + 2).toLowerCase();
-//     if (Object.values(KnownFileTypes).includes(ext)) {
-//         return ext;
-//     }
-//     return 'other';
-// }
-
-/**
- * Description placeholder
- *
- * @export
- * @param {*} type
- * @returns {*}
- */
-// export function getFileTypeFromUploadType(type: string): string {
-//     return fileTypeMap[type] || 'other';
-// }
-
 export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType: string): FileType {
     const fType: FileType = {
         extension: fileName ? fileName.slice(((fileName.lastIndexOf('.') - 1) >>> 0) + 2).toLowerCase() : '',
@@ -324,9 +204,6 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
     }
 
     try {
-        // if (Object.prototype.toString.call(arrayBuffer) !== '[object ArrayBuffer]') {
-        //     throw new TypeError('(!) the provided value is not a valid ArrayBuffer type.');
-        // }
         const str_8 = getSliceArrTo16(arrayBuffer, 0, 8).join('');
         // first match
         for (let key in formatMap) {
@@ -369,30 +246,11 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
                 fType.contentType = 'epub';
                 fType.simpleType = 'ebook';
             } else {
-                // The default is one of the three formats: xlsx, pptx, docx, for the second match.
-                // If no match is found, the result is still file2007
-                // let arr_500_16 = getSliceArrTo16(arrayBuffer, -500, 0);
-                // for (let type in format2007Map) {
-                //     let target = format2007Map[type];
-                //     if (isListContainsTarget(target, arr_500_16)) {
-                //         fType.simpleType = type;
-                //         break;
-                //     }
-                // }
                 fType.simpleType = fType.extension;
             }
         } else if (fType.contentType == 'pdf') {
             fType.simpleType = 'pdf';
         } else if (fType.contentType == 'file2003') {
-            // let arr_end_16 = getSliceArrTo16(arrayBuffer, -550, -440);
-            // for (let type in format2003Map) {
-            //     let target = format2003Map[type];
-            //     // Determine whether it is doc/ppt by counting down the 440-550 position
-            //     if (~arr_end_16.join('').indexOf(target.join(''))) {
-            //         fType.simpleType = type;
-            //         break;
-            //     }
-            // }
             fType.simpleType = fType.extension;
         } else if (
             fType.contentType == 'avif' ||
