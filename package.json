@@ -1,7 +1,7 @@
 {
     "name": "react-document-viewer",
-    "version": "2.0.0",
-    "description": "A React component to preview document of 'pdf,xls,xlsx,docx', which can automatically identify file types.",
+    "version": "2.1.0",
+    "description": "A React component to preview document of 'epub,mobi,pdf,xls,xlsx,docx and images', which can automatically identify file types.",
     "main": "build/bundle.js",
     "author": "Sergey Ko",
     "license": "MIT",
