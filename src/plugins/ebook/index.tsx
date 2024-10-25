@@ -227,7 +227,7 @@ export default (props: ViewerPluginProps) => {
     };
 
     const showSidebar = (show: boolean) => {
-        const sidebar = document.querySelector('div.sidebar');
+        const sidebar = document.querySelector('div.doc-viewer .sidebar');
         if (show) {
             sidebar?.classList.add('visible');
             setSidebarShown(true);

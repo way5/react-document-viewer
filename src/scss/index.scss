@@ -903,7 +903,7 @@ div:not(span):where(.doc-viewer),
             }
 
             .sidebar {
-                @apply w-52 absolute -left-56 top-11 bottom-0 z-20
+                @apply w-52 h-full absolute -left-56 top-11 bottom-0 z-20
                         bg-black opacity-90 transition-all duration-300 p-0
                         flex flex-col items-center text-gray-300
                         overflow-hidden px-1 shadow-lg;

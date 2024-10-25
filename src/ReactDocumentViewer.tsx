@@ -4,7 +4,7 @@ import _PdfViewer from './plugins/pdf';
 import _SheetViewer from './plugins/msexcel';
 import _DocxViewer from './plugins/msdocx';
 import _ImgViewer from './plugins/img';
-import _EbookViewer from './plugins/epub';
+import _EbookViewer from './plugins/ebook';
 import { getfileTypeExtesions, getFileType } from './utils.js';
 import { useTranslation } from 'react-i18next';
 import i18nInit from './locales';

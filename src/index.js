@@ -1,13 +1,15 @@
 import "./scss/index.scss";
 import ReactDocumentViewer from "./ReactDocumentViewer";
 
+window.ReactDocumentViewer = ReactDocumentViewer;
+
 if (process.env.NODE_ENV !== "production") {
     window.addEventListener("load", () => {
         window.ReactDocumentViewer = new ReactDocumentViewer({
             rootElement: document.getElementById("root"),
             // files: [],
             files: [
-                { src: "/docs/test.mobi", fileName: "Image #1" },
+                { src: "/docs/test.epub", fileName: "Image #1" },
                 { src: "/docs/test.webp", fileName: "Image #2" },
             ],
             downloadInNewWindow: false,
