@@ -40,7 +40,7 @@ export interface ViewerImageSize {
 
 export interface FileDescriptor {
     src: string;
-    fileName: string;
+    name: string;
     defaultSize?: ViewerImageSize;
 }
 

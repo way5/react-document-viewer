@@ -7,6 +7,13 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => ({
+    css: {
+        preprocessorOptions: {
+            scss: {
+                api: "modern",
+            },
+        },
+    },
     plugins: [
         react({}),
         sassDts({
@@ -37,14 +44,14 @@ export default defineConfig(({ command, mode }) => ({
                     src: './node_modules/pdfjs-dist/cmaps',
                     dest: '../public',
                 },
-                {
-                    src: './node_modules/epub.js/libs/jszip/jszip.min.js',
-                    dest: '',
-                },
-                {
-                    src: './node_modules/epub.js/libs/jszip/jszip.min.js',
-                    dest: '../public',
-                },
+                // {
+                //     src: './node_modules/jszip/dist/jszip.js',
+                //     dest: '',
+                // },
+                // {
+                //     src: './node_modules/jszip/dist/jszip.js',
+                //     dest: '../public',
+                // },
             ],
         }),
     ],
@@ -78,12 +85,11 @@ export default defineConfig(({ command, mode }) => ({
                 //             .toString();
                 //     }
                 // },
-                assetFileNames: (a) => {
-                    if (a.name === 'index.css') return 'doc_viewer.css';
-                    else if (a.name === 'index.js') return 'doc_viewer.js';
-                    else if (a.name === 'app.scss') return 'doc_viewer.scss';
-                    else return a.name;
-                },
+                // assetFileNames: (a) => {
+                //     if (a.name === 'index.scss') return 'doc_viewer.scss';
+                //     else if (a.name === 'index.js') return 'doc_viewer.js';
+                //     else return a.name;
+                // },
                 entryFileNames: 'doc_viewer.js',
             },
             onLog(level, log, handler) {

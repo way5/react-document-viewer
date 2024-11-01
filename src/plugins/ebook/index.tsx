@@ -223,7 +223,7 @@ export default (props: ViewerPluginProps) => {
 
     const handleDownload = () => {
         const fileUrl = _getBlobUrlFromBuffer(fileBuffer, fileType.extension);
-        _download(fileUrl, bookMeta.title || activeFile.fileName, fileType.extension);
+        _download(fileUrl, bookMeta.title || activeFile.name, fileType.extension);
     };
 
     const showSidebar = (show: boolean) => {
@@ -307,7 +307,7 @@ export default (props: ViewerPluginProps) => {
         <div className="epub-document">
             <EbookViewerToolbar
                 onAction={handleAction}
-                fileName={bookMeta.title || activeFile.fileName}
+                fileName={bookMeta.title || activeFile.name}
                 fileType={fileType.simpleType}
                 disabled={!fileBuffer}
                 showFileName={showFileName}

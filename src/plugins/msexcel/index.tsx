@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import { HotTable } from "@handsontable/react";
 import { ToolbarMS } from "../../components/index";
-import { _getBlobUrlFromBuffer, _download } from "../../utils";
+import { _getBlobUrlFromBuffer, _download, basename } from "../../utils";
 import { useTranslation } from "react-i18next";
 import { ViewerPluginProps } from "../../definitions";
 
@@ -26,9 +26,7 @@ export default (props: ViewerPluginProps) => {
     } = props;
     const [data, setData] = useState<Record<string, any>>({});
     const [file, setFile] = useState(fileBuffer);
-    const [fileName, setFileName] = useState<string>(
-        activeFile.fileName || ''
-    );
+    const [fileName, setFileName] = useState<string>('');
     const { t } = useTranslation();
     const [activeTabKey, setActiveTabKey] = useState<string>("wbSheets_0");
     const [sheetNames, setSheetNames] = useState<string[]>([]);
@@ -39,7 +37,7 @@ export default (props: ViewerPluginProps) => {
     }, [fileBuffer]);
 
     useEffect(() => {
-        setFileName(activeFile.fileName || "");
+        setFileName(activeFile.name || basename(activeFile.src));
     }, [activeIndex]);
 
     useEffect(() => {

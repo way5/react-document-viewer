@@ -15,7 +15,7 @@ import Loading from './components/loading.js';
 import { TbBomb, TbBookOff, TbCloudUpload } from 'react-icons/tb';
 
 /**
- * Diable right click
+ * Disable right click
  */
 document.oncontextmenu = document.body.oncontextmenu = function () {
     return false;
@@ -54,17 +54,14 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         disablePlugins,
     } = p;
 
-    let errInfo = '';
-    let overlay = null;
-    let plugin = null;
     let pdfWorker = props.pdfWorkerUrl;
     if (!pdfWorker || pdfWorker == '') {
-        pdfWorker = new URL(
-            '/node_modules/pdfjs-dist/build/pdf.worker.mjs',
-            import.meta.url
-        ).toString() as string;
+        pdfWorker = new URL('/node_modules/pdfjs-dist/build/pdf.worker.mjs', import.meta.url).toString() as string;
     }
     // ErrorMessages
+    const [plugin, setPlugin] = useState<React.ReactNode | null>(null);
+    const [overlay, setOverlay] = useState<React.ReactNode | null>(null);
+    const [errInfo, setErrInfo] = useState<string>('');
     const [showError, setShowError] = useState(false);
     const [errorInfo, setErrorInfo] = useState<string>('');
     const [onHideError, setOnHideError] = useState<any>();
@@ -73,8 +70,8 @@ const _AllViewers = (props: UnifiedViewerProps) => {
     const [file, setFile] = useState<File | null>();
     const [fileBuffer, setFileBuffer] = useState<Uint8Array | null>(null);
     const [fileIsOpen, setFileIsOpen] = useState<boolean>(false);
-    const [fileType, setFileType] = useState<FileType>();
-    const [fileDescriptor, setFileDescriptor] = useState<FileDescriptor>(files[0] || { src: '', fileName: '' });
+    const [fileType, setFileType] = useState<FileType | null>(null);
+    const [fileDescriptor, setFileDescriptor] = useState<FileDescriptor>(files[0] || { src: '', name: '' });
     const { t } = useTranslation();
     // switching between files
     const [activeIndex, setActiveIndex] = useState<number>(index);
@@ -92,13 +89,14 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                     const arrBuffer = new Uint8Array(bytes);
                     setFileType(getFileType(arrBuffer, file.name, file.type));
                     setFileBuffer(arrBuffer);
-                    setFileDescriptor({ src: '', fileName: file.name });
+                    setFileDescriptor({ src: '', name: file.name });
                 })
                 .catch((err) => {
                     setFileIsOpen(false);
                     setFile(null);
                     setFileBuffer(null);
                     setShowLoading(false);
+                    setErrInfo(t('unableToParseFile'));
                 });
         } else if (files.length) {
             setFileDescriptor(files[activeIndex]);
@@ -116,6 +114,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                     setFile(null);
                     setFileBuffer(null);
                     setShowLoading(false);
+                    setErrInfo(t('unableToDownloadFile'));
                 },
             });
         }
@@ -130,168 +129,179 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         setFile(inputFileObj);
     };
 
-    if (fileType?.simpleType == 'doc' || fileType?.simpleType == 'file2003') {
-        errInfo = t('formatInfoDocx');
-    } else if (fileType?.simpleType == 'ppt' || fileType?.simpleType == 'pptx') {
-        errInfo = t('formatInfoPPTx');
-    } else if (fileType?.simpleType == 'other' || (!getfileTypeExtesions(fileType?.extension) && fileType?.simpleType)) {
-        errInfo = t('supportFileTypes');
-    }
-
-    if (fileType?.simpleType == 'pdf' && !disablePlugins?.includes('pdf')) {
-        plugin = (
-            <_PdfViewer
-                fileBuffer={fileBuffer}
-                fileType={fileType}
-                filesTotal={files.length}
-                activeFile={fileDescriptor}
-                activeIndex={activeIndex}
-                pdfWorkerUrl={pdfWorker}
-                changeHandler={setActiveIndex}
-                showLoader={setShowLoading}
-                showFileName={showFileName}
-                allowDownloadFile={allowDownloadFile}
-                setOnShowError={setOnShowError}
-                setOnHideError={setOnHideError}
-                errorMessage={setErrorInfo}
-                showError={setShowError}
-                setFileOpen={setFileIsOpen}
-            />
-        );
-    } else if (
-        (fileType?.simpleType == 'xlsx' && !disablePlugins?.includes('msexcel')) ||
-        (fileType?.simpleType == 'xls' && !disablePlugins?.includes('excel'))
-    ) {
-        plugin = (
-            <_SheetViewer
-                fileBuffer={fileBuffer}
-                fileType={fileType}
-                filesTotal={files.length}
-                activeFile={fileDescriptor}
-                activeIndex={activeIndex}
-                changeHandler={setActiveIndex}
-                showLoader={setShowLoading}
-                showFileName={showFileName}
-                allowDownloadFile={allowDownloadFile}
-                setOnShowError={setOnShowError}
-                setOnHideError={setOnHideError}
-                errorMessage={setErrorInfo}
-                showError={setShowError}
-                setFileOpen={setFileIsOpen}
-            />
-        );
-    } else if (fileType?.simpleType == 'image' && !disablePlugins?.includes('images')) {
-        plugin = (
-            <_ImgViewer
-                fileBuffer={fileBuffer}
-                fileType={fileType}
-                filesTotal={files.length}
-                activeFile={fileDescriptor}
-                activeIndex={activeIndex}
-                files={files} // TODO: get rid of this artefact
-                drag={props.drag}
-                showAttributes={props.showAttributes}
-                showFileName={showFileName}
-                zoomable={props.zoomable}
-                rotatable={props.rotatable}
-                scalable={props.scalable}
-                changeable={props.changeable}
-                customToolbar={props.customToolbar}
-                zoomSpeed={props.zoomSpeed}
-                noNavbar={props.noNavbar}
-                noFooter={props.noFooter}
-                disableKeyboardSupport={props.disableKeyboardSupport}
-                noResetZoomAfterChange={props.noResetZoomAfterChange}
-                noLimitInitializationSize={props.noLimitInitializationSize}
-                defaultScale={props.defaultScale}
-                allowLoop={props.allowLoop}
-                disableMouseZoom={props.disableMouseZoom}
-                noImgDetails={props.noImgDetails}
-                noToolbar={props.noToolbar}
-                showTotal={props.showTotal}
-                minScale={props.minScale}
-                changeHandler={setActiveIndex}
-                showLoader={setShowLoading}
-                allowDownloadFile={allowDownloadFile}
-                setOnShowError={setOnShowError}
-                setOnHideError={setOnHideError}
-                errorMessage={setErrorInfo}
-                showError={setShowError}
-                setFileOpen={setFileIsOpen}
-            />
-        );
-    } else if (fileType?.simpleType == 'docx' && !disablePlugins?.includes('msword')) {
-        plugin = (
-            <_DocxViewer
-                fileBuffer={fileBuffer}
-                fileType={fileType}
-                filesTotal={files.length}
-                activeFile={fileDescriptor}
-                activeIndex={activeIndex}
-                changeHandler={setActiveIndex}
-                showLoader={setShowLoading}
-                showFileName={showFileName}
-                allowDownloadFile={allowDownloadFile}
-                setOnShowError={setOnShowError}
-                setOnHideError={setOnHideError}
-                errorMessage={setErrorInfo}
-                showError={setShowError}
-                setFileOpen={setFileIsOpen}
-            />
-        );
-    } else if (fileType?.simpleType == 'ebook' && !disablePlugins?.includes('ebook')) {
-        plugin = (
-            <_EbookViewer
-                fileBuffer={fileBuffer}
-                fileType={fileType}
-                filesTotal={files.length}
-                activeFile={fileDescriptor}
-                activeIndex={activeIndex}
-                changeHandler={setActiveIndex}
-                showLoader={setShowLoading}
-                showFileName={showFileName}
-                allowDownloadFile={allowDownloadFile}
-                setOnShowError={setOnShowError}
-                setOnHideError={setOnHideError}
-                errorMessage={setErrorInfo}
-                showError={setShowError}
-                setFileOpen={setFileIsOpen}
-            />
-        );
-    } else if(disablePlugins?.length != 0) {
-        errInfo = t('pluginDisabled', { plugins: disablePlugins?.join(', ') });
-    }
-
-    if(errInfo != '') {
-        if (allowOpenFile ) {
-            const fileOpen = () => {
-                const inputElement = document.querySelector('input[type="file"]') as HTMLInputElement;
-                inputElement.click();
-            };
-
-            overlay = (
-                <div className="dropzone" onMouseDown={fileOpen}>
-                    <TbCloudUpload />
-                    <input type="file" className="hidden" onChange={onFlieChange} />
-                    <span>{t('uploadFile')}</span>
-                </div>
-            );
-        } else if (files.length == 0) {
-            overlay = (
-                <div className="no-files-info">
-                    <TbBookOff />
-                    {t('noFileSelected')}
-                </div>
-            );
-        } else if (files.length != 0) {
-            overlay = (
-                <div className="something-wrong-info">
-                    <TbBomb />
-                    {t('somethingWrong')}
-                </div>
-            );
+    useEffect(() => {
+        if (fileType?.simpleType == 'doc' || fileType?.simpleType == 'file2003') {
+            setErrInfo(t('formatInfoDocx'));
+        } else if (fileType?.simpleType == 'ppt' || fileType?.simpleType == 'pptx') {
+            setErrInfo(t('formatInfoPPTx'));
+        } else if (
+            fileType?.simpleType == 'other' ||
+            (!getfileTypeExtesions(fileType?.extension) && fileType?.simpleType)
+        ) {
+            setErrInfo(t('supportFileTypes'));
+        } else if (fileType?.simpleType == '' && fileType.contentType=== '' && fileBuffer) {
+            setErrInfo(t('wrongFileType'));
         }
-    }
+
+        if (fileType?.simpleType == 'pdf' && !disablePlugins?.includes('pdf')) {
+            setPlugin(
+                <_PdfViewer
+                    fileBuffer={fileBuffer}
+                    fileType={fileType}
+                    filesTotal={files.length}
+                    activeFile={fileDescriptor}
+                    activeIndex={activeIndex}
+                    pdfWorkerUrl={pdfWorker}
+                    changeHandler={setActiveIndex}
+                    showLoader={setShowLoading}
+                    showFileName={showFileName}
+                    allowDownloadFile={allowDownloadFile}
+                    setOnShowError={setOnShowError}
+                    setOnHideError={setOnHideError}
+                    errorMessage={setErrorInfo}
+                    showError={setShowError}
+                    setFileOpen={setFileIsOpen}
+                />
+            );
+        } else if (
+            (fileType?.simpleType == 'xlsx' && !disablePlugins?.includes('msexcel')) ||
+            (fileType?.simpleType == 'xls' && !disablePlugins?.includes('excel'))
+        ) {
+            setPlugin(
+                <_SheetViewer
+                    fileBuffer={fileBuffer}
+                    fileType={fileType}
+                    filesTotal={files.length}
+                    activeFile={fileDescriptor}
+                    activeIndex={activeIndex}
+                    changeHandler={setActiveIndex}
+                    showLoader={setShowLoading}
+                    showFileName={showFileName}
+                    allowDownloadFile={allowDownloadFile}
+                    setOnShowError={setOnShowError}
+                    setOnHideError={setOnHideError}
+                    errorMessage={setErrorInfo}
+                    showError={setShowError}
+                    setFileOpen={setFileIsOpen}
+                />
+            );
+        } else if (fileType?.simpleType == 'image' && !disablePlugins?.includes('images')) {
+            setPlugin(
+                <_ImgViewer
+                    fileBuffer={fileBuffer}
+                    fileType={fileType}
+                    filesTotal={files.length}
+                    activeFile={fileDescriptor}
+                    activeIndex={activeIndex}
+                    files={files} // TODO: get rid of this artefact
+                    drag={props.drag}
+                    showAttributes={props.showAttributes}
+                    showFileName={showFileName}
+                    zoomable={props.zoomable}
+                    rotatable={props.rotatable}
+                    scalable={props.scalable}
+                    changeable={props.changeable}
+                    customToolbar={props.customToolbar}
+                    zoomSpeed={props.zoomSpeed}
+                    noNavbar={props.noNavbar}
+                    noFooter={props.noFooter}
+                    disableKeyboardSupport={props.disableKeyboardSupport}
+                    noResetZoomAfterChange={props.noResetZoomAfterChange}
+                    noLimitInitializationSize={props.noLimitInitializationSize}
+                    defaultScale={props.defaultScale}
+                    allowLoop={props.allowLoop}
+                    disableMouseZoom={props.disableMouseZoom}
+                    noImgDetails={props.noImgDetails}
+                    noToolbar={props.noToolbar}
+                    showTotal={props.showTotal}
+                    minScale={props.minScale}
+                    changeHandler={setActiveIndex}
+                    showLoader={setShowLoading}
+                    allowDownloadFile={allowDownloadFile}
+                    setOnShowError={setOnShowError}
+                    setOnHideError={setOnHideError}
+                    errorMessage={setErrorInfo}
+                    showError={setShowError}
+                    setFileOpen={setFileIsOpen}
+                />
+            );
+        } else if (fileType?.simpleType == 'docx' && !disablePlugins?.includes('msword')) {
+            setPlugin(
+                <_DocxViewer
+                    fileBuffer={fileBuffer}
+                    fileType={fileType}
+                    filesTotal={files.length}
+                    activeFile={fileDescriptor}
+                    activeIndex={activeIndex}
+                    changeHandler={setActiveIndex}
+                    showLoader={setShowLoading}
+                    showFileName={showFileName}
+                    allowDownloadFile={allowDownloadFile}
+                    setOnShowError={setOnShowError}
+                    setOnHideError={setOnHideError}
+                    errorMessage={setErrorInfo}
+                    showError={setShowError}
+                    setFileOpen={setFileIsOpen}
+                />
+            );
+        } else if (fileType?.simpleType == 'ebook' && !disablePlugins?.includes('ebook')) {
+            setPlugin(
+                <_EbookViewer
+                    fileBuffer={fileBuffer}
+                    fileType={fileType}
+                    filesTotal={files.length}
+                    activeFile={fileDescriptor}
+                    activeIndex={activeIndex}
+                    changeHandler={setActiveIndex}
+                    showLoader={setShowLoading}
+                    showFileName={showFileName}
+                    allowDownloadFile={allowDownloadFile}
+                    setOnShowError={setOnShowError}
+                    setOnHideError={setOnHideError}
+                    errorMessage={setErrorInfo}
+                    showError={setShowError}
+                    setFileOpen={setFileIsOpen}
+                />
+            );
+        } else if (disablePlugins?.length != 0) {
+            setErrInfo(t('pluginDisabled', { plugins: disablePlugins?.join(', ') }));
+        }
+    }, [fileType]);
+
+    useEffect(() => {
+        if (errInfo != '') {
+            if (allowOpenFile) {
+                const fileOpen = () => {
+                    const inputElement = document.querySelector('input[type="file"]') as HTMLInputElement;
+                    inputElement.click();
+                };
+
+                setOverlay(
+                    <div className="dropzone" onMouseDown={fileOpen}>
+                        <TbCloudUpload />
+                        <input type="file" className="hidden" onChange={onFlieChange} />
+                        <span>{t('uploadFile')}</span>
+                    </div>,
+                );
+            } else if (files.length == 0) {
+                setOverlay(
+                    <div className="no-files-info">
+                        <TbBookOff />
+                        {t('noFileSelected')}
+                    </div>,
+                );
+            } else if (files.length != 0) {
+                setOverlay(
+                    <div className="something-wrong-info">
+                        <TbBomb />
+                        {t('somethingWrong')}
+                    </div>,
+                );
+            }
+        } else {
+            setOverlay(null);
+        }
+    }, [errInfo]);
 
     return (
         <div className="doc-viewer">
@@ -306,8 +316,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
             {/* {Object.values(KnownFileTypes).includes(fileType as any) ? ( */}
             <div className="document-container">
                 {showLoading && !fileIsOpen && <Loading />}
-                {overlay && <div className="document-container-overlay">{overlay}</div>}
-                {plugin}
+                {overlay ? <div className="document-container-overlay">{overlay}</div> : plugin}
                 {errInfo ? <ErrorMessage showError={true} allowCloseButton={false} errorInfo={errInfo} /> : null}
             </div>
             {/* ) : null} */}

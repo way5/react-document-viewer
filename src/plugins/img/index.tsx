@@ -10,7 +10,7 @@ import {
     ImageViewerCoreState,
 } from "../../definitions";
 import { useTranslation } from "react-i18next";
-import { _getBlobUrlFromBuffer } from "../../utils";
+import { _getBlobUrlFromBuffer, basename } from "../../utils";
 
 /**
  * Description placeholder
@@ -94,7 +94,7 @@ export default (props: ViewerPluginProps) => {
     const [imageElement, setImageElement] = useState<HTMLImageElement>();
     const viewerCore = React.useRef<HTMLDivElement>(null);
     const currentIndex = React.useRef<number>(0);
-    const fileName = activeFile.fileName;
+    const [fileName, setFileName] = React.useState<string>('');
     const containerSize = React.useRef( { width: 0, height: 0 } );
     const showNavbar = !noNavbar && filesTotal > 1;
     const [state, dispatch] = React.useReducer<
@@ -134,6 +134,7 @@ export default (props: ViewerPluginProps) => {
     });
 
     useEffect(() => {
+        setFileName(activeFile.name || basename(activeFile.src));
         dispatch(
             createAction(ACTION_TYPES.setActiveIndex, {
                 index: activeIndex,

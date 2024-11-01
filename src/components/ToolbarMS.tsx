@@ -45,9 +45,11 @@ export default function ToolbarMS(props: ToolbarMSProps) {
                     ) : (
                         <TbFileUnknown />
                     ))}
-                    <span>
-                        {fileName}
-                    </span>
+                    {fileName && (
+                        <span>
+                            {fileName}
+                        </span>
+                    )}
                 </div>
             )}
             <div className='controls'>

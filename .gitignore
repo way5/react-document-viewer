@@ -119,5 +119,5 @@ dist
 assets
 extension/web-ext-artifacts
 extension/manifest.json
-
+doc/*.psd
 public

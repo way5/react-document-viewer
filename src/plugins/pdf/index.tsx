@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import * as pdfjs from "pdfjs-dist";
 import { usePdf } from "./viewer";
 import { default as Toolbar } from "./toolbar";
-import { _download, _getObjectUrl } from "../../utils";
+import { _download, _getObjectUrl, basename } from "../../utils";
 import { useTranslation } from "react-i18next";
 import {
     PDFViewerProps,
@@ -59,7 +59,7 @@ export default (props: ViewerPluginProps) => {
     const [page, setPage] = useState(1);
     const [scale, setScale] = useState(1);
     const [rotate, setRotate] = useState(0);
-    const [fileName, setFileName] = useState<string>(activeFile.fileName);
+    const [fileName, setFileName] = useState<string>('');
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const pageWrapperRef = useRef<HTMLElement>(null);
@@ -74,7 +74,7 @@ export default (props: ViewerPluginProps) => {
 
     useEffect(() => {
         if (filesTotal != 0 && activeIndex < filesTotal) {
-            setFileName(activeFile.fileName || "");
+            setFileName(activeFile.name || basename(activeFile.src));
         }
     }, [fileBuffer]);
 

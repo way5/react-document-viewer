@@ -1,7 +1,7 @@
 import mammoth from "mammoth";
 import React, { useEffect, useState } from "react";
 import { ToolbarMS } from "../../components/index";
-import { _getBlobUrlFromBuffer, _download } from "../../utils";
+import { _getBlobUrlFromBuffer, _download, basename } from "../../utils";
 import { useTranslation } from "react-i18next";
 import { ViewerPluginProps } from "../../definitions";
 import { Parser } from "html-to-react";
@@ -24,14 +24,14 @@ export default (props: ViewerPluginProps) => {
         // setFileOpen = () => {},
     } = props;
 
-    const [docHtmlStr, setDocHtmlStr] = useState<string>("");
-    const [fileName, setFileName] = useState<string>(activeFile.fileName || "");
+    const [docHtmlStr, setDocHtmlStr] = useState<string>('');
+    const [fileName, setFileName] = useState<string>('');
     const [file, setFile] = useState(fileBuffer);
     const { t } = useTranslation();
     const [zoomLevel, setZoomLevel] = useState<number>(1);
 
     useEffect(() => {
-        setFileName(activeFile.fileName || "");
+        setFileName(activeFile.name || basename(activeFile.src));
     }, [activeIndex]);
 
     useEffect(() => {

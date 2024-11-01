@@ -12,35 +12,6 @@
 
 import { FileType } from "./definitions";
 
-/**
- * This file contains sources of two projects:
- *      - https://github.com/react-office-viewer/getFileTypeFromArrayBuffer
- *      - https://github.com/react-office-viewer/react-office-viewer
- *
- *  Both are under the MIT License:
- *
- *  Copyright (c) 2023 react-office-viewer
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the 'Software'), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- *
- */
-
 // See: https://en.wikipedia.org/wiki/List_of_file_signatures
 const formatMap: { [key: string]: string[][] } = {
     pdf: [['25', '50', '44', '46']],
@@ -116,6 +87,12 @@ export const swapKeyValue = (obj: Object): Object => {
     return Object.fromEntries(Object.entries(obj).map((a) => a.reverse()));
 };
 
+/**
+ * Get file type extensions
+ *
+ * @param {(string | null)} [fileExt=null]
+ * @returns {(string[] | boolean)}
+ */
 export const getfileTypeExtesions = (fileExt: string | null = null): string[] | boolean => {
     const exts = Object.values(fileTypeMap);
     if (!fileExt) return exts;
@@ -123,12 +100,26 @@ export const getfileTypeExtesions = (fileExt: string | null = null): string[] | 
     return false;
 }
 
-export const getfileTypes = () => {
+/**
+ * Get file types
+ *
+ * @returns {*}
+ */
+export const getfileTypes = (): string[] => {
     return Object.keys(fileTypeMap);
 }
 
 /**
- * Description placeholder
+ * Returns file name extracted from path
+ *
+ * @type {*}
+ */
+export const basename = (path: string): string => {
+    return path.replace(/^.*[\\/]/, '')
+}
+
+/**
+ * Get blob URL
  *
  * @export
  * @param {*} arrayBuffer
@@ -144,7 +135,7 @@ export function _getBlobUrlFromBuffer(arrayBuffer: Uint8Array | null, fileType: 
 }
 
 /**
- * Description placeholder
+ * Get object URL
  *
  * @export
  * @param {*} file
@@ -166,7 +157,7 @@ export function _getObjectUrl(file: any): string {
 }
 
 /**
- * Description placeholder
+ * Download an object (blob)
  *
  * @export
  * @param {*} blobUrl
@@ -194,6 +185,15 @@ export function _download(blobUrl: string, fileName: string, ext: string = 'txt'
     }
 }
 
+/**
+ * Get file type
+ *
+ * @export
+ * @param {Uint8Array} arrayBuffer
+ * @param {string} fileName
+ * @param {string} mimeType
+ * @returns {FileType}
+ */
 export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType: string): FileType {
     const fType: FileType = {
         extension: fileName ? fileName.slice(((fileName.lastIndexOf('.') - 1) >>> 0) + 2).toLowerCase() : '',
@@ -224,12 +224,12 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
 
         if (fType.contentType == '') {
             // emit debug data
-            console.log(`(!) unable to identiify the file (${fType.contentType}) type using byte mask:`, str_8);
+            console.log(`(!) header [${str_8}] has not been identified, trying something else...`);
             // No match, it may be an xls file in html format
-            let arr_start_16 = getSliceArrTo16(arrayBuffer, 50, 150);
+            let arr_start_16 = getSliceArrTo16(arrayBuffer, 50, 150).join('');
             let xlsHtmlTarget = ['6f', '66', '66', '69', '63', '65', '3a', '65', '78', '63', '65', '6c'];
             // Determine whether it is xls through the first 50-150 positions
-            if (~arr_start_16.join('').indexOf(xlsHtmlTarget.join(''))) {
+            if (~arr_start_16.indexOf(xlsHtmlTarget.join(''))) {
                 fType.simpleType = 'xls';
             } else if (mimeType == fileTypesReverse['fb2'] || fType.extension === 'fb2' || fType.extension === 'fbz') {
                 // this is FB2 maybe
@@ -240,6 +240,9 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
                 fType.contentType = 'mobi';
                 fType.simpleType = 'ebook';
             }
+            // still nothing
+            if (fType.contentType == '')
+                throw new Error(`(!) still unable to identiify the file type with header: ${arr_start_16}`);
         } else if (fType.contentType == 'file2007') {
             // fix for EPUB
             if (mimeType == fileTypesReverse['epub']) {

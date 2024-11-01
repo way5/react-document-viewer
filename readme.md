@@ -1,4 +1,10 @@
-# react-document-viewer
+<p align="center"> 
+
+![ReactDocViewer Logo](./doc/logo.png) 
+
+</p>
+
+![React Document Viewer Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fway5%2Freact-document-viewer%2Frefs%2Fheads%2Fdev%2Fpackage.json&query=%24.version&label=ReactDocViewer:&color=%23F86071)
 
 ### + INTRO
 
@@ -8,6 +14,7 @@ Accepted document formats:
 - xls, xlsx
 - pdf
 - epub
+- fb2
 - mobi
 - all images
 
