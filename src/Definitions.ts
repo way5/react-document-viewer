@@ -1,4 +1,4 @@
-import { Dispatch } from "react";
+import { Dispatch } from 'react';
 
 export enum ActionType {
     noOp = 0,
@@ -14,7 +14,7 @@ export enum ActionType {
     scaleY = 10,
     download = 11,
     show = 12,
-    hide = 13,
+    hide = 13
 }
 
 export interface FileType {
@@ -88,45 +88,45 @@ export interface EpubToolbarProps {
 
 export const ImageViewerDefaultToolbar: ImageViewerToolbarConfig[] = [
     {
-        key: "zoomIn",
-        actionType: ActionType.zoomIn,
+        key: 'zoomIn',
+        actionType: ActionType.zoomIn
     },
     {
-        key: "zoomOut",
-        actionType: ActionType.zoomOut,
+        key: 'zoomOut',
+        actionType: ActionType.zoomOut
     },
     {
-        key: "prev",
-        actionType: ActionType.prev,
+        key: 'prev',
+        actionType: ActionType.prev
     },
     {
-        key: "reset",
-        actionType: ActionType.reset,
+        key: 'reset',
+        actionType: ActionType.reset
     },
     {
-        key: "next",
-        actionType: ActionType.next,
+        key: 'next',
+        actionType: ActionType.next
     },
     {
-        key: "rotateLeft",
-        actionType: ActionType.rotateLeft,
+        key: 'rotateLeft',
+        actionType: ActionType.rotateLeft
     },
     {
-        key: "rotateRight",
-        actionType: ActionType.rotateRight,
+        key: 'rotateRight',
+        actionType: ActionType.rotateRight
     },
     {
-        key: "scaleX",
-        actionType: ActionType.scaleX,
+        key: 'scaleX',
+        actionType: ActionType.scaleX
     },
     {
-        key: "scaleY",
-        actionType: ActionType.scaleY,
+        key: 'scaleY',
+        actionType: ActionType.scaleY
     },
     {
-        key: "download",
-        actionType: ActionType.download,
-    },
+        key: 'download',
+        actionType: ActionType.download
+    }
 ];
 
 export interface ImageViewerCanvasProps {
@@ -143,12 +143,7 @@ export interface ImageViewerCanvasProps {
     loading?: boolean;
     drag: boolean;
     showFileName?: boolean;
-    onChangeImgState: (
-        width: number,
-        height: number,
-        top: number,
-        left: number
-    ) => void;
+    onChangeImgState: (width: number, height: number, top: number, left: number) => void;
     onResize: () => void;
     // onCanvasMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
@@ -252,10 +247,8 @@ export interface DownloadFileProps {
     files: FileDescriptor[];
     activeIndex: number;
     downloadTimeout: number;
-    onLoad?: (
-        event: ProgressEvent
-    ) => void;
-    onLoadend?: (buffer: Uint8Array, name: string, type:string, event: ProgressEvent) => void;
+    onLoad?: (event: ProgressEvent) => void;
+    onLoadend?: (buffer: Uint8Array, name: string, type: string, event: ProgressEvent) => void;
     onError?: (event: ProgressEvent) => void;
     onAbort?: (event: ProgressEvent) => void;
 }
@@ -292,9 +285,7 @@ interface CommonProps {
     // wheather to show change button
     changeable?: boolean;
     // custom toolbar
-    customToolbar?: (
-        toolbars: ImageViewerToolbarConfig[]
-    ) => ImageViewerToolbarConfig[];
+    customToolbar?: (toolbars: ImageViewerToolbarConfig[]) => ImageViewerToolbarConfig[];
     // zoom speed
     zoomSpeed?: number;
     // default image size
@@ -355,13 +346,13 @@ interface UnifiedViewerProps extends CommonProps {
     // array of file descriptors to browse through
     files: FileDescriptor[];
     // locale name (en, ru, zh, es, ...)
-    locale?: "zh" | "en" | "es" | "ru";
+    locale?: 'zh' | 'en' | 'es' | 'ru';
     // download fails when the time is out
     downloadTimeout: number;
     // makes "Open File" button available
     allowOpenFile?: boolean;
     // disable one or few plugins
-    disablePlugins?: ['pdf'?, 'msexcel'?, 'excel'?, 'msword'?, 'images'?, 'ebook'?]
+    disablePlugins?: ['pdf'?, 'msexcel'?, 'excel'?, 'msword'?, 'images'?, 'ebook'?];
 }
 
 export default UnifiedViewerProps;

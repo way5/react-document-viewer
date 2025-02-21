@@ -1,10 +1,10 @@
-import mammoth from "mammoth";
-import React, { useEffect, useState } from "react";
-import { ToolbarMS } from "../../components/index";
-import { _getBlobUrlFromBuffer, _download, basename } from "../../utils";
-import { useTranslation } from "react-i18next";
-import { ViewerPluginProps } from "../../definitions";
-import { Parser } from "html-to-react";
+import mammoth from 'mammoth';
+import React, { useEffect, useState } from 'react';
+import { ToolbarMS } from '../../components/index';
+import { _getBlobUrlFromBuffer, _download, basename } from '../../utils';
+import { useTranslation } from 'react-i18next';
+import { ViewerPluginProps } from '../../definitions';
+import { Parser } from 'html-to-react';
 
 export default (props: ViewerPluginProps) => {
     const PAGE_WIDTH = 795;
@@ -17,10 +17,10 @@ export default (props: ViewerPluginProps) => {
         changeHandler,
         showFileName,
         allowDownloadFile,
-        showLoader = (s) => {},
-        showError = (s) => {},
-        setOnHideError = (f) => {},
-        errorMessage = (m) => {},
+        showLoader = s => {},
+        showError = s => {},
+        setOnHideError = f => {},
+        errorMessage = m => {}
         // setFileOpen = () => {},
     } = props;
 
@@ -46,16 +46,16 @@ export default (props: ViewerPluginProps) => {
             let { value } = await mammoth.convertToHtml(
                 { arrayBuffer: data },
                 {
-                    includeDefaultStyleMap: true,
+                    includeDefaultStyleMap: true
                 }
             );
-            const div = document.createElement("div");
+            const div = document.createElement('div');
             div.innerHTML = value;
 
             // process all a tags so that they open in new tabs
-            const domList = div.getElementsByTagName("a");
-            Array.from(domList).forEach((item) => {
-                item.setAttribute("target", "_blank");
+            const domList = div.getElementsByTagName('a');
+            Array.from(domList).forEach(item => {
+                item.setAttribute('target', '_blank');
             });
             setDocHtmlStr(div.innerHTML);
         } catch (e) {
@@ -95,11 +95,10 @@ export default (props: ViewerPluginProps) => {
                 <div
                     className='wrapper'
                     style={{
-                        width: zoomLevel * PAGE_WIDTH + "px",
-                        minHeight: zoomLevel * PAGE_HIGHT + "px",
-                        fontSize: 1 * zoomLevel + "rem",
-                    }}
-                >
+                        width: zoomLevel * PAGE_WIDTH + 'px',
+                        minHeight: zoomLevel * PAGE_HIGHT + 'px',
+                        fontSize: 1 * zoomLevel + 'rem'
+                    }}>
                     <div className='pages'>{Parser().parse(docHtmlStr)}</div>
                 </div>
             </div>

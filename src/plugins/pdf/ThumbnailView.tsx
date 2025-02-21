@@ -1,11 +1,6 @@
-import React, {
-    useEffect,
-    useRef,
-    useImperativeHandle,
-    forwardRef,
-} from "react";
-import { _getObjectUrl } from "../../utils";
-import { PDFThumbsProps } from "../../definitions";
+import React, { useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
+import { _getObjectUrl } from '../../utils';
+import { PDFThumbsProps } from '../../definitions';
 
 const THUMBNAIL_WIDTH = 98;
 
@@ -21,7 +16,7 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
 
     useImperativeHandle(ref, () => {
         return {
-            handleScrollView,
+            handleScrollView
         };
     }, []);
 
@@ -34,13 +29,13 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
                 documentPromiseArr.push(pdfDocument.getPage(i));
             }
             Promise.all(documentPromiseArr)
-                .then((pdfPages) => {
+                .then(pdfPages => {
                     pdfPages.forEach((page: any) => {
                         pagePromiseArr.push(getRenderTask(page));
                     });
                     serialDrawPage(pagePromiseArr);
                 })
-                .catch((err) => {
+                .catch(err => {
                     errorMessage(err);
                     showError(true);
                 });
@@ -62,8 +57,8 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
         }
 
         let { width, height } = viewportRef.current;
-        const canvasEl = document.createElement("canvas");
-        const canvasContext = canvasEl.getContext("2d");
+        const canvasEl = document.createElement('canvas');
+        const canvasContext = canvasEl.getContext('2d');
         canvasEl.style.width = `${width}px`;
         canvasEl.style.height = `${height}px`;
         canvasEl.height = height;
@@ -72,12 +67,12 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
         return {
             renderTask: page.render({
                 canvasContext,
-                viewport: viewportRef.current,
+                viewport: viewportRef.current
             }).promise,
             pageInfo: {
                 page,
-                canvasEl,
-            },
+                canvasEl
+            }
         };
     };
 
@@ -92,7 +87,7 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
                 let { canvasEl } = pagePromise.pageInfo;
                 if (!viewer) return;
 
-                const img = document.createElement("img");
+                const img = document.createElement('img');
 
                 if (canvasEl.toBlob) {
                     canvasEl.toBlob((blob: object) => {
@@ -105,18 +100,18 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
                 let pageDiv = document.getElementById(`page=${count + 1}`);
 
                 if (!pageDiv) {
-                    let className = "thumbnail";
-                    pageDiv = document.createElement("div");
-                    pageDiv.setAttribute("id", `page=${count + 1}`);
+                    let className = 'thumbnail';
+                    pageDiv = document.createElement('div');
+                    pageDiv.setAttribute('id', `page=${count + 1}`);
 
                     if (count == 0) {
                         if (!selectedPageRef.current) {
                             selectedPageRef.current = pageDiv;
-                            className = className + " selected";
+                            className = className + ' selected';
                         }
                     }
 
-                    pageDiv.setAttribute("class", className);
+                    pageDiv.setAttribute('class', className);
                     viewer.appendChild(pageDiv);
                     pageDiv.appendChild(img);
                 } else {
@@ -135,16 +130,16 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
 
     const handleChangePage = (e: any) => {
         let pageDiv = e.target.parentNode;
-        if (!pageDiv.id.includes("page=")) return;
-        let className = pageDiv.getAttribute("class");
-        if (className && className.includes("selected")) return;
+        if (!pageDiv.id.includes('page=')) return;
+        let className = pageDiv.getAttribute('class');
+        if (className && className.includes('selected')) return;
 
-        pageDiv.setAttribute("class", "thumbnail selected");
+        pageDiv.setAttribute('class', 'thumbnail selected');
         if (selectedPageRef.current) {
-            selectedPageRef.current.setAttribute("class", "thumbnail");
+            selectedPageRef.current.setAttribute('class', 'thumbnail');
         }
         selectedPageRef.current = pageDiv;
-        let pageNo = pageDiv.id.split("=")[1];
+        let pageNo = pageDiv.id.split('=')[1];
         if (pageNo * 1 > 0) {
             onPageSearch(pageNo * 1);
         }
@@ -152,22 +147,16 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
 
     const handleScrollView = (numPages: number, page: number) => {
         if (viewportRef.current?.height) {
-            if (
-                numPages * viewportRef.current?.height >
-                sidebarRef.current.clientHeight
-            ) {
-                sidebarRef.current.scrollTo(
-                    0,
-                    (page - 1) * viewportRef.current?.height
-                );
+            if (numPages * viewportRef.current?.height > sidebarRef.current.clientHeight) {
+                sidebarRef.current.scrollTo(0, (page - 1) * viewportRef.current?.height);
             }
         }
 
         let pageDiv = sidebarRef.current.children[page - 1];
         if (pageDiv) {
-            pageDiv.setAttribute("class", "thumbnail selected");
+            pageDiv.setAttribute('class', 'thumbnail selected');
             if (selectedPageRef.current) {
-                selectedPageRef.current.setAttribute("class", "thumbnail");
+                selectedPageRef.current.setAttribute('class', 'thumbnail');
             }
             selectedPageRef.current = pageDiv;
         }
@@ -176,17 +165,12 @@ export default forwardRef((props: PDFThumbsProps, ref) => {
     const resetThumbnail = () => {
         selectedPageRef.current = null;
         viewportRef.current = null;
-        if(sidebarRef.current)
-            sidebarRef.current.innerHTML = "";
+        if (sidebarRef.current) sidebarRef.current.innerHTML = '';
     };
 
     return (
         <div className='sidebar-content'>
-            <div
-                className='thumbnail-view'
-                ref={sidebarRef}
-                onClick={handleChangePage}
-            ></div>
+            <div className='thumbnail-view' ref={sidebarRef} onClick={handleChangePage}></div>
         </div>
     );
 });

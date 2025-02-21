@@ -6,19 +6,19 @@ export default [
     {
         ignores: ['dist/**/*'],
         plugins: {
-            pluginReact,
-        },
+            pluginReact
+        }
     },
     {
         files: ['**/*.{js,mjs,cjs,jsx,tsx,ts}'],
-        ...pluginReact.configs.flat.recommended,
-    }, 
+        ...pluginReact.configs.flat.recommended
+    },
     {
         languageOptions: {
             ...pluginReact.configs.flat.recommended.languageOptions,
             globals: {
                 ...globals.serviceworker,
-                ...globals.browser,
+                ...globals.browser
             },
             ecmaVersion: 'latest'
         },
@@ -29,8 +29,8 @@ export default [
         },
         rules: {
             'react/jsx-uses-react': 'error',
-            'react/jsx-uses-vars': 'error',
-        },
+            'react/jsx-uses-vars': 'error'
+        }
     },
     pluginJs.configs.recommended,
     pluginReact.configs.flat.recommended

@@ -8,5 +8,5 @@ export default function Loading() {
                 <TbLoader size={40} />
             </div>
         </div>
-    )
+    );
 }

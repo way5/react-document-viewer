@@ -1,16 +1,16 @@
-import React, {useState, useEffect} from "react";
-import ImageViewerCanvas from "./canvas";
-import ImageViewerNavigation from "./navigation";
-import { default as ImageViewerToolbar } from "./toolbar";
+import React, { useState, useEffect } from 'react';
+import ImageViewerCanvas from './canvas';
+import ImageViewerNavigation from './navigation';
+import { default as ImageViewerToolbar } from './toolbar';
 import {
     ViewerPluginProps,
     ImageViewerToolbarConfig,
     ActionType,
     ImageViewerDefaultToolbar,
-    ImageViewerCoreState,
-} from "../../definitions";
-import { useTranslation } from "react-i18next";
-import { _getBlobUrlFromBuffer, basename } from "../../utils";
+    ImageViewerCoreState
+} from '../../definitions';
+import { useTranslation } from 'react-i18next';
+import { _getBlobUrlFromBuffer, basename } from '../../utils';
 
 /**
  * Description placeholder
@@ -18,15 +18,15 @@ import { _getBlobUrlFromBuffer, basename } from "../../utils";
  * @type {{ setVisible: string; setActiveIndex: string; update: string; }}
  */
 const ACTION_TYPES = {
-    setVisible: "setVisible",
-    setActiveIndex: "setActiveIndex",
-    update: "update",
+    setVisible: 'setVisible',
+    setActiveIndex: 'setActiveIndex',
+    update: 'update'
 };
 
 function createAction(type: string, payload: Object) {
     return {
         type,
-        payload: payload || {},
+        payload: payload || {}
     };
 }
 
@@ -52,7 +52,7 @@ export default (props: ViewerPluginProps) => {
         rotatable = true,
         scalable = true,
         changeable = true,
-        customToolbar = (toolbars) => toolbars,
+        customToolbar = toolbars => toolbars,
         zoomSpeed = 0.05,
         disableKeyboardSupport = false,
         noResetZoomAfterChange = false,
@@ -66,12 +66,12 @@ export default (props: ViewerPluginProps) => {
         minScale = 0.1,
         changeHandler = (i: number) => {},
         allowDownloadFile = true,
-        showLoader = (s) => {},
-        showError = (s) => {},
-        setOnHideError = (f) => {},
-        errorMessage = (m) => { },
+        showLoader = s => {},
+        showError = s => {},
+        setOnHideError = f => {},
+        errorMessage = m => {},
         // setFileOpen = () => {},
-        noNavbar = false,
+        noNavbar = false
     } = props;
 
     const initialState: ImageViewerCoreState = {
@@ -88,18 +88,16 @@ export default (props: ViewerPluginProps) => {
         scaleY: defaultScale,
         loading: false,
         loadFailed: false,
-        startLoading: false,
+        startLoading: false
     };
 
     const [imageElement, setImageElement] = useState<HTMLImageElement>();
     const viewerCore = React.useRef<HTMLDivElement>(null);
     const currentIndex = React.useRef<number>(0);
     const [fileName, setFileName] = React.useState<string>('');
-    const containerSize = React.useRef( { width: 0, height: 0 } );
+    const containerSize = React.useRef({ width: 0, height: 0 });
     const showNavbar = !noNavbar && filesTotal > 1;
-    const [state, dispatch] = React.useReducer<
-            (s: any, a: any) => ImageViewerCoreState
-            >(reducer, initialState);
+    const [state, dispatch] = React.useReducer<(s: any, a: any) => ImageViewerCoreState>(reducer, initialState);
 
     function reducer(s: ImageViewerCoreState, action: any): typeof initialState {
         switch (action.type) {
@@ -107,13 +105,13 @@ export default (props: ViewerPluginProps) => {
                 return {
                     ...s,
                     activeIndex: action.payload.index,
-                    startLoading: true,
+                    startLoading: true
                 };
 
             case ACTION_TYPES.update:
                 return {
                     ...s,
-                    ...action.payload,
+                    ...action.payload
                 };
 
             default:
@@ -137,7 +135,7 @@ export default (props: ViewerPluginProps) => {
         setFileName(activeFile.name || basename(activeFile.src));
         dispatch(
             createAction(ACTION_TYPES.setActiveIndex, {
-                index: activeIndex,
+                index: activeIndex
             })
         );
     }, [fileBuffer]);
@@ -161,7 +159,7 @@ export default (props: ViewerPluginProps) => {
         const height = canvasElement?.offsetHeight;
         return {
             width,
-            height,
+            height
         };
     }
 
@@ -174,37 +172,33 @@ export default (props: ViewerPluginProps) => {
         dispatch(
             createAction(ACTION_TYPES.update, {
                 loading: true,
-                loadFailed: false,
+                loadFailed: false
             })
         );
         const image = new Image();
         image.onload = () => {
             loadImgSuccess(image.width, image.height, true);
             setImageElement(image);
-        }
+        };
         // error
         image.onerror = () => {
             dispatch(
                 createAction(ACTION_TYPES.update, {
                     loading: false,
                     loadFailed: false,
-                    startLoading: false,
+                    startLoading: false
                 })
             );
             errorMessage(t('imgLoadError'));
             showError(true);
-        }
+        };
         //
         if (fileBuffer) {
             const imageUrl = _getBlobUrlFromBuffer(fileBuffer, fileType.extension);
             image.src = imageUrl;
         }
 
-        function loadImgSuccess(
-            imgWidth: number,
-            imgHeight: number,
-            success: boolean
-        ) {
+        function loadImgSuccess(imgWidth: number, imgHeight: number, success: boolean) {
             if (currentActiveIndex !== currentIndex.current) {
                 return;
             }
@@ -219,14 +213,10 @@ export default (props: ViewerPluginProps) => {
                 realImgWidth = activeFile.defaultSize.width;
                 realImgHeight = activeFile.defaultSize.height;
             }
-            let [width, height] = getImgWidthHeight(
-                realImgWidth,
-                realImgHeight
-            );
+            let [width, height] = getImgWidthHeight(realImgWidth, realImgHeight);
 
             let left = (containerSize.current.width - width) / 2;
-            let top =
-                (containerSize.current.height - height - footerHeight) / 2;
+            let top = (containerSize.current.height - height - footerHeight) / 2;
             let scaleX = defaultScale;
             let scaleY = defaultScale;
 
@@ -248,7 +238,7 @@ export default (props: ViewerPluginProps) => {
                     scaleX: scaleX,
                     scaleY: scaleY,
                     loadFailed: !success,
-                    startLoading: false,
+                    startLoading: false
                 })
             );
             // hide global loader
@@ -295,7 +285,7 @@ export default (props: ViewerPluginProps) => {
     function handleDownload() {
         if (activeFile.src) {
             if (props.downloadInNewWindow) {
-                window.open(activeFile.src, "_blank");
+                window.open(activeFile.src, '_blank');
             } else {
                 location.href = activeFile.src;
             }
@@ -305,7 +295,7 @@ export default (props: ViewerPluginProps) => {
     function handleMirrorX(newScale: 1 | -1) {
         dispatch(
             createAction(ACTION_TYPES.update, {
-                scaleX: state.scaleX * newScale,
+                scaleX: state.scaleX * newScale
             })
         );
     }
@@ -313,7 +303,7 @@ export default (props: ViewerPluginProps) => {
     function handleMirrorY(newScale: 1 | -1) {
         dispatch(
             createAction(ACTION_TYPES.update, {
-                scaleY: state.scaleY * newScale,
+                scaleY: state.scaleY * newScale
             })
         );
     }
@@ -321,7 +311,7 @@ export default (props: ViewerPluginProps) => {
     function handleRotate(isRight: boolean = false) {
         dispatch(
             createAction(ACTION_TYPES.update, {
-                rotate: state.rotate + 90 * (isRight ? 1 : -1),
+                rotate: state.rotate + 90 * (isRight ? 1 : -1)
             })
         );
     }
@@ -373,18 +363,13 @@ export default (props: ViewerPluginProps) => {
         }
     }
 
-    function handleChangeImgState(
-        width: number,
-        height: number,
-        top: number,
-        left: number
-    ) {
+    function handleChangeImgState(width: number, height: number, top: number, left: number) {
         dispatch(
             createAction(ACTION_TYPES.update, {
                 width: width,
                 height: height,
                 top: top,
-                left: left,
+                left: left
             })
         );
     }
@@ -404,23 +389,19 @@ export default (props: ViewerPluginProps) => {
         dispatch(
             createAction(ACTION_TYPES.update, {
                 left: left,
-                top: top,
+                top: top
             })
         );
     }
 
     function bindEvent(remove: boolean = false) {
         if (!disableKeyboardSupport) {
-            if(remove)
-                document.removeEventListener("keydown", handleKeydown, true);
-            else
-                document.addEventListener("keydown", handleKeydown, true);
+            if (remove) document.removeEventListener('keydown', handleKeydown, true);
+            else document.addEventListener('keydown', handleKeydown, true);
         }
         if (viewerCore.current) {
-            if(remove)
-                viewerCore.current.removeEventListener("wheel", handleMouseScroll, false);
-            else
-                viewerCore.current.addEventListener("wheel", handleMouseScroll, false);
+            if (remove) viewerCore.current.removeEventListener('wheel', handleMouseScroll, false);
+            else viewerCore.current.addEventListener('wheel', handleMouseScroll, false);
         }
     }
 
@@ -430,7 +411,7 @@ export default (props: ViewerPluginProps) => {
         let isFeatrue = false;
         switch (keyCode) {
             // key: ←
-            case "ArrowLeft":
+            case 'ArrowLeft':
                 if (e.ctrlKey) {
                     handleDefaultAction(ActionType.rotateLeft);
                 } else {
@@ -439,7 +420,7 @@ export default (props: ViewerPluginProps) => {
                 isFeatrue = true;
                 break;
             // key: →
-            case "ArrowRight":
+            case 'ArrowRight':
                 if (e.ctrlKey) {
                     handleDefaultAction(ActionType.rotateRight);
                 } else {
@@ -448,17 +429,17 @@ export default (props: ViewerPluginProps) => {
                 isFeatrue = true;
                 break;
             // key: ↑
-            case "ArrowUp":
+            case 'ArrowUp':
                 handleDefaultAction(ActionType.zoomIn);
                 isFeatrue = true;
                 break;
             // key: ↓
-            case "ArrorDown":
+            case 'ArrorDown':
                 handleDefaultAction(ActionType.zoomOut);
                 isFeatrue = true;
                 break;
             // key: Ctrl + 1
-            case "1":
+            case '1':
                 if (e.ctrlKey) {
                     loadImg(state.activeIndex);
                     isFeatrue = true;
@@ -508,16 +489,11 @@ export default (props: ViewerPluginProps) => {
     function getImageCenterXY() {
         return {
             x: state.left + state.width / 2,
-            y: state.top + state.height / 2,
+            y: state.top + state.height / 2
         };
     }
 
-    function handleZoom(
-        targetX: number,
-        targetY: number,
-        direct: number,
-        scale: number
-    ) {
+    function handleZoom(targetX: number, targetY: number, direct: number, scale: number) {
         let imgCenterXY = getImageCenterXY();
         let diffX = targetX - imgCenterXY.x;
         let diffY = targetY - imgCenterXY.y;
@@ -529,10 +505,7 @@ export default (props: ViewerPluginProps) => {
         let scaleY = 0;
 
         if (state.width === 0) {
-            const [imgWidth, imgHeight] = getImgWidthHeight(
-                state.imageWidth,
-                state.imageHeight
-            );
+            const [imgWidth, imgHeight] = getImgWidthHeight(state.imageWidth, state.imageHeight);
             left = (containerSize.current.width - imgWidth) / 2;
             top = (containerSize.current.height - footerHeight - imgHeight) / 2;
             width = state.width + imgWidth;
@@ -543,7 +516,7 @@ export default (props: ViewerPluginProps) => {
             let directY = state.scaleY > 0 ? 1 : -1;
             scaleX = state.scaleX + scale * direct * directX;
             scaleY = state.scaleY + scale * direct * directY;
-            if (typeof props.maxScale !== "undefined") {
+            if (typeof props.maxScale !== 'undefined') {
                 if (Math.abs(scaleX) > props.maxScale) {
                     scaleX = props.maxScale * directX;
                 }
@@ -557,12 +530,8 @@ export default (props: ViewerPluginProps) => {
             if (Math.abs(scaleY) < minScale) {
                 scaleY = minScale * directY;
             }
-            top =
-                state.top +
-                ((-direct * diffY) / state.scaleX) * scale * directX;
-            left =
-                state.left +
-                ((-direct * diffX) / state.scaleY) * scale * directY;
+            top = state.top + ((-direct * diffY) / state.scaleX) * scale * directX;
+            left = state.left + ((-direct * diffX) / state.scaleY) * scale * directY;
             width = state.width;
             height = state.height;
         }
@@ -574,7 +543,7 @@ export default (props: ViewerPluginProps) => {
                 height: height,
                 top: top,
                 left: left,
-                loading: false,
+                loading: false
             })
         );
     }
@@ -598,7 +567,7 @@ export default (props: ViewerPluginProps) => {
                 showFileName={state.showFileName}
             />
             {props.noFooter || (
-                <div className={"footer" + (!showNavbar ? " no-navbar" : "")}>
+                <div className={'footer' + (!showNavbar ? ' no-navbar' : '')}>
                     <div className='box'>
                         {noToolbar || (
                             <ImageViewerToolbar
@@ -630,9 +599,7 @@ export default (props: ViewerPluginProps) => {
                     )}
                 </div>
             )}
-            {(fileName && state.showFileName) && (
-                <div className="file-name">{`${fileName}`}</div>
-            )}
+            {fileName && state.showFileName && <div className='file-name'>{`${fileName}`}</div>}
         </div>
     );
 };

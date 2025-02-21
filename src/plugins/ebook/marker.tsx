@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface SectionMarkerProps {
     itemId: number;
@@ -16,29 +16,24 @@ class SectionMarker extends React.Component<SectionMarkerProps> {
 
     componentDidMount(): void {
         const el = this.#ref.current as HTMLAnchorElement;
-        el.addEventListener('click', (e) => {
-            e.preventDefault()
+        el.addEventListener('click', e => {
+            e.preventDefault();
             const needle = document.querySelector(`[name="${this.props.href}"]`);
             needle?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        })
+        });
     }
 
     render(): React.ReactNode {
         return (
-            <a href={this.props.href}
-                style={this.props.style}
-                className='section-mark group'
-                ref={this.#ref}
-            >
-                {this.props.label &&
-                <div className='tooltip__text'>
-                    <div className='hidden group-hover:block'>
-                        {this.props.label}
+            <a href={this.props.href} style={this.props.style} className='section-mark group' ref={this.#ref}>
+                {this.props.label && (
+                    <div className='tooltip__text'>
+                        <div className='hidden group-hover:block'>{this.props.label}</div>
                     </div>
-                </div>}
+                )}
             </a>
-        )
+        );
     }
 }
 
-export default SectionMarker
+export default SectionMarker;

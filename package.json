@@ -5,7 +5,6 @@
     "main": "build/bundle.js",
     "author": "Sergey Ko <u306060@gmail.com>",
     "license": "MIT",
-    "type": "commonjs",
     "homepage": "https://github.com/way5/react-document-viewer",
     "scripts": {
         "dev": "vite",

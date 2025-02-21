@@ -4,7 +4,7 @@ import {
     TbBook2,
     TbCloudDownload,
     TbLayoutSidebarLeftCollapseFilled,
-    TbLayoutSidebarLeftExpandFilled,
+    TbLayoutSidebarLeftExpandFilled
 } from 'react-icons/tb';
 import { ActionType, EpubToolbarProps } from '../../definitions';
 
@@ -23,7 +23,7 @@ export default function EbookViewerToolbar(props: EpubToolbarProps) {
         disabled,
         showFileName,
         showSidebar = true,
-        showDownloadButton = true,
+        showDownloadButton = true
     } = props;
 
     const { t } = useTranslation();
@@ -31,25 +31,26 @@ export default function EbookViewerToolbar(props: EpubToolbarProps) {
     return (
         <div className='toolbar'>
             <div className='controls'>
-                {showSidebar ?
-                    (<TbLayoutSidebarLeftCollapseFilled onClick={() => {
-                            onAction({ key: 'toc', actionType: ActionType.hide })
+                {showSidebar ? (
+                    <TbLayoutSidebarLeftCollapseFilled
+                        onClick={() => {
+                            onAction({ key: 'toc', actionType: ActionType.hide });
                         }}
-                        title={t("sidebarToggle")}
-                    />) :
-                    (<TbLayoutSidebarLeftExpandFilled onClick={() => {
-                            onAction({ key: 'toc', actionType: ActionType.show })
+                        title={t('sidebarToggle')}
+                    />
+                ) : (
+                    <TbLayoutSidebarLeftExpandFilled
+                        onClick={() => {
+                            onAction({ key: 'toc', actionType: ActionType.show });
                         }}
-                        title={t("sidebarToggle")}
-                    />)
-                }
+                        title={t('sidebarToggle')}
+                    />
+                )}
             </div>
             {showFileName && (
                 <div className='file-name'>
                     <TbBook2 />
-                    <span>
-                        {fileName}
-                    </span>
+                    <span>{fileName}</span>
                 </div>
             )}
             <div className='controls'>

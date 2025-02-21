@@ -1,5 +1,5 @@
-import * as React from "react";
-import { ImageViewerNavProps } from "../../definitions";
+import * as React from 'react';
+import { ImageViewerNavProps } from '../../definitions';
 
 /**
  * Navigation block
@@ -20,23 +20,19 @@ export default function ImageViewerNavigation(props: ImageViewerNavProps) {
 
     let marginLeft = `calc(-${activeIndex + 1} * 31px)`;
     let listStyle = {
-        marginLeft: marginLeft,
+        marginLeft: marginLeft
     };
 
     return (
         <div className='navbar'>
-            <ul
-                className='list list-transition'
-                style={listStyle}
-            >
+            <ul className='list list-transition' style={listStyle}>
                 {props.files.map((item, index) => (
                     <li
                         key={index}
-                        className={index === activeIndex ? "active" : ""}
+                        className={index === activeIndex ? 'active' : ''}
                         onClick={() => {
                             handleChangeImg(index);
-                        }}
-                    >
+                        }}>
                         <img src={item.src} alt={props.fileName} />
                     </li>
                 ))}

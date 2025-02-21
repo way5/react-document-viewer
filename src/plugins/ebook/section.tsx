@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * Description placeholder
@@ -8,11 +8,11 @@ import React from "react";
  */
 interface SectionElementProps {
     itemId: number;
-    section: {src: string, id: string};
+    section: { src: string; id: string };
     book: any;
     style?: React.CSSProperties;
     resolveNavigation: (href: any) => void;
-    setSectionLength: (index: number, length: number) => void
+    setSectionLength: (index: number, length: number) => void;
 }
 
 /**
@@ -85,33 +85,31 @@ dl::first-child
 }
 </style>`;
 
-            let containerHeight = ifrBody.scrollWidth * 1.42
+            let containerHeight = ifrBody.scrollWidth * 1.42;
             if (containerHeight < ifrBody.scrollHeight) {
-                containerHeight = ifrBody.scrollHeight
+                containerHeight = ifrBody.scrollHeight;
             }
-            target.setAttribute('style', `height: ${containerHeight}px !important;`)
-            this.props.setSectionLength(this.props.itemId, containerHeight)
+            target.setAttribute('style', `height: ${containerHeight}px !important;`);
+            this.props.setSectionLength(this.props.itemId, containerHeight);
 
             ifrDoc?.addEventListener('click', e => {
-                const a = (e.target as HTMLElement).closest('a[href]')
-                if (!a) return
-                e.preventDefault()
-                const href_ = a.getAttribute('href')
-                const section = this.props.book.sections[this.props.itemId]
-                const href = section.resolveHref?.(href_) ?? href_
+                const a = (e.target as HTMLElement).closest('a[href]');
+                if (!a) return;
+                e.preventDefault();
+                const href_ = a.getAttribute('href');
+                const section = this.props.book.sections[this.props.itemId];
+                const href = section.resolveHref?.(href_) ?? href_;
                 if (this.props.book.isExternal?.(href))
-                    Promise.resolve(dispatchEvent(
-                        new CustomEvent('external-link', { detail: { a, href }, cancelable: true })
-                    ))
-                        .then(x => x ? window.open(href, '_blank')?.focus() : null)
-                        .catch(e => console.error(e))
+                    Promise.resolve(
+                        dispatchEvent(new CustomEvent('external-link', { detail: { a, href }, cancelable: true }))
+                    )
+                        .then(x => (x ? window.open(href, '_blank')?.focus() : null))
+                        .catch(e => console.error(e));
                 else
-                    Promise.resolve(dispatchEvent(
-                        new CustomEvent('link', { detail: { a, href }, cancelable: true })
-                    ))
-                        .then(x => x ? this.props.resolveNavigation(href) : null)
-                        .catch(e => console.error(e))
-            })
+                    Promise.resolve(dispatchEvent(new CustomEvent('link', { detail: { a, href }, cancelable: true })))
+                        .then(x => (x ? this.props.resolveNavigation(href) : null))
+                        .catch(e => console.error(e));
+            });
         }
     }
 
@@ -141,10 +139,8 @@ dl::first-child
     // componentDidUpdate(): void {}
 
     render(): JSX.Element {
-        return (
-            <iframe ref={this.#rootRef} src={this.props.section.src} name={this.props.section.id} />
-        );
+        return <iframe ref={this.#rootRef} src={this.props.section.src} name={this.props.section.id} />;
     }
 }
 
-export default SectionElement
+export default SectionElement;

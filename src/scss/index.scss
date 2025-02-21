@@ -38,6 +38,11 @@ div:not(span):where(.doc-viewer),
     padding: revert;
 }
 
+/***** INVISIBLE CANVAS *****/
+.hiddenCanvasElement {
+    @apply hidden invisible opacity-0 absolute top-0 left-0 w-0 h-0;
+}
+
 /********************/
 /****** THEMES ******/
 /********************/

@@ -19,10 +19,10 @@ export default (props: ViewerPluginProps) => {
         // changeHandler,
         showFileName,
         allowDownloadFile,
-        showLoader = (s) => {},
-        showError = (s) => {},
+        showLoader = s => {},
+        showError = s => {},
         // setOnHideError = (f) => {},
-        errorMessage = (m) => {},
+        errorMessage = m => {}
         // setFileOpen = () => {},
     } = props;
 
@@ -37,7 +37,7 @@ export default (props: ViewerPluginProps) => {
     const [bookTocProgress, setBookTocProgress] = useState<TOCProgress>();
     const [currentSection, setCurrentSection] = useState<{ index: number; progress: number }>({
         index: 0,
-        progress: 0,
+        progress: 0
     });
     const [sidebarShown, setSidebarShown] = React.useState(false);
     const [sectionLengths, setSectionLengths] = useState<{ [key: number]: number }>({});
@@ -55,7 +55,7 @@ export default (props: ViewerPluginProps) => {
             if (scrollTopPosition < scroller.scrollTop && scroller.scrollTop < scrollTopPosition + values[i + 1]) {
                 setCurrentSection({
                     index: i,
-                    progress: (scroller.scrollTop / lengthFull) * 100,
+                    progress: (scroller.scrollTop / lengthFull) * 100
                 });
                 break;
             }
@@ -95,7 +95,7 @@ export default (props: ViewerPluginProps) => {
                             toc: book.toc ?? [],
                             ids,
                             splitHref,
-                            getFragment,
+                            getFragment
                         });
                     }
 
@@ -125,25 +125,25 @@ export default (props: ViewerPluginProps) => {
                     scrollRef.current?.removeEventListener(
                         'scroll',
                         (e: Event) => filterScrollEvent(e, sectionProgress),
-                        false,
+                        false
                     );
                     progressBarRef.current?.removeEventListener(
                         'mousedown',
                         (e: MouseEvent) => filterCursorChangeEvent(e, sectionProgress),
-                        false,
+                        false
                     );
                     scrollWrapperRef.current?.removeEventListener('click', (e: Event) => showSidebar(false), true);
                     // add page switching
                     scrollRef.current?.addEventListener(
                         'scroll',
                         (e: Event) => filterScrollEvent(e, sectionProgress),
-                        false,
+                        false
                     );
                     // jump to section
                     progressBarRef.current?.addEventListener(
                         'mousedown',
                         (e: MouseEvent) => filterCursorChangeEvent(e, sectionProgress),
-                        false,
+                        false
                     );
                     // handle history
                     // window.addEventListener('popstate', (e: any) => historyPopstateHandler(e), false);
@@ -172,7 +172,7 @@ export default (props: ViewerPluginProps) => {
         zip.configure({ useWebWorkers: false });
         const reader = new zip.ZipReader(new zip.BlobReader(new Blob([data])));
         const entries = await reader.getEntries();
-        const map = new Map(entries.map((entry) => [entry.filename, entry]));
+        const map = new Map(entries.map(entry => [entry.filename, entry]));
         const load =
             (f: any) =>
             (name: string, ...args: any[]) =>
@@ -192,24 +192,23 @@ export default (props: ViewerPluginProps) => {
                 const loader = await makeZipLoader(data);
 
                 if (fileType.contentType == 'fb2') {
-                    const { makeFB2 } = await import('foliate-js/fb2.js')
-                    const { entries } = loader
-                    const entry = entries.find(entry => entry.filename.endsWith('.fb2'))
-                    const blob = await loader.loadBlob((entry ?? entries[0]).filename)
-                    book = await makeFB2(blob)
+                    const { makeFB2 } = await import('foliate-js/fb2.js');
+                    const { entries } = loader;
+                    const entry = entries.find(entry => entry.filename.endsWith('.fb2'));
+                    const blob = await loader.loadBlob((entry ?? entries[0]).filename);
+                    book = await makeFB2(blob);
                 } else if (fileType.contentType == 'epub') {
-                    const { EPUB } = await import('foliate-js/epub.js')
+                    const { EPUB } = await import('foliate-js/epub.js');
                     book = await new EPUB(loader).init();
                 }
             } else if (fileType.contentType == 'fb2') {
                 const { makeFB2 } = await import('foliate-js/fb2.js');
                 book = await makeFB2(new Blob([data]));
             } else if (fileType.contentType == 'mobi') {
-                const { MOBI } = await import('foliate-js/mobi.js')
-                const fflate = await import('fflate')
-                book = await new MOBI({ unzlib: fflate.unzlibSync }).open(new Blob([data]))
-            } else
-                throw new Error('(!) unknown file type')
+                const { MOBI } = await import('foliate-js/mobi.js');
+                const fflate = await import('fflate');
+                book = await new MOBI({ unzlib: fflate.unzlibSync }).open(new Blob([data]));
+            } else throw new Error('(!) unknown file type');
         } catch (e) {
             errorMessage(`(!) error loading document: ${e}`);
             showError(true);
@@ -301,10 +300,10 @@ export default (props: ViewerPluginProps) => {
         const a = sectionLengths;
         a[i] = Math.ceil(length);
         setSectionLengths(a);
-    }
+    };
 
     return (
-        <div className="epub-document">
+        <div className='epub-document'>
             <EbookViewerToolbar
                 onAction={handleAction}
                 fileName={bookMeta.title || activeFile.name}
@@ -314,14 +313,14 @@ export default (props: ViewerPluginProps) => {
                 showDownloadButton={allowDownloadFile}
                 showSidebar={sidebarShown}
             />
-            <div className="sidebar">
-                <div className="header">{t('TableOfContents')}</div>
+            <div className='sidebar'>
+                <div className='header'>{t('TableOfContents')}</div>
                 {bookTocProgress && <TOC map={bookTocProgress.map} resolveNavigation={goTo} />}
             </div>
-            <div className="scroll-wrapper" ref={scrollWrapperRef}>
-                <div className="progress-bar-container">
-                    <div className="progress-bar-bg">
-                        <div className="progress-bar-inner">
+            <div className='scroll-wrapper' ref={scrollWrapperRef}>
+                <div className='progress-bar-container'>
+                    <div className='progress-bar-bg'>
+                        <div className='progress-bar-inner'>
                             {bookSectionProgress &&
                                 Object.keys(bookSectionProgress.sectionFractions).map((v: any, i: number) => {
                                     const items = bookTocProgress && bookTocProgress.map.get(bookTocProgress.ids[i]);
@@ -336,20 +335,18 @@ export default (props: ViewerPluginProps) => {
                                         />
                                     );
                                 })}
-                            <div className="progress-bar__outer" ref={progressBarRef}>
+                            <div className='progress-bar__outer' ref={progressBarRef}>
                                 <div
-                                    className="progress-bar__inner"
-                                    style={{ height: `${currentSection.progress}%` }}
-                                ></div>
+                                    className='progress-bar__inner'
+                                    style={{ height: `${currentSection.progress}%` }}></div>
                                 <div
-                                    className="progress-bar__mean"
-                                    style={{ height: `calc(100% - ${currentSection.progress}%)` }}
-                                ></div>
+                                    className='progress-bar__mean'
+                                    style={{ height: `calc(100% - ${currentSection.progress}%)` }}></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="scroll" ref={scrollRef}>
+                <div className='scroll' ref={scrollRef}>
                     {bookSections &&
                         Object.values(bookSections).map((v: any, i: number) => {
                             return (

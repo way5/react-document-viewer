@@ -1,13 +1,7 @@
-import React, {
-    useEffect,
-    useRef,
-    useState,
-    useImperativeHandle,
-    forwardRef
-} from "react";
-import { default as ThumbnailView } from "./thumbnailView";
-import printView from "./printView";
-import { useTranslation } from "react-i18next";
+import React, { useEffect, useRef, useState, useImperativeHandle, forwardRef } from 'react';
+import { default as ThumbnailView } from './thumbnailView';
+import printView from './printView';
+import { useTranslation } from 'react-i18next';
 import {
     TbArrowLeft,
     TbArrowRight,
@@ -17,9 +11,9 @@ import {
     TbRotate2,
     TbRotateClockwise2,
     TbZoomIn,
-    TbZoomOut,
-} from "react-icons/tb";
-import { PDFToolbarProps } from "../../definitions";
+    TbZoomOut
+} from 'react-icons/tb';
+import { PDFToolbarProps } from '../../definitions';
 
 /**
  * PDF Viewer toolbar
@@ -44,7 +38,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
         errorMessage
     } = props;
 
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [pageNo, setPageNo] = useState(1);
     const [scale, setScale] = useState('page-actual');
     const [customValue, setCustomValue] = useState<string>('');
@@ -59,17 +53,17 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
 
     useImperativeHandle(ref, () => {
         return {
-            initZoomStatus,
+            initZoomStatus
         };
     }, []);
 
     useEffect(() => {
-        addEvent(window, "keydown", handleKeyEnter);
+        addEvent(window, 'keydown', handleKeyEnter);
         let sidebarContainer = sidebarContainerRef.current;
-        addEvent(sidebarContainer, "transitionend", removeClass);
+        addEvent(sidebarContainer, 'transitionend', removeClass);
         return () => {
-            removeEvent(window, "keydown", handleKeyEnter);
-            removeEvent(sidebarContainer, "transitionend", removeClass);
+            removeEvent(window, 'keydown', handleKeyEnter);
+            removeEvent(sidebarContainer, 'transitionend', removeClass);
         };
     }, [pdfDocument]);
 
@@ -90,7 +84,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
         if (obj.addEventListener) {
             obj.addEventListener(type, callback, false);
         } else {
-            obj.attachEvent("on" + type, callback);
+            obj.attachEvent('on' + type, callback);
         }
     }
 
@@ -98,7 +92,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
         if (obj.removeEventListener) {
             obj.removeEventListener(type, callback);
         } else {
-            obj.detachEvent("on" + type, callback);
+            obj.detachEvent('on' + type, callback);
         }
     }
 
@@ -111,7 +105,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
     }
 
     function removeClass(e: TransitionEvent) {
-        if (!sidebarOpenRef.current.includes("sidebar-open")) {
+        if (!sidebarOpenRef.current.includes('sidebar-open')) {
             setSidebarOpen('');
         }
     }
@@ -140,11 +134,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
 
     const onPageBlur = () => {
         let newPageNo = pageRef.current;
-        if (
-            !newPageNo ||
-            newPageNo * 1 < 1 ||
-            newPageNo * 1 > pdfDocument.numPages
-        ) {
+        if (!newPageNo || newPageNo * 1 < 1 || newPageNo * 1 > pdfDocument.numPages) {
             setPageNo(pageOutRef.current);
             return;
         }
@@ -152,8 +142,8 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
     };
 
     const initZoomStatus = () => {
-        setScale("pageActual");
-        onZoomSearch("pageActual");
+        setScale('pageActual');
+        onZoomSearch('pageActual');
     };
 
     const onZoomChange = (e: any) => {
@@ -162,15 +152,15 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
     };
 
     const onZoomIn = (e: any) => {
-        let newValue = Math.round((scaleOut + SCALE_STEP) * 100) + "%";
-        setScale("customValue");
+        let newValue = Math.round((scaleOut + SCALE_STEP) * 100) + '%';
+        setScale('customValue');
         setCustomValue(newValue);
         onZoomSearch(`${scaleOut + SCALE_STEP}`);
     };
 
     const onZoomOut = (e: any) => {
-        let newValue = Math.round((scaleOut - SCALE_STEP) * 100) + "%";
-        setScale("customValue");
+        let newValue = Math.round((scaleOut - SCALE_STEP) * 100) + '%';
+        setScale('customValue');
         setCustomValue(newValue);
         onZoomSearch(`${scaleOut - SCALE_STEP}`);
     };
@@ -200,10 +190,10 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
     // };
 
     const onShowSidebar = () => {
-        if (sidebarOpen.includes("sidebar-open")) {
-            setSidebarOpen("sidebar-moving");
+        if (sidebarOpen.includes('sidebar-open')) {
+            setSidebarOpen('sidebar-moving');
         } else {
-            setSidebarOpen("sidebar-open");
+            setSidebarOpen('sidebar-open');
         }
     };
 
@@ -211,10 +201,10 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
         const iframe: any = printFrameRef.current;
         const doc = iframe.contentWindow.document;
         let printContainer = iframe.contentWindow.document.body;
-        printContainer.innerHTML = "";
-        let style = doc.head.getElementsByTagName("style")[0];
+        printContainer.innerHTML = '';
+        let style = doc.head.getElementsByTagName('style')[0];
         if (!style) {
-            style = document.createElement("style");
+            style = document.createElement('style');
             style.textContent = `.printedPage{width:100%;height:100%;
                 page-break-after:always;
                 page-break-inside:avoid;
@@ -236,7 +226,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
         iframe.contentWindow.focus();
         showLoader(true);
 
-        printView(pdfDocument, printContainer).then((res) => {
+        printView(pdfDocument, printContainer).then(res => {
             showLoader(false);
             iframe.contentWindow.print();
         });
@@ -253,7 +243,7 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                     <div className='toolbar-viewer-left'>
                         <TbLayoutSidebarLeftExpand
                             className='toolbar-button sidebar-toggle'
-                            title={t("sidebarToggle")}
+                            title={t('sidebarToggle')}
                             onClick={onShowSidebar}
                         />
                         <div className='toolbar-button-spacer'></div>
@@ -261,15 +251,15 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                             <span data-l10n-id="findbar_label">Find</span>
                         </button> */}
                         <TbArrowLeft
-                            className={`toolbar-button previous${pageNo == 1 ? ' disabled': ''}`}
-                            title={t("previous")}
+                            className={`toolbar-button previous${pageNo == 1 ? ' disabled' : ''}`}
+                            title={t('previous')}
                             onClick={onPagePrev}
                         />
                         <div className='pagination'>
                             <input
                                 ref={inputRef as any}
                                 type='number'
-                                title={t("pageNumber")}
+                                title={t('pageNumber')}
                                 value={pageNo}
                                 min='1'
                                 autoComplete='off'
@@ -277,46 +267,35 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                                 onBlur={onPageBlur}
                                 disabled={!pdfDocument}
                             />
-                            <span className='num-pages'>
-                                / {pdfDocument?.numPages || 0}
-                            </span>
+                            <span className='num-pages'>/ {pdfDocument?.numPages || 0}</span>
                         </div>
                         <TbArrowRight
-                            className={`toolbar-button next${!pdfDocument || pageNo >= pdfDocument.numPages ? ' disabled': ''}`}
-                            title={t("next")}
+                            className={`toolbar-button next${!pdfDocument || pageNo >= pdfDocument.numPages ? ' disabled' : ''}`}
+                            title={t('next')}
                             onClick={onPageNext}
                         />
                     </div>
                     <div className='toolbar-viewer-middle'>
                         <TbZoomOut
-                            className={`toolbar-button zoomOut${scaleOut === MIN_SCALE ? ' disabled': ''}`}
-                            title={t("zoomOut")}
+                            className={`toolbar-button zoomOut${scaleOut === MIN_SCALE ? ' disabled' : ''}`}
+                            title={t('zoomOut')}
                             onClick={onZoomOut}
                         />
                         <span className='scale-select-container dropdown-toolbar-button'>
-                            <select
-                                title={t("scaleSelect")}
-                                onChange={onZoomChange}
-                                value={scale}
-                            >
+                            <select title={t('scaleSelect')} onChange={onZoomChange} value={scale}>
                                 <option title='' value='auto'>
-                                    {t("pageAutoOption")}
+                                    {t('pageAutoOption')}
                                 </option>
                                 <option title='' value='page-actual'>
-                                    {t("pageActualOption")}
+                                    {t('pageActualOption')}
                                 </option>
                                 <option title='' value='page-fit'>
-                                    {t("pageFitOption")}
+                                    {t('pageFitOption')}
                                 </option>
                                 <option title='' value='page-width'>
-                                    {t("pageWidthOption")}
+                                    {t('pageWidthOption')}
                                 </option>
-                                <option
-                                    title=''
-                                    value='customValue'
-                                    disabled
-                                    hidden={true}
-                                >
+                                <option title='' value='customValue' disabled hidden={true}>
                                     {customValue}
                                 </option>
                                 <option title='' value='0.5'>
@@ -346,32 +325,28 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                             </select>
                         </span>
                         <TbZoomIn
-                            className={`toolbar-button zoomIn${scaleOut === MAX_SCALE ? ' disabled': ''}`}
-                            title={t("zoomIn")}
+                            className={`toolbar-button zoomIn${scaleOut === MAX_SCALE ? ' disabled' : ''}`}
+                            title={t('zoomIn')}
                             onClick={onZoomIn}
                         />
                     </div>
                     <div className='toolbar-viewer-right'>
-                        <TbPrinter
-                            className='toolbar-button print'
-                            title={t("print")}
-                            onClick={onPrint}
-                        />
+                        <TbPrinter className='toolbar-button print' title={t('print')} onClick={onPrint} />
                         {downloadVisible && (
                             <TbDownload
                                 className='toolbar-button download'
-                                title={t("downloadFile")}
+                                title={t('downloadFile')}
                                 onClick={onDownload}
                             />
                         )}
                         <TbRotate2
                             className='toolbar-button page-rotate-ccw'
-                            title={t("pageRotateCcw")}
+                            title={t('pageRotateCcw')}
                             onClick={onRotateAntiClock}
                         />
                         <TbRotateClockwise2
                             className='toolbar-button pageRotateCw'
-                            title={t("pageRotateCw")}
+                            title={t('pageRotateCw')}
                             onClick={onRotateClock}
                         />
                     </div>

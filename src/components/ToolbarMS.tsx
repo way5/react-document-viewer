@@ -8,7 +8,7 @@ import {
     TbFileUnknown,
     TbZoomIn,
     TbZoomOut,
-    TbZoomReset,
+    TbZoomReset
 } from 'react-icons/tb';
 import { ToolbarMSProps } from '../definitions';
 
@@ -29,7 +29,7 @@ export default function ToolbarMS(props: ToolbarMSProps) {
         onZoom,
         showFileName,
         zoomLevel,
-        showDownloadButton = true,
+        showDownloadButton = true
     } = props;
 
     const { t } = useTranslation();
@@ -40,36 +40,21 @@ export default function ToolbarMS(props: ToolbarMSProps) {
                 <div className='file-name'>
                     {fileType === 'file2003' ? (
                         <TbFileTypeDoc />
-                    ) : (fileType === 'file2007' ? (
+                    ) : fileType === 'file2007' ? (
                         <TbFileTypeXls />
                     ) : (
                         <TbFileUnknown />
-                    ))}
-                    {fileName && (
-                        <span>
-                            {fileName}
-                        </span>
                     )}
+                    {fileName && <span>{fileName}</span>}
                 </div>
             )}
             <div className='controls'>
                 {zoom && (
                     <div className='zoom-controls'>
-                        <TbZoomReset
-                            title={t('resetView')}
-                            onClick={() => onZoom(1)}
-                        />
-                        <TbZoomOut
-                            title={t('zoomOut')}
-                            onClick={() => onZoom(zoomLevel - 0.1)}
-                        />
-                        <div className='zoom-level'>
-                            {Math.trunc(zoomLevel * 100)}%
-                        </div>
-                        <TbZoomIn
-                            title={t('zoomIn')}
-                            onClick={() => onZoom(zoomLevel + 0.1)}
-                        />
+                        <TbZoomReset title={t('resetView')} onClick={() => onZoom(1)} />
+                        <TbZoomOut title={t('zoomOut')} onClick={() => onZoom(zoomLevel - 0.1)} />
+                        <div className='zoom-level'>{Math.trunc(zoomLevel * 100)}%</div>
+                        <TbZoomIn title={t('zoomIn')} onClick={() => onZoom(zoomLevel + 0.1)} />
                     </div>
                 )}
                 {showDownloadButton && (

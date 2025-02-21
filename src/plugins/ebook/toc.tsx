@@ -1,9 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-    TbArrowBadgeDownFilled,
-    TbArrowBadgeRightFilled,
-    TbDots
-} from 'react-icons/tb';
+import { TbArrowBadgeDownFilled, TbArrowBadgeRightFilled, TbDots } from 'react-icons/tb';
 
 /**
  * Anchor Element Props
@@ -39,27 +35,31 @@ const TOCItem = (props: TOCItemProps) => {
     const [anchorStateExpanded, setAnchorStateExpanded] = useState(false);
     const tocItemRef = useRef<HTMLAnchorElement>(null);
 
-    const ArrowIcon = props.subitems?.length ? (
-        anchorStateExpanded ?
-            TbArrowBadgeDownFilled
+    const ArrowIcon = props.subitems?.length
+        ? anchorStateExpanded
+            ? TbArrowBadgeDownFilled
             : TbArrowBadgeRightFilled
-    ) : TbDots;
+        : TbDots;
 
-    tocItemRef.current?.addEventListener('click', (e) => {
-        e.preventDefault();
-        const el = e.target as HTMLAnchorElement;
-        const subList = el.parentElement?.querySelector('div.subitems');
-        if (subList) {
-            if (!anchorStateExpanded) {
-                subList.classList.remove('hidden');
-                setAnchorStateExpanded(true);
-            } else {
-                subList.classList.add('hidden');
-                setAnchorStateExpanded(false);
+    tocItemRef.current?.addEventListener(
+        'click',
+        e => {
+            e.preventDefault();
+            const el = e.target as HTMLAnchorElement;
+            const subList = el.parentElement?.querySelector('div.subitems');
+            if (subList) {
+                if (!anchorStateExpanded) {
+                    subList.classList.remove('hidden');
+                    setAnchorStateExpanded(true);
+                } else {
+                    subList.classList.add('hidden');
+                    setAnchorStateExpanded(false);
+                }
             }
-        }
-        props.resolveNavigation(props.href);
-    }, true)
+            props.resolveNavigation(props.href);
+        },
+        true
+    );
 
     return (
         <div className='item'>
@@ -67,8 +67,8 @@ const TOCItem = (props: TOCItemProps) => {
                 <ArrowIcon />
                 {props.label}
             </a>
-            {props.subitems?.length ?
-                (<div className='subitems hidden'>
+            {props.subitems?.length ? (
+                <div className='subitems hidden'>
                     {props.subitems?.map((item: any, i: number) => {
                         return (
                             <TOCItem
@@ -77,13 +77,15 @@ const TOCItem = (props: TOCItemProps) => {
                                 label={item.label}
                                 resolveNavigation={props.resolveNavigation}
                             />
-                        )
+                        );
                     })}
-                </div>) : ''
-            }
+                </div>
+            ) : (
+                ''
+            )}
         </div>
-    )
-}
+    );
+};
 
 /**
  * TOC Nodes
@@ -104,32 +106,26 @@ class TOC extends React.Component<TOCProps> {
                 const item = v.items[0].item;
                 const storageItem = this.#tocArray.get(item.id);
                 if (!storageItem) {
-                    this.#tocArray.set(
-                        item.id,
-                        {
-                            href: item.href,
-                            label: item.label,
-                            parent: -1
-                        }
-                    );
+                    this.#tocArray.set(item.id, {
+                        href: item.href,
+                        label: item.label,
+                        parent: -1
+                    });
                 }
                 if (item.subitems && item.subitems.length) {
                     item.subitems.forEach((subItem: any) => {
                         const subStorageItem = this.#tocArray.get(subItem.id);
                         if (!subStorageItem) {
-                            this.#tocArray.set(
-                                subItem.id,
-                                {
-                                    href: subItem.href,
-                                    label: subItem.label,
-                                    parent: item.id
-                                }
-                            );
+                            this.#tocArray.set(subItem.id, {
+                                href: subItem.href,
+                                label: subItem.label,
+                                parent: item.id
+                            });
                         }
-                    })
+                    });
                 }
             }
-        })
+        });
     }
 
     render(): React.ReactNode {
@@ -138,24 +134,21 @@ class TOC extends React.Component<TOCProps> {
             if (v.parent === -1) {
                 const subitems: TOCItemProps[] = [];
                 this.#tocArray.forEach((subv: any, k: number) => {
-                    if (subv.parent === i)
-                        subitems.push(subv);
-                })
-                nodes.push(<TOCItem
-                    key={i}
-                    href={v.href}
-                    label={v.label}
-                    subitems={subitems}
-                    resolveNavigation={this.props.resolveNavigation}
-                />)
+                    if (subv.parent === i) subitems.push(subv);
+                });
+                nodes.push(
+                    <TOCItem
+                        key={i}
+                        href={v.href}
+                        label={v.label}
+                        subitems={subitems}
+                        resolveNavigation={this.props.resolveNavigation}
+                    />
+                );
             }
         });
-        return (
-            <div className='content'>
-                {nodes}
-            </div>
-        )
+        return <div className='content'>{nodes}</div>;
     }
 }
 
-export default TOC
+export default TOC;

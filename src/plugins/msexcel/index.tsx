@@ -1,12 +1,11 @@
-import "handsontable/dist/handsontable.full.css";
-import React, { useEffect, useState } from "react";
-import * as XLSX from "xlsx";
-import { HotTable } from "@handsontable/react";
-import { ToolbarMS } from "../../components/index";
-import { _getBlobUrlFromBuffer, _download, basename } from "../../utils";
-import { useTranslation } from "react-i18next";
-import { ViewerPluginProps } from "../../definitions";
-
+import 'handsontable/dist/handsontable.full.css';
+import React, { useEffect, useState } from 'react';
+import * as XLSX from 'xlsx';
+import { HotTable } from '@handsontable/react';
+import { ToolbarMS } from '../../components/index';
+import { _getBlobUrlFromBuffer, _download, basename } from '../../utils';
+import { useTranslation } from 'react-i18next';
+import { ViewerPluginProps } from '../../definitions';
 
 export default (props: ViewerPluginProps) => {
     const {
@@ -17,18 +16,18 @@ export default (props: ViewerPluginProps) => {
         changeHandler,
         allowDownloadFile,
         showFileName,
-        showLoader = (s) => {},
-        showError = (s) => {},
-        setOnHideError = (f) => { },
-        setOnShowError = (f) => {},
-        errorMessage = (m) => { },
+        showLoader = s => {},
+        showError = s => {},
+        setOnHideError = f => {},
+        setOnShowError = f => {},
+        errorMessage = m => {}
         // setFileOpen = () => {},
     } = props;
     const [data, setData] = useState<Record<string, any>>({});
     const [file, setFile] = useState(fileBuffer);
     const [fileName, setFileName] = useState<string>('');
     const { t } = useTranslation();
-    const [activeTabKey, setActiveTabKey] = useState<string>("wbSheets_0");
+    const [activeTabKey, setActiveTabKey] = useState<string>('wbSheets_0');
     const [sheetNames, setSheetNames] = useState<string[]>([]);
     const [zoomLevel, setZoomLevel] = useState<number>(1);
 
@@ -45,7 +44,7 @@ export default (props: ViewerPluginProps) => {
             Error(false);
             showLoader(true);
             try {
-                const workbook = XLSX.read(file, { type: "buffer" });
+                const workbook = XLSX.read(file, { type: 'buffer' });
                 loadData(workbook);
             } catch (e: any) {
                 Error(true, e);
@@ -66,18 +65,18 @@ export default (props: ViewerPluginProps) => {
         const names = workbook.SheetNames;
         if (names && names.length > 0) {
             setSheetNames(names);
-            setActiveTabKey("wbSheets_0");
+            setActiveTabKey('wbSheets_0');
         }
         names.forEach(function (sheetName, idx) {
-            const subDivId = "wbSheets_" + idx;
+            const subDivId = 'wbSheets_' + idx;
             var json = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {
-                header: "A",
-                blankrows: false,
+                header: 'A',
+                blankrows: false
             });
-            setData((data) => {
+            setData(data => {
                 return {
                     ...data,
-                    [subDivId]: json,
+                    [subDivId]: json
                 };
             });
         });
@@ -112,7 +111,7 @@ export default (props: ViewerPluginProps) => {
                 licenseKey='non-commercial-and-evaluation'
                 settings={{
                     data: data[activeTabKey],
-                    colHeaders:true,
+                    colHeaders: true,
                     rowHeaders: true,
                     fixedColumnsLeft: 0,
                     fixedRowsTop: 0,
@@ -144,18 +143,8 @@ export default (props: ViewerPluginProps) => {
             />
             <ul className='wbsheets-tablist'>
                 {sheetNames.map((item, index) => (
-                    <li
-                        className={
-                            activeTabKey == "wbSheets_" + index
-                                ? "selected"
-                                : ""
-                        }
-                        key={sheetNames[index]}
-                    >
-                        <a
-                            href={"wbSheets_" + index}
-                            onClick={(e) => onChangeTab(e, `wbSheets_${index}`)}
-                        >
+                    <li className={activeTabKey == 'wbSheets_' + index ? 'selected' : ''} key={sheetNames[index]}>
+                        <a href={'wbSheets_' + index} onClick={e => onChangeTab(e, `wbSheets_${index}`)}>
                             {item}
                         </a>
                     </li>

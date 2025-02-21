@@ -1,16 +1,16 @@
-import "./scss/index.scss";
-import ReactDocumentViewer from "./ReactDocumentViewer";
+import './scss/index.scss';
+import ReactDocumentViewer from './ReactDocumentViewer';
 
 window.ReactDocumentViewer = ReactDocumentViewer;
 
-if (process.env.NODE_ENV !== "production") {
-    window.addEventListener("load", () => {
+if (process.env.NODE_ENV !== 'production') {
+    window.addEventListener('load', () => {
         window.ReactDocumentViewer = new ReactDocumentViewer({
-            rootElement: document.getElementById("root"),
+            rootElement: document.getElementById('root'),
             // files: [],
             files: [
                 { src: '/docs/test.jpg', name: '', mime: '' },
-                { src: '/docs/test.webp', name: 'Image #2', mime: '' },
+                { src: '/docs/test.webp', name: 'Image #2', mime: '' }
             ],
             downloadInNewWindow: false,
             // disablePlugins: ["pdf"],
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV !== "production") {
             // rotatable: false,
             // scalable: false,
             // noImgDetails: true,
-            noNavbar: false,
+            noNavbar: false
             // noToolbar: true,
             // noFooter: true,
             // allowLoop: false,

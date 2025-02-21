@@ -10,7 +10,7 @@
  ---------------------------------------------------------------------------------
 */
 
-import { FileType } from "./definitions";
+import { FileType } from './definitions';
 
 // See: https://en.wikipedia.org/wiki/List_of_file_signatures
 const formatMap: { [key: string]: string[][] } = {
@@ -19,25 +19,25 @@ const formatMap: { [key: string]: string[][] } = {
     file2007: [
         ['50', '4b', '03', '04'],
         ['50', '4b', '05', '06'],
-        ['50', '4b', '07', '08'],
+        ['50', '4b', '07', '08']
     ],
     png: [['89', '50', '4e', '47']],
     gif: [
         ['47', '49', '46', '38', '37', '61'],
-        ['47', '49', '46', '38', '39', '61'],
+        ['47', '49', '46', '38', '39', '61']
     ],
     jpg: [
         ['ff', 'd8', 'ff', 'e0'],
         ['ff', 'd8', 'ff', 'e1'],
         ['ff', 'd8', 'ff', 'ee'],
-        ['ff', 'd8', 'ff', 'e8'],
+        ['ff', 'd8', 'ff', 'e8']
     ],
     tiff: [
         ['49', '49', '2a', '00'],
-        ['4d', '4d', '00', '2a'],
+        ['4d', '4d', '00', '2a']
     ],
     webp: [['52', '49', '46', '46']],
-    bmp: [['42', '4D']],
+    bmp: [['42', '4D']]
 };
 
 // See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
@@ -74,7 +74,7 @@ const fileTypeMap: { [key: string]: string } = {
     'image/x-tiff': 'tiff',
     'image/x-webp': 'webp',
     'image/x-bmp': 'bmp',
-    'image/svg+xml': 'svg',
+    'image/svg+xml': 'svg'
 };
 
 /**
@@ -84,7 +84,7 @@ const fileTypeMap: { [key: string]: string } = {
  * @returns {*}
  */
 export const swapKeyValue = (obj: Object): Object => {
-    return Object.fromEntries(Object.entries(obj).map((a) => a.reverse()));
+    return Object.fromEntries(Object.entries(obj).map(a => a.reverse()));
 };
 
 /**
@@ -98,7 +98,7 @@ export const getfileTypeExtesions = (fileExt: string | null = null): string[] | 
     if (!fileExt) return exts;
     else if (exts.includes(fileExt)) return true;
     return false;
-}
+};
 
 /**
  * Get file types
@@ -107,7 +107,7 @@ export const getfileTypeExtesions = (fileExt: string | null = null): string[] | 
  */
 export const getfileTypes = (): string[] => {
     return Object.keys(fileTypeMap);
-}
+};
 
 /**
  * Returns file name extracted from path
@@ -115,8 +115,8 @@ export const getfileTypes = (): string[] => {
  * @type {*}
  */
 export const basename = (path: string): string => {
-    return path.replace(/^.*[\\/]/, '')
-}
+    return path.replace(/^.*[\\/]/, '');
+};
 
 /**
  * Get blob URL
@@ -200,8 +200,8 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
         simpleType: '',
         contentType: '',
         isZip: false,
-        mimeType: mimeType,
-    }
+        mimeType: mimeType
+    };
 
     try {
         const str_8 = getSliceArrTo16(arrayBuffer, 0, 8).join('');
@@ -218,7 +218,7 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
         const fileTypesReverse: any = swapKeyValue(fileTypeMap);
 
         // check if isZip
-        if(arrayBuffer[0] === 0x50 && arrayBuffer[1] === 0x4b && arrayBuffer[2] === 0x03 && arrayBuffer[3] === 0x04) {
+        if (arrayBuffer[0] === 0x50 && arrayBuffer[1] === 0x4b && arrayBuffer[2] === 0x03 && arrayBuffer[3] === 0x04) {
             fType.isZip = true;
         }
 
@@ -268,7 +268,6 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
         ) {
             fType.simpleType = 'image';
         }
-
     } catch (e) {
         console.log(e);
     }
@@ -309,5 +308,5 @@ export function isListContainsTarget(target: string[], arr: string[]) {
  */
 export function getSliceArrTo16(arr: Uint8Array, start: number, end: number): string[] {
     let newArr = arr.slice(start, end);
-    return Array.prototype.map.call(newArr, (x) => ('00' + x.toString(16)).slice(-2)) as string[];
+    return Array.prototype.map.call(newArr, x => ('00' + x.toString(16)).slice(-2)) as string[];
 }

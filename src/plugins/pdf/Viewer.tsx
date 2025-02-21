@@ -1,7 +1,7 @@
-import { useState, useEffect, useRef } from "react";
-import * as pdfjs from "pdfjs-dist";
-import { RenderTask, TextContent } from "pdfjs-dist/types/src/display/api";
-import { PDFViewerProps } from "../../definitions";
+import { useState, useEffect, useRef } from 'react';
+import * as pdfjs from 'pdfjs-dist';
+import { RenderTask, TextContent } from 'pdfjs-dist/types/src/display/api';
+import { PDFViewerProps } from '../../definitions';
 
 /**
  * PDF viewer
@@ -26,7 +26,7 @@ export const usePdf = (props: PDFViewerProps) => {
         cMapUrl,
         cMapPacked,
         workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.mjs`,
-        withCredentials = true,
+        withCredentials = true
     } = props;
 
     const [pdfDocument, setPdfDocument] = useState<pdfjs.PDFDocumentProxy>();
@@ -78,7 +78,7 @@ export const usePdf = (props: PDFViewerProps) => {
     }, [pdfPage]);
 
     useEffect(() => {
-        if (typeof file !== "object") {
+        if (typeof file !== 'object') {
             return;
         }
         // const config = { withCredentials };
@@ -93,15 +93,15 @@ export const usePdf = (props: PDFViewerProps) => {
         //     config.cMapPacked = cMapPacked;
         // }
         pdfjs.getDocument(file).promise.then(
-            (loadedPdfDocument) => {
+            loadedPdfDocument => {
                 setPdfDocument(loadedPdfDocument);
 
-                if (typeof onDocumentLoadSuccessRef.current === "function") {
+                if (typeof onDocumentLoadSuccessRef.current === 'function') {
                     onDocumentLoadSuccessRef.current(loadedPdfDocument);
                 }
             },
-            (info) => {
-                if (typeof onDocumentLoadFailRef.current === "function") {
+            info => {
+                if (typeof onDocumentLoadFailRef.current === 'function') {
                     onDocumentLoadFailRef.current(info);
                 }
             }
@@ -111,15 +111,15 @@ export const usePdf = (props: PDFViewerProps) => {
     useEffect(() => {
         if (pdfDocument) {
             pdfDocument.getPage(page).then(
-                (loadedPdfPage) => {
+                loadedPdfPage => {
                     setPdfPage(loadedPdfPage);
-                    if (typeof onPageLoadSuccessRef.current === "function") {
+                    if (typeof onPageLoadSuccessRef.current === 'function') {
                         onPageLoadSuccessRef.current(loadedPdfPage);
                     }
                 },
-                (e) => {
-                    console.log("(!) page load failed: ", e);
-                    if (typeof onPageLoadFailRef.current === "function") {
+                e => {
+                    console.log('(!) page load failed: ', e);
+                    if (typeof onPageLoadFailRef.current === 'function') {
                         onPageLoadFailRef.current();
                     }
                 }
@@ -137,13 +137,13 @@ export const usePdf = (props: PDFViewerProps) => {
             const adjustedScale = scaleRef.current * dpRatio;
             const viewport = page.getViewport({
                 scale: adjustedScale,
-                rotation,
+                rotation
             });
             const canvasEl = canvasRef.current;
             if (!canvasEl) {
                 return;
             }
-            const canvasContext = canvasEl.getContext("2d");
+            const canvasContext = canvasEl.getContext('2d');
             if (!canvasContext) {
                 return;
             }
@@ -164,7 +164,7 @@ export const usePdf = (props: PDFViewerProps) => {
             renderTask.current = page.render({
                 canvasContext,
                 viewport,
-                transform: [resolution, 0, 0, resolution, 0, 0],
+                transform: [resolution, 0, 0, resolution, 0, 0]
             });
 
             return renderTask.current.promise
@@ -172,28 +172,21 @@ export const usePdf = (props: PDFViewerProps) => {
                     () => {
                         renderTask.current = null;
 
-                        if (
-                            typeof onPageRenderSuccessRef.current === "function"
-                        ) {
+                        if (typeof onPageRenderSuccessRef.current === 'function') {
                             onPageRenderSuccessRef.current(page);
                         }
                         return page.getTextContent();
                     },
-                    (reason) => {
+                    reason => {
                         renderTask.current = null;
-                        if (
-                            reason &&
-                            reason.name === "RenderingCancelledException"
-                        ) {
+                        if (reason && reason.name === 'RenderingCancelledException') {
                             drawPDF(pdfPageRef.current as pdfjs.PDFPageProxy);
-                        } else if (
-                            typeof onPageRenderFailRef.current === "function"
-                        ) {
+                        } else if (typeof onPageRenderFailRef.current === 'function') {
                             onPageRenderFailRef.current(null);
                         }
                     }
                 )
-                .then((textContent) => {
+                .then(textContent => {
                     createTextlayer(
                         pageWrapper,
                         textContent,
@@ -219,14 +212,11 @@ export const usePdf = (props: PDFViewerProps) => {
         height: string
     ) => {
         if (text) {
-            const oldDiv = document.getElementById("pdf_viewer_textLayer");
-            const textLayerDiv = document.createElement("div");
-            textLayerDiv.setAttribute("id", "pdf_viewer_textLayer");
-            textLayerDiv.setAttribute(
-                "style",
-                `width:${width};height:${height};word-break:keep-all`
-            );
-            textLayerDiv.setAttribute("class", "text-layer");
+            const oldDiv = document.getElementById('pdf_viewer_textLayer');
+            const textLayerDiv = document.createElement('div');
+            textLayerDiv.setAttribute('id', 'pdf_viewer_textLayer');
+            textLayerDiv.setAttribute('style', `width:${width};height:${height};word-break:keep-all`);
+            textLayerDiv.setAttribute('class', 'text-layer');
 
             if (oldDiv) {
                 wrapper.replaceChild(textLayerDiv, oldDiv);
@@ -237,7 +227,7 @@ export const usePdf = (props: PDFViewerProps) => {
             const textLayer = new pdfjs.TextLayer({
                 textContentSource: text,
                 container: textLayerDiv,
-                viewport: viewport,
+                viewport: viewport
             });
 
             textLayer.render();

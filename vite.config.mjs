@@ -10,40 +10,40 @@ export default defineConfig(({ command, mode }) => ({
     css: {
         preprocessorOptions: {
             scss: {
-                api: "modern",
-            },
-        },
+                api: 'modern'
+            }
+        }
     },
     plugins: [
         react({}),
         sassDts({
             enabledMode: ['development', 'production'],
             sourceDir: path.resolve(__dirname, './src'),
-            outputDir: path.resolve(__dirname, './dist'),
+            outputDir: path.resolve(__dirname, './dist')
         }),
         viteStaticCopy({
             targets: [
                 {
                     src: './src/scss/index.scss',
                     dest: '',
-                    rename: (name, extension, fullPath) => `doc_viewer.${extension}`,
+                    rename: (name, extension, fullPath) => `doc_viewer.${extension}`
                 },
                 {
                     src: './node_modules/pdfjs-dist/build/pdf.worker.mjs',
-                    dest: '',
+                    dest: ''
                 },
                 {
                     src: './node_modules/pdfjs-dist/build/pdf.worker.mjs.map',
-                    dest: '',
+                    dest: ''
                 },
                 {
                     src: './node_modules/pdfjs-dist/cmaps',
-                    dest: '',
+                    dest: ''
                 },
                 {
                     src: './node_modules/pdfjs-dist/cmaps',
-                    dest: '../public',
-                },
+                    dest: '../public'
+                }
                 // {
                 //     src: './node_modules/jszip/dist/jszip.js',
                 //     dest: '',
@@ -52,8 +52,8 @@ export default defineConfig(({ command, mode }) => ({
                 //     src: './node_modules/jszip/dist/jszip.js',
                 //     dest: '../public',
                 // },
-            ],
-        }),
+            ]
+        })
     ],
     build: {
         // minify: "terser",
@@ -65,14 +65,14 @@ export default defineConfig(({ command, mode }) => ({
         chunkSizeWarningLimit: 1000,
         terserOptions: {
             compress: {
-                defaults: true,
+                defaults: true
             },
             ie8: true,
-            safari10: true,
+            safari10: true
         },
         rollupOptions: {
             input: {
-                app: './index.html',
+                app: './index.html'
             },
             output: {
                 format: 'umd',
@@ -90,26 +90,26 @@ export default defineConfig(({ command, mode }) => ({
                 //     else if (a.name === 'index.js') return 'doc_viewer.js';
                 //     else return a.name;
                 // },
-                entryFileNames: 'doc_viewer.js',
+                entryFileNames: 'doc_viewer.js'
             },
             onLog(level, log, handler) {
                 if (log.cause && log.cause.message === `Can't resolve original location of error.`) {
                     return;
                 }
                 handler(level, log);
-            },
-        },
+            }
+        }
     },
     resolve: {
         alias: {
-            lib: path.resolve(__dirname, 'lib'),
-        },
+            lib: path.resolve(__dirname, 'lib')
+        }
     },
     define: {
-        'process.env': process.env,
+        'process.env': process.env
     },
     server: {
         port: 8000,
-        open: true,
-    },
+        open: true
+    }
 }));

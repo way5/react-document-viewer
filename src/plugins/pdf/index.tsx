@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import * as pdfjs from "pdfjs-dist";
-import { usePdf } from "./viewer";
-import { default as Toolbar } from "./toolbar";
-import { _download, _getObjectUrl, basename } from "../../utils";
-import { useTranslation } from "react-i18next";
-import {
-    PDFViewerProps,
-    ViewerPluginProps,
-    PDFToolbarElement,
-} from "../../definitions.js";
+import React, { useState, useEffect, useRef } from 'react';
+import * as pdfjs from 'pdfjs-dist';
+import { usePdf } from './viewer';
+import { default as Toolbar } from './toolbar';
+import { _download, _getObjectUrl, basename } from '../../utils';
+import { useTranslation } from 'react-i18next';
+import { PDFViewerProps, ViewerPluginProps, PDFToolbarElement } from '../../definitions.js';
 
 const MAX_SCALE = 4;
 const MIN_SCALE = 0.5;
@@ -26,13 +22,13 @@ const DEFAULT_SIZE = 1;
  * @returns {unknown}
  */
 const _getBlobUrl = async (url: string, pdfDocument: any) => {
-    if (url.indexOf("blob:") == 0) {
+    if (url.indexOf('blob:') == 0) {
         return url;
     }
     let unit8ArrayData = await pdfDocument.getData();
-    let blob = new Blob([unit8ArrayData], { type: "application/pdf" });
+    let blob = new Blob([unit8ArrayData], { type: 'application/pdf' });
     return _getObjectUrl(blob);
-}
+};
 
 /**
  * PDF Viewer
@@ -48,10 +44,10 @@ export default (props: ViewerPluginProps) => {
         changeHandler,
         showFileName,
         allowDownloadFile = true,
-        showLoader = (b) => {},
-        showError = (b) => {},
+        showLoader = b => {},
+        showError = b => {},
         setOnHideError,
-        errorMessage = (m) => {},
+        errorMessage = m => {}
         // setFileOpen = () => {},
     } = props;
 
@@ -68,7 +64,7 @@ export default (props: ViewerPluginProps) => {
         pageWidthScale: 1,
         pageHeightScale: 1,
         pageWidth: 0,
-        pageHeight: 0,
+        pageHeight: 0
     });
     const { t } = useTranslation();
 
@@ -87,7 +83,7 @@ export default (props: ViewerPluginProps) => {
         pageWrapperRef: pageWrapperRef,
         workerSrc: pdfWorkerUrl,
         cMapPacked: true,
-        cMapUrl: location.origin + "/cmaps/",
+        cMapUrl: location.origin + '/cmaps/',
         // cMapUrl: new URL(
         //     "/node_modules/pdfjs-dist/cmaps/",
         //     import.meta.url
@@ -98,7 +94,7 @@ export default (props: ViewerPluginProps) => {
         onPageLoadFail: () => {},
         onPageLoadSuccess: () => {},
         onPageRenderFail: () => {},
-        withCredentials: true,
+        withCredentials: true
     };
     const { pdfDocument, pdfPage } = usePdf(pdfConfigArr);
 
@@ -135,8 +131,7 @@ export default (props: ViewerPluginProps) => {
     };
 
     const onZoomSearch = (value: string) => {
-        const { pageWidthScale, pageHeightScale, pageWidth, pageHeight } =
-            pageScaleMap;
+        const { pageWidthScale, pageHeightScale, pageWidth, pageHeight } = pageScaleMap;
 
         let scale = parseFloat(value);
         if (scale > 0) {
@@ -145,28 +140,22 @@ export default (props: ViewerPluginProps) => {
         }
 
         switch (value) {
-            case "page-actual":
+            case 'page-actual':
                 scale = DEFAULT_SIZE;
                 break;
-            case "page-fit":
+            case 'page-fit':
                 scale = Math.min(pageWidthScale, pageHeightScale);
                 break;
-            case "page-width":
+            case 'page-width':
                 scale = pageWidthScale;
                 break;
-            case "auto":
+            case 'auto':
                 let isLandscape = pageWidth > pageHeight;
-                let horizontalScale = isLandscape
-                    ? Math.min(pageHeightScale, pageWidthScale)
-                    : pageWidthScale;
+                let horizontalScale = isLandscape ? Math.min(pageHeightScale, pageWidthScale) : pageWidthScale;
                 scale = Math.min(MAX_SCALE, horizontalScale);
                 break;
             default:
-                console.error(
-                    'PDFViewer._setScale: "' +
-                        value +
-                        '" is an unknown zoom value.'
-                );
+                console.error('PDFViewer._setScale: "' + value + '" is an unknown zoom value.');
                 return;
         }
         setScale(scale);
@@ -181,10 +170,7 @@ export default (props: ViewerPluginProps) => {
     };
 
     // Update initial scale data
-    const refreshScaleMap = (
-        pdfPage: pdfjs.PDFPageProxy | undefined,
-        rotate = 0
-    ) => {
+    const refreshScaleMap = (pdfPage: pdfjs.PDFPageProxy | undefined, rotate = 0) => {
         if (!pdfPage) return;
         if (!containerRef.current) return;
         let pageView = pdfPage._pageInfo.view;
@@ -196,15 +182,13 @@ export default (props: ViewerPluginProps) => {
             pageHeight = pageView[2];
         }
         let container = containerRef.current;
-        let pageWidthScale =
-            Math.round((container.clientWidth / pageWidth) * 10) / 10;
-        let pageHeightScale =
-            Math.round((container.clientHeight / pageHeight) * 10) / 10;
+        let pageWidthScale = Math.round((container.clientWidth / pageWidth) * 10) / 10;
+        let pageHeightScale = Math.round((container.clientHeight / pageHeight) * 10) / 10;
         setPageScaleMap({
             pageWidthScale,
             pageHeightScale,
             pageWidth,
-            pageHeight,
+            pageHeight
         });
     };
 
@@ -212,18 +196,15 @@ export default (props: ViewerPluginProps) => {
     const handleLayout = () => {
         const { pageWidthScale } = pageScaleMap;
         if (!containerRef.current) return;
-        const isCenter = window.getComputedStyle(
-            containerRef.current,
-            null
-        ).alignItems;
+        const isCenter = window.getComputedStyle(containerRef.current, null).alignItems;
 
         if (scale >= pageWidthScale) {
-            if (isCenter === "center") {
-                containerRef.current.style.alignItems = "flex-start";
+            if (isCenter === 'center') {
+                containerRef.current.style.alignItems = 'flex-start';
             }
         } else {
-            if (isCenter !== "center") {
-                containerRef.current.style.alignItems = "center";
+            if (isCenter !== 'center') {
+                containerRef.current.style.alignItems = 'center';
             }
         }
 
@@ -233,23 +214,21 @@ export default (props: ViewerPluginProps) => {
     const onDownloadFile = async () => {
         showLoader(true);
         let fileUrl = await _getBlobUrl(activeFile.src, pdfDocument);
-        _download(fileUrl, fileName, "pdf");
+        _download(fileUrl, fileName, 'pdf');
         showLoader(false);
     };
 
-    const onShowError = (status: boolean = false, info: string = "") => {
+    const onShowError = (status: boolean = false, info: string = '') => {
         showError(status);
-        if (info !== "") {
-            info = t("pdfGenericError");
+        if (info !== '') {
+            info = t('pdfGenericError');
         }
         errorMessage(info);
     };
 
     return (
         <div className='pdf-document'>
-            {fileName && showFileName && (
-                <div className='file-name'>{`${fileName}`}</div>
-            )}
+            {fileName && showFileName && <div className='file-name'>{`${fileName}`}</div>}
             <>
                 <Toolbar
                     ref={toolbarRef}
@@ -278,10 +257,9 @@ export default (props: ViewerPluginProps) => {
                     ref={containerRef}
                     style={
                         {
-                            "--scale-factor": scale,
+                            '--scale-factor': scale
                         } as React.CSSProperties
-                    }
-                >
+                    }>
                     {pdfDocument && (
                         <article className='page' ref={pageWrapperRef}>
                             <div className='canvas-wrapper'>

@@ -39,7 +39,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         files: [],
         disablePlugins: [],
         changeHandler: () => {},
-        showLoader: (s: boolean) => {},
+        showLoader: (s: boolean) => {}
     };
 
     const p = Object.assign(defs, props);
@@ -51,7 +51,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         allowOpenFile,
         allowDownloadFile,
         showFileName,
-        disablePlugins,
+        disablePlugins
     } = p;
 
     let pdfWorker = props.pdfWorkerUrl;
@@ -85,13 +85,13 @@ const _AllViewers = (props: UnifiedViewerProps) => {
 
         if (file instanceof File) {
             file.arrayBuffer()
-                .then((bytes) => {
+                .then(bytes => {
                     const arrBuffer = new Uint8Array(bytes);
                     setFileType(getFileType(arrBuffer, file.name, file.type));
                     setFileBuffer(arrBuffer);
                     setFileDescriptor({ src: '', name: file.name });
                 })
-                .catch((err) => {
+                .catch(err => {
                     setFileIsOpen(false);
                     setFile(null);
                     setFileBuffer(null);
@@ -108,14 +108,14 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                     setFileType(getFileType(arrBuffer, name, type));
                     setFileBuffer(arrBuffer);
                 },
-                onError: (err) => {
+                onError: err => {
                     // setFileType('');
                     setFileIsOpen(false);
                     setFile(null);
                     setFileBuffer(null);
                     setShowLoading(false);
                     setErrInfo(t('unableToDownloadFile'));
-                },
+                }
             });
         }
     }, [files, file, activeIndex]);
@@ -139,7 +139,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
             (!getfileTypeExtesions(fileType?.extension) && fileType?.simpleType)
         ) {
             setErrInfo(t('supportFileTypes'));
-        } else if (fileType?.simpleType == '' && fileType.contentType=== '' && fileBuffer) {
+        } else if (fileType?.simpleType == '' && fileType.contentType === '' && fileBuffer) {
             setErrInfo(t('wrongFileType'));
         }
 
@@ -277,25 +277,25 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                 };
 
                 setOverlay(
-                    <div className="dropzone" onMouseDown={fileOpen}>
+                    <div className='dropzone' onMouseDown={fileOpen}>
                         <TbCloudUpload />
-                        <input type="file" className="hidden" onChange={onFlieChange} />
+                        <input type='file' className='hidden' onChange={onFlieChange} />
                         <span>{t('uploadFile')}</span>
-                    </div>,
+                    </div>
                 );
             } else if (files.length == 0) {
                 setOverlay(
-                    <div className="no-files-info">
+                    <div className='no-files-info'>
                         <TbBookOff />
                         {t('noFileSelected')}
-                    </div>,
+                    </div>
                 );
             } else if (files.length != 0) {
                 setOverlay(
-                    <div className="something-wrong-info">
+                    <div className='something-wrong-info'>
                         <TbBomb />
                         {t('somethingWrong')}
-                    </div>,
+                    </div>
                 );
             }
         } else {
@@ -304,7 +304,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
     }, [errInfo]);
 
     return (
-        <div className="doc-viewer">
+        <div className='doc-viewer'>
             {showError && (
                 <ErrorMessage
                     showError={showError}
@@ -314,9 +314,9 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                 />
             )}
             {/* {Object.values(KnownFileTypes).includes(fileType as any) ? ( */}
-            <div className="document-container">
+            <div className='document-container'>
                 {showLoading && !fileIsOpen && <Loading />}
-                {overlay ? <div className="document-container-overlay">{overlay}</div> : plugin}
+                {overlay ? <div className='document-container-overlay'>{overlay}</div> : plugin}
                 {errInfo ? <ErrorMessage showError={true} allowCloseButton={false} errorInfo={errInfo} /> : null}
             </div>
             {/* ) : null} */}

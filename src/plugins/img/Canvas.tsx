@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { ImageViewerCanvasProps } from "../../definitions";
+import React, { useEffect } from 'react';
+import { ImageViewerCanvasProps } from '../../definitions';
 
 /**
  * Canvas block
@@ -12,33 +12,27 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
     const isMouseDown = React.useRef(false);
     const prePosition = React.useRef({
         x: 0,
-        y: 0,
+        y: 0
     });
 
     const [position, setPosition] = React.useState({
         x: 0,
-        y: 0,
+        y: 0
     });
 
     useEffect(() => {
         if (props.image) {
-            const canvas = document.querySelector(
-                "div.canvas"
-            ) as HTMLDivElement;
+            const canvas = document.querySelector('div.canvas') as HTMLDivElement;
             if (canvas) {
                 if (canvas.children.length > 0) {
                     canvas.removeChild(canvas.children[0]);
                 }
                 const img = props.image;
-                const imgStyle = `width:${props.width}px;height:${props.height}px; transform: translateX(${props.left !== null ? props.left + "px" : "aoto"}) translateY(${props.top}px) rotate(${props.rotate}deg) scaleX(${props.scaleX}) scaleY(${props.scaleY})`;
-                img.setAttribute(
-                    "class",
-                    (props.drag ? "draggable" : "") +
-                        (isMouseDown.current ? " drag" : "")
-                );
-                img.setAttribute("style", imgStyle);
-                img.addEventListener("mousedown", (e) => handleMouseDown(e));
-                img.addEventListener("mouseup", (e) => handleMouseUp(e));
+                const imgStyle = `width:${props.width}px;height:${props.height}px; transform: translateX(${props.left !== null ? props.left + 'px' : 'aoto'}) translateY(${props.top}px) rotate(${props.rotate}deg) scaleX(${props.scaleX}) scaleY(${props.scaleY})`;
+                img.setAttribute('class', (props.drag ? 'draggable' : '') + (isMouseDown.current ? ' drag' : ''));
+                img.setAttribute('style', imgStyle);
+                img.addEventListener('mousedown', e => handleMouseDown(e));
+                img.addEventListener('mouseup', e => handleMouseUp(e));
                 canvas.appendChild(img);
             } else {
                 console.log('(!) unable to find <div class="canvas"> element');
@@ -53,7 +47,7 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
         props.rotate,
         props.scaleX,
         props.scaleY,
-        props.drag,
+        props.drag
     ]);
 
     useEffect(() => {
@@ -78,14 +72,9 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
         let diffY = position.y - prePosition.current.y;
         prePosition.current = {
             x: position.x,
-            y: position.y,
+            y: position.y
         };
-        props.onChangeImgState(
-            props.width,
-            props.height,
-            props.top + diffY,
-            props.left + diffX
-        );
+        props.onChangeImgState(props.width, props.height, props.top + diffY, props.left + diffX);
     }, [position]);
 
     function handleResize(e: Event) {
@@ -100,13 +89,13 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
             return;
         }
         const el = e.target as HTMLElement;
-        el.classList.add("drag");
+        el.classList.add('drag');
         e.preventDefault();
         e.stopPropagation();
         isMouseDown.current = true;
         prePosition.current = {
             x: e.clientX,
-            y: e.clientY,
+            y: e.clientY
         };
         e.preventDefault();
     }
@@ -121,31 +110,31 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
             e.preventDefault();
             setPosition({
                 x: e.clientX,
-                y: e.clientY,
+                y: e.clientY
             });
         }
     }
 
     function handleMouseUp(e: MouseEvent) {
         const el = e.target as HTMLElement;
-        el.classList.remove("drag");
+        el.classList.remove('drag');
         isMouseDown.current = false;
     }
 
     function bindWindowResizeEvent(remove: boolean = false) {
         if (remove) {
-            window.removeEventListener("resize", handleResize, false);
+            window.removeEventListener('resize', handleResize, false);
             return;
         }
-        window.addEventListener("resize", handleResize, false);
+        window.addEventListener('resize', handleResize, false);
     }
 
     function bindEvent(remove: boolean = false) {
         if (remove) {
-            document.removeEventListener("mousemove", handleMouseMove, false);
+            document.removeEventListener('mousemove', handleMouseMove, false);
             return;
         }
-        document.addEventListener("mousemove", handleMouseMove, false);
+        document.addEventListener('mousemove', handleMouseMove, false);
     }
 
     return <div className='canvas'></div>;

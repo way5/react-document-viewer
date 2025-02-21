@@ -3,13 +3,7 @@ import { TbCircleLetterX } from 'react-icons/tb';
 import { ErrorMessageProps } from '../definitions';
 
 export default function ErrorMessage(props: ErrorMessageProps) {
-    const {
-        showError,
-        errorInfo,
-        onShowError,
-        onHideError = (e) => { },
-        allowCloseButton = true
-    } = props;
+    const { showError, errorInfo, onShowError, onHideError = e => {}, allowCloseButton = true } = props;
 
     // const { t } = useTranslation();
     const [msgHidden, setMsgHidden] = useState(!showError);
@@ -23,7 +17,7 @@ export default function ErrorMessage(props: ErrorMessageProps) {
 
     const hideEvent = new Event('closeErrorMessageEvent', {
         bubbles: false,
-        cancelable: true,
+        cancelable: true
     });
 
     window.addEventListener('closeErrorMessageEvent', (e: Event) => {
@@ -43,7 +37,7 @@ export default function ErrorMessage(props: ErrorMessageProps) {
                 <div>
                     <TbCircleLetterX
                         size={25}
-                        onMouseDown={(e) => {
+                        onMouseDown={e => {
                             e.stopPropagation();
                             window.dispatchEvent(hideEvent);
                         }}

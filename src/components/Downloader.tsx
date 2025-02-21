@@ -1,4 +1,4 @@
-import { DownloadFileProps } from "../definitions";
+import { DownloadFileProps } from '../definitions';
 
 /**
  * FIle dowwnloader
@@ -9,15 +9,7 @@ import { DownloadFileProps } from "../definitions";
  * @param props
  */
 export default function DownloadFile(props: DownloadFileProps) {
-    const {
-        files,
-        activeIndex,
-        downloadTimeout,
-        onLoad = () => {},
-        onLoadend = () => {},
-        onAbort,
-        onError,
-    } = props;
+    const { files, activeIndex, downloadTimeout, onLoad = () => {}, onLoadend = () => {}, onAbort, onError } = props;
 
     let activeFile = files[0];
     if (files.length > 0 && activeIndex < files.length) {
@@ -25,8 +17,8 @@ export default function DownloadFile(props: DownloadFileProps) {
     }
 
     const req = new XMLHttpRequest();
-    req.open("GET", activeFile.src);
-    req.responseType = "blob";
+    req.open('GET', activeFile.src);
+    req.responseType = 'blob';
 
     const xhrTimeOut = setTimeout(() => {
         req.abort();
@@ -44,16 +36,15 @@ export default function DownloadFile(props: DownloadFileProps) {
                     const arrBuffer = new Uint8Array(buffer);
                     onLoadend(
                         arrBuffer,
-                        activeFile.src.substring(activeFile.src.lastIndexOf("/") + 1),
+                        activeFile.src.substring(activeFile.src.lastIndexOf('/') + 1),
                         req.response.type,
                         e
                     );
-                }
+                };
                 t();
                 // TODO Blob.size
-            } else
-                console.error('(!) the request result is empty');
-        }
+            } else console.error('(!) the request result is empty');
+        };
         req.onerror = function (e: ProgressEvent) {
             onError && onError(e);
         };
