@@ -8,12 +8,8 @@ module.exports = {
         extend: {},
     },
     plugins: [
-        require("tailwindcss/colors"),
-        // require("@tailwindcss/forms"),
-        require("postcss-import"),
-        require("postcss-nesting"),
-        require("tailwindcss/nesting"),
-        require("tailwindcss-animated"),
+        require("@tailwindcss/forms"),
         require("@tailwindcss/typography"),
+        require("tailwindcss-animated"),
     ],
 };

@@ -1,30 +1,37 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
-import pluginReact from "eslint-plugin-react";
-import reactRecommended from "eslint-plugin-react/configs/recommended.js";
-
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import pluginReact from 'eslint-plugin-react';
 
 export default [
     {
-        ignores: ["./dist/**/*"],
-      },
-    {
-        files: ["**/*.{js,mjs,cjs,jsx}"],
-        ignores: ["dist/**/*"],
-        ...reactRecommended,
-        settings: {
-            react: {
-                version: "detect"
-            }
+        ignores: ['dist/**/*'],
+        plugins: {
+            pluginReact,
         },
-  },
+    },
+    {
+        files: ['**/*.{js,mjs,cjs,jsx,tsx,ts}'],
+        ...pluginReact.configs.flat.recommended,
+    }, 
     {
         languageOptions: {
-            ...reactRecommended.languageOptions,
-            globals: globals.browser,
-            ecmaVersion: "latest",
-        }
+            ...pluginReact.configs.flat.recommended.languageOptions,
+            globals: {
+                ...globals.serviceworker,
+                ...globals.browser,
+            },
+            ecmaVersion: 'latest'
+        },
+        settings: {
+            react: {
+                version: 'detect'
+            }
+        },
+        rules: {
+            'react/jsx-uses-react': 'error',
+            'react/jsx-uses-vars': 'error',
+        },
     },
-  pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended
+    pluginJs.configs.recommended,
+    pluginReact.configs.flat.recommended
 ];
