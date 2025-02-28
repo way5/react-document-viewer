@@ -169,7 +169,7 @@ div:not(span):where(.doc-viewer),
 
             .file-name {
                 @apply absolute right-0 left-0 top-0 sm:left-auto rounded-t-none sm:rounded-t-md
-                    sm:top-[5%] sm:right-[5%] py-1 px-2 rounded-b-md opacity-70 z-10 text-sm;
+                        sm:top-[5%] sm:right-[5%] py-1 px-2 rounded-b-md opacity-70 z-10 text-sm;
                 @extend .toolbar-background;
                 @extend .text-primary;
             }

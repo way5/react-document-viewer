@@ -9,8 +9,8 @@ if (process.env.NODE_ENV !== 'production') {
             rootElement: document.getElementById('root'),
             // files: [],
             files: [
-                { src: '/docs/test.jpg', name: '', mime: '' },
-                { src: '/docs/test.webp', name: 'Image #2', mime: '' }
+                { src: '/docs/test.jpg', name: '', type: '' },
+                { src: '/docs/test.webp', name: 'Image #2', type: '' }
             ],
             downloadInNewWindow: false,
             // disablePlugins: ["pdf"],

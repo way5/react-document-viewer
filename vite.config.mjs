@@ -56,8 +56,7 @@ export default defineConfig(({ command, mode }) => ({
         })
     ],
     build: {
-        // minify: "terser",
-        minify: false,
+        minify: "terser",
         cssMinify: 'terser',
         assetsDir: '',
         reportCompressedSize: false,
@@ -107,9 +106,5 @@ export default defineConfig(({ command, mode }) => ({
     },
     define: {
         'process.env': process.env
-    },
-    server: {
-        port: 8000,
-        open: true
     }
 }));
