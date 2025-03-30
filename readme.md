@@ -1,60 +1,32 @@
-# react-office-viewer:    pdf, xls, xlsx, docx
-# Features
-1. Temporary support 'pdf,xls,xlsx,docx'.For more types, please pay attention to the following updates.      
-2. Automatically identify file types of 'pdf,xls,xlsx,doc,docx,ppt,pptx' according to file arraybuffer. File suffix or file name is better but not necessary. Further more, it can avoid wrong judgment by the falsy changes of file suffix.   
-能自动识别文件类型，传递文件名称不是必须的（但最好传递），可以避免后缀名错误修改导致的错误类型判断。   
-3. PDF viewer has a full functional toolbar with common functions of pagination,zoom,rotate,print,thumbview,etc.      
-其中pdf 预览组件有功能健全的toolbar，实现了翻页、缩放、旋转、打印、缩略图等常用功能。
-4. The inner prompt language supports both Chinese and English, you can choose it by passing a param.(Default Chinese)   
-组件内置的提示语言支持中英双语，你可以通过传递参数来选择。（默认中文）  
-5. Implemented based on react 16.8.  
+<p align="center"> 
 
-# Usage
-```
-npm install react-office-viewer
+![ReactDocViewer Logo](./doc/logo.png) 
 
-```
-```
-import Viewer from "react-office-viewer"
+</p>
 
-//If you only want to preview a certain format, you can import them individually.
-import { SheetViewer, PdfViewer, DocxViewer } from "react-office-viewer"
-```
+![React Document Viewer Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fway5%2Freact-document-viewer%2Frefs%2Fheads%2Fdev%2Fpackage.json&query=%24.version&label=ReactDocViewer:&color=%23F86071)
 
-## Params 
-```
-// Pass a url that can get the file stream. 
-<Viewer file="http://xxxx"/>   
+### + INTRO
 
-// Or, pass a File Object.
-<Viewer file={ fileObject }/>
+Accepted document formats:
 
-<input type='file' onChange={this.getFileObject} />
-getFileObject = e => {
-  this.setState({ fileObject: e.target.files[0] });
-}
+- docx 
+- xls, xlsx
+- pdf
+- epub
+- fb2
+- mobi
+- all images
 
+See: [index.js](./src/index.js) for more details.
 
-//other optional params:
-let params = {
-  fileName,  //PropTypes.string
-  locale: 'en', // PropTypes.oneOf(['zh','en'])
-  width, //PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  height, //PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  timeout: 10000, //PropTypes.number. Timeout limit of url request, only works on sheet/docx previewer.
-}
+Locales available:
 
-<Viewer file="http://xxxx" {...params} />
+- en-US, es-ES, ru-RU, zh-CN
 
-```
-# Demo
-效果样例：
-![image](https://github.com/react-office-viewer/react-office-viewer/blob/gh-pages/build/pic/pdf.png)
-![image](https://github.com/react-office-viewer/react-office-viewer/blob/gh-pages/build/pic/docx.png)
-![image](https://github.com/react-office-viewer/react-office-viewer/blob/gh-pages/build/pic/xlsx.png)
+See [i18next](https://www.i18next.com/overview/configuration-options) for configuration options.
 
-# Dependencies
-handsontable,  
-mammoth,   
-xlsx, 
-pdfjs-dist       
+### + CREDITS
+
+- E-book viewer based on [johnfactotum's Foliate-js](https://github.com/johnfactotum/foliate-js)
+- Image viewer is inspired by [fengyuanchen's Viewerjs](https://github.com/fengyuanchen/viewerjs)

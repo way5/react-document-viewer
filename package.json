@@ -1,56 +1,81 @@
 {
-  "name": "react-office-viewer",
-  "version": "1.0.3",
-  "description": "A React component to preview document of 'pdf,xls,xlsx,docx', which can automatically identify file types.",
-  "main": "build/bundle.js",
-  "scripts": {
-    "build": "yarn run rollup -c",
-    "start": "yarn run rollup -c -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/react-office-viewer/react-office-viewer.git"
-  },
-  "keywords": [
-    "pdfjs",
-    "docx",
-    "xlsx",
-    "react-file-viewer",
-    "react-doc-viewer"
-  ],
-  "author": "yiiran",
-  "license": "MIT",
-  "dependencies": {
-    "@handsontable/react": "^12.1.3",
-    "@yiiran/get-file-type": "^1.0.3",
-    "handsontable": "^12.3.0",
-    "i18next": "^21.10.0",
-    "i18next-browser-languagedetector": "^6.1.8",
-    "mammoth": "^1.5.1",
-    "pdfjs-dist": "2.10.377",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-i18next": "^11.18.6",
-    "xlsx": "^0.18.5"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.19.3",
-    "@babel/preset-env": "^7.19.3",
-    "@babel/preset-react": "^7.18.6",
-    "@rollup/plugin-commonjs": "^23.0.0",
-    "@rollup/plugin-url": "^7.0.0",
-    "@sixian/css-url": "^1.0.3",
-    "autoprefixer": "^8.0.0",
-    "less": "^4.1.3",
-    "postcss": "^8.4.16",
-    "rollup": "^2.79.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-postcss": "^4.0.2"
-  },
-  "files": [
-    "build/",
-    "readme.md",
-    "LICENSE"
-  ]
+    "name": "react-document-viewer",
+    "version": "2.3.0",
+    "description": "React-based component which provides epub,mobi,pdf,xls,xlsx,docx and image viewer capabilities for your browser",
+    "main": "src/index.js",
+    "author": "Sergey Ko <u306060@gmail.com>",
+    "license": "MIT",
+    "homepage": "https://github.com/way5/react-document-viewer",
+    "scripts": {
+        "dev": "_ENV='development' vite",
+        "build": "_ENV='local' vite build",
+        "build:prod": "_ENV='production' vite build",
+        "lint": "eslint --config eslint.config.js ./src",
+        "prettier": "prettier --write '**/*.{js,mjs,cjs,jsx,ts,tsx}'",
+        "prettier:check": "prettier --check '**/*.{js,mjs,cjs,jsx,ts,tsx}'",
+        "test": "echo \"Error: no test specified yet\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/way5/react-document-viewer.git"
+    },
+    "keywords": [
+        "pdf",
+        "docx",
+        "xlsx",
+        "xls",
+        "pdfjs",
+        "epub",
+        "fb2",
+        "mammoth",
+        "react-document-viewer"
+    ],
+    "dependencies": {
+        "@handsontable/react-wrapper": "^15.2.0",
+        "@zip.js/zip.js": "^2.7.57",
+        "fflate": "^0.8.2",
+        "foliate-js": "https://github.com/johnfactotum/foliate-js.git",
+        "handsontable": "^15.2.0",
+        "jszip": "^3.10.1",
+        "mammoth": "^1.9.0",
+        "pdfjs-dist": "4.10.38",
+        "react-icons": "^5.5.0",
+        "react-tooltip": "^5.28.0",
+        "xlsx": "^0.18.5"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.10",
+        "@tailwindcss/typography": "^0.5.16",
+        "@types/node": "^22.13.4",
+        "@types/react": "^19.0.10",
+        "@types/react-dom": "^19.0.4",
+        "@vitejs/plugin-react": "^4.3.4",
+        "autoprefixer": "^10.4.20",
+        "eslint": "^9.20.1",
+        "eslint-config-prettier": "^10.0.1",
+        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-unused-imports": "^4.1.4",
+        "globals": "^16.0.0",
+        "html-to-react": "^1.7.0",
+        "i18next": "^24.2.2",
+        "i18next-browser-languagedetector": "^8.0.4",
+        "lodash.debounce": "^4.0.8",
+        "postcss": "^8.5.3",
+        "postcss-nesting": "^13.0.1",
+        "prettier": "^3.5.1",
+        "prop-types": "^15.8.1",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "react-i18next": "^15.4.1",
+        "sass-embedded": "^1.85.0",
+        "tailwindcss": "^3.4.17",
+        "tailwindcss-animated": "^2.0.0",
+        "terser": "^5.39.0",
+        "util": "^0.12.5",
+        "vite": "^6.1.1",
+        "vite-plugin-sass-dts": "^1.3.30",
+        "vite-plugin-static-copy": "^2.2.0",
+        "xmldom": "^0.6.0"
+    },
+    "packageManager": "yarn@4.7.0"
 }
