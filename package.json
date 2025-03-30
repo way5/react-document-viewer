@@ -7,9 +7,9 @@
     "license": "MIT",
     "homepage": "https://github.com/way5/react-document-viewer",
     "scripts": {
-        "dev": "_ENV='development' vite",
-        "build": "_ENV='local' vite build",
-        "build:prod": "_ENV='production' vite build",
+        "dev": "NODE_ENV='development' vite",
+        "build": "NODE_ENV='local' vite build",
+        "build:prod": "NODE_ENV='production' vite build",
         "lint": "eslint --config eslint.config.js ./src",
         "prettier": "prettier --write '**/*.{js,mjs,cjs,jsx,ts,tsx}'",
         "prettier:check": "prettier --check '**/*.{js,mjs,cjs,jsx,ts,tsx}'",

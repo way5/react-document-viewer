@@ -4,7 +4,7 @@ import ReactDocumentViewer from './ReactDocumentViewer';
 
 window.ReactDocumentViewer = ReactDocumentViewer;
 
-if (process.env._ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
     window.addEventListener('load', () => {
         window.ReactDocumentViewer = new ReactDocumentViewer({
             rootElement: document.getElementById('root'),

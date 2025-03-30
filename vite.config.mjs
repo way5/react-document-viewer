@@ -5,7 +5,7 @@ import sassDts from 'vite-plugin-sass-dts';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 // const env = loadEnv(mode, process.cwd(), "");
 
-const isProduction = process.env._ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => ({
