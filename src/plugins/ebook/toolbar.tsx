@@ -7,6 +7,7 @@ import {
     TbLayoutSidebarLeftExpandFilled
 } from 'react-icons/tb';
 import { ActionType, EpubToolbarProps } from '../../definitions';
+import { Tooltip } from 'react-tooltip';
 
 /**
  * Description placeholder
@@ -33,17 +34,21 @@ export default function EbookViewerToolbar(props: EpubToolbarProps) {
             <div className='controls'>
                 {showSidebar ? (
                     <TbLayoutSidebarLeftCollapseFilled
+                        data-tooltip-id='toolbar-tooltip'
+                        data-tooltip-content={t('sidebarToggle')}
+                        data-tooltip-place="bottom"
                         onClick={() => {
                             onAction({ key: 'toc', actionType: ActionType.hide });
                         }}
-                        title={t('sidebarToggle')}
                     />
                 ) : (
                     <TbLayoutSidebarLeftExpandFilled
+                        data-tooltip-id='toolbar-tooltip'
+                        data-tooltip-content={t('sidebarToggle')}
+                        data-tooltip-place="bottom"
                         onClick={() => {
                             onAction({ key: 'toc', actionType: ActionType.show });
                         }}
-                        title={t('sidebarToggle')}
                     />
                 )}
             </div>
@@ -55,13 +60,16 @@ export default function EbookViewerToolbar(props: EpubToolbarProps) {
             )}
             <div className='controls'>
                 {showDownloadButton && (
-                    <TbCloudDownload
-                        className={`download${disabled ? ' disabled' : ''}`}
-                        title={t('downloadFile')}
-                        onClick={() => onAction({ key: 'download', actionType: ActionType.download })}
-                    />
+                        <TbCloudDownload
+                            className={`download${disabled ? ' disabled' : ''}`}
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('downloadFile')}
+                            data-tooltip-place="bottom"
+                            onClick={() => onAction({ key: 'download', actionType: ActionType.download })}
+                        />
                 )}
             </div>
+            <Tooltip id='toolbar-tooltip' />
         </div>
     );
 }

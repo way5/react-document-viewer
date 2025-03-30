@@ -43,7 +43,9 @@ export default function DownloadFile(props: DownloadFileProps) {
                 };
                 t();
                 // TODO Blob.size
-            } else console.error('(!) the request result is empty');
+            } else {
+                console.error(`empty response received while downloading: ${activeFile.src}`);
+            }
         };
         req.onerror = function (e: ProgressEvent) {
             onError && onError(e);
@@ -51,6 +53,6 @@ export default function DownloadFile(props: DownloadFileProps) {
         req.onabort = (e: ProgressEvent) => onAbort && onAbort(e);
         req.send();
     } catch (e) {
-        console.log(`(!) unable to download: ${files[activeIndex]}`);
+        throw new Error(`unable to download: ${files[activeIndex]}`);
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { TbEyeClosed } from 'react-icons/tb';
 
 /**
  * Description placeholder
@@ -99,16 +100,21 @@ dl::first-child
                 const href_ = a.getAttribute('href');
                 const section = this.props.book.sections[this.props.itemId];
                 const href = section.resolveHref?.(href_) ?? href_;
-                if (this.props.book.isExternal?.(href))
+                if (this.props.book.isExternal?.(href)) {
                     Promise.resolve(
                         dispatchEvent(new CustomEvent('external-link', { detail: { a, href }, cancelable: true }))
                     )
                         .then(x => (x ? window.open(href, '_blank')?.focus() : null))
-                        .catch(e => console.error(e));
-                else
+                        .catch(e => {
+                            throw new Error(`failed to dispatch 'external-link': ${e}`);
+                        });
+                } else {
                     Promise.resolve(dispatchEvent(new CustomEvent('link', { detail: { a, href }, cancelable: true })))
                         .then(x => (x ? this.props.resolveNavigation(href) : null))
-                        .catch(e => console.error(e));
+                        .catch(e => {
+                            throw new Error(`failed to dispatch 'link': ${e}`);
+                        });
+                }
             });
         }
     }

@@ -568,6 +568,14 @@ export default (props: ViewerPluginProps) => {
             />
             {props.noFooter || (
                 <div className={'footer' + (!showNavbar ? ' no-navbar' : '')}>
+                    {showNavbar && (
+                        <ImageViewerNavigation
+                            files={props.files || []}
+                            activeIndex={state.activeIndex}
+                            onChangeImg={handleChangeImg}
+                            fileName={fileName}
+                        />
+                    )}
                     <div className='box'>
                         {noToolbar || (
                             <ImageViewerToolbar
@@ -589,14 +597,6 @@ export default (props: ViewerPluginProps) => {
                             />
                         )}
                     </div>
-                    {showNavbar && (
-                        <ImageViewerNavigation
-                            files={props.files || []}
-                            activeIndex={state.activeIndex}
-                            onChangeImg={handleChangeImg}
-                            fileName={fileName}
-                        />
-                    )}
                 </div>
             )}
             {fileName && state.showFileName && <div className='file-name'>{`${fileName}`}</div>}

@@ -155,7 +155,7 @@ export default (props: ViewerPluginProps) => {
                 scale = Math.min(MAX_SCALE, horizontalScale);
                 break;
             default:
-                console.error('PDFViewer._setScale: "' + value + '" is an unknown zoom value.');
+                // throw new Error(`PDFViewer._setScale: "${value}" is an unknown zoom value`);
                 return;
         }
         setScale(scale);

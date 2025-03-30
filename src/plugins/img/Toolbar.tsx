@@ -14,6 +14,7 @@ import {
     TbZoomOut
 } from 'react-icons/tb';
 import { useTranslation } from 'react-i18next';
+import { Tooltip } from 'react-tooltip';
 
 /**
  * Delete toolbar option
@@ -48,37 +49,37 @@ export default function ImageViewerToolbar(props: ImageToolbarProps) {
         }
         switch (config.actionType) {
             case 1: // ZoomIn
-                content = <TbZoomIn title={t('zoomIn')} />;
+                content = <TbZoomIn data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('zoomIn')} />;
                 break;
             case 2: // ZoomOut
-                content = <TbZoomOut title={t('zoomOut')} />;
+                content = <TbZoomOut data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('zoomOut')} />;
                 break;
             case 3: // prew
-                content = <TbArrowBigLeft title={t('previous')} />;
+                content = <TbArrowBigLeft data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('previous')} />;
                 break;
             case 4: // next
-                content = <TbArrowBigRight title={t('next')} />;
+                content = <TbArrowBigRight data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('next')} />;
                 break;
             case 5: // rotate left
-                content = <TbRotate2 title={t('pageRotateCcw')} />;
+                content = <TbRotate2 data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('pageRotateCcw')} />;
                 break;
             case 6: // rotate right
-                content = <TbRotateClockwise2 title={t('pageRotateCw')} />;
+                content = <TbRotateClockwise2 data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('pageRotateCw')} />;
                 break;
             case 7: // reset
-                content = <TbRestore title={t('resetView')} />;
+                content = <TbRestore data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('resetView')} />;
                 break;
             // case 8: // close
             //     content = <TbLetterX />;
             //     break;
             case 9: // scale X
-                content = <TbArrowsHorizontal title={t('flipX')} />;
+                content = <TbArrowsHorizontal data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('flipX')} />;
                 break;
             case 10: // scale Y
-                content = <TbArrowsVertical title={t('flipY')} />;
+                content = <TbArrowsVertical data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('flipY')} />;
                 break;
             case 11: // download
-                content = <TbCloudDownload title={t('downloadFile')} />;
+                content = <TbCloudDownload data-tooltip-id="toolbar-tooltip" data-tooltip-content={t('downloadFile')} />;
                 break;
         }
         // extra toolbar
@@ -137,6 +138,7 @@ export default function ImageViewerToolbar(props: ImageToolbarProps) {
                     return renderAction(item);
                 })}
             </ul>
+            <Tooltip id='toolbar-tooltip' />
         </div>
     );
 }

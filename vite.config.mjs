@@ -5,6 +5,8 @@ import sassDts from 'vite-plugin-sass-dts';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 // const env = loadEnv(mode, process.cwd(), "");
 
+const isProduction = process.env._ENV === 'production';
+
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => ({
     css: {
@@ -17,7 +19,7 @@ export default defineConfig(({ command, mode }) => ({
     plugins: [
         react({}),
         sassDts({
-            enabledMode: ['development', 'production'],
+            enabledMode: ['production'],
             sourceDir: path.resolve(__dirname, './src'),
             outputDir: path.resolve(__dirname, './dist')
         }),
@@ -56,8 +58,8 @@ export default defineConfig(({ command, mode }) => ({
         })
     ],
     build: {
-        minify: "terser",
-        cssMinify: 'terser',
+        minify: !isProduction ? false : 'terser',
+        cssMinify: !isProduction ? false : 'terser',
         assetsDir: '',
         reportCompressedSize: false,
         copyPublicDir: false,

@@ -1,11 +1,15 @@
-import 'handsontable/dist/handsontable.full.css';
+import 'handsontable/styles/handsontable.min.css';
+import 'handsontable/styles/ht-theme-main.min.css';
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
-import { HotTable } from '@handsontable/react';
+import { HotTable } from '@handsontable/react-wrapper';
 import { ToolbarMS } from '../../components/index';
 import { _getBlobUrlFromBuffer, _download, basename } from '../../utils';
 import { useTranslation } from 'react-i18next';
 import { ViewerPluginProps } from '../../definitions';
+import { registerAllModules } from 'handsontable/registry';
+
+registerAllModules();
 
 export default (props: ViewerPluginProps) => {
     const {
@@ -108,38 +112,47 @@ export default (props: ViewerPluginProps) => {
                 showDownloadButton={allowDownloadFile}
             />
             <HotTable
-                licenseKey='non-commercial-and-evaluation'
-                settings={{
-                    data: data[activeTabKey],
-                    colHeaders: true,
-                    rowHeaders: true,
-                    fixedColumnsLeft: 0,
-                    fixedRowsTop: 0,
-                    stretchH: 'all',
-                    // colWidths: 200,
-                    // startRows: 1,
-                    // startCols: 1,
-                    // wordWrap: true,
-                    // autoRowSize: true,
-                    // autoWrapRow: true,
-                    // autoWrapCol: true,
-                    dropdownMenu: true,
-                    // multiColumnSorting: true,
-                    // autoColumnSize: {
-                    //     syncLimit: 60,
-                    //     useHeaders: true,
-                    // },
-                    // filters: true,
-                    // manualRowMove: true,
-                    // allowInsertColumn: true,
-                    // allowInsertRow: true,
-                    // allowRemoveColumn: true,
-                    // allowRemoveRow: true,
-                    // fillHandle: true,
-                    contextMenu: true,
-                    width: '100%',
-                    height: '100%'
+                style={{
+                    marginTop: '45px',
+                    zIndex: 0
                 }}
+                licenseKey='non-commercial-and-evaluation'
+                data={data[activeTabKey]}
+                colHeaders={true}
+                rowHeaders={true}
+                dropdownMenu={true}
+                fixedColumnsLeft={0}
+                fixedRowsTop={0}
+                stretchH={'all'}
+                copyPaste={{
+                    pasteMode: 'overwrite',
+                    copyColumnHeaders: true,
+                    copyColumnGroupHeaders: true
+                }}
+                // wordWrap={true}
+                // autoRowSize={true}
+                autoColumnSize={{
+                    syncLimit: 60,
+                    useHeaders: true,
+                    samplingRatio: 200,
+                    allowSampleDuplicates: true
+                }}
+                autoWrapRow={true}
+                autoWrapCol={true}
+                filters={true}
+                multiColumnSorting={true}
+                manualRowMove={true}
+                manualColumnResize={true}
+                allowInsertColumn={true}
+                allowInsertRow={true}
+                allowRemoveColumn={true}
+                allowRemoveRow={true}
+                viewportColumnRenderingOffset={'auto'}
+                viewportRowRenderingOffset={'auto'}
+                fillHandle={true}
+                contextMenu={true}
+                width={'100%'}
+                height={'100%'}
             />
             <ul className='wbsheets-tablist'>
                 {sheetNames.map((item, index) => (

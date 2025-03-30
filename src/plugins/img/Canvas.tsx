@@ -35,7 +35,7 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
                 img.addEventListener('mouseup', e => handleMouseUp(e));
                 canvas.appendChild(img);
             } else {
-                console.log('(!) unable to find <div class="canvas"> element');
+                throw new Error(`unable to find canvas element`);
             }
         }
     }, [

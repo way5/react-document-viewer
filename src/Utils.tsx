@@ -52,7 +52,8 @@ const fileTypeMap: { [key: string]: string } = {
     'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'pptx',
     'application/epub+zip': 'epub',
     'application/vnd.comicbook+zip': 'cbz',
-    'application/x-fictionbook+xml': 'fb2',
+    'application/fictionbook2+zip': 'fb2',
+    'application/fictionbook3+zip': 'fb3',
     'application/x-zip-compressed-fb2': 'fbz',
     'application/x-mobipocket-ebook': 'mobi',
     'text/plain': 'txt',
@@ -203,47 +204,58 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
         mimeType: mimeType
     };
 
-    try {
-        const str_8 = getSliceArrTo16(arrayBuffer, 0, 8).join('');
-        // first match
-        for (let key in formatMap) {
-            formatMap[key].forEach((type: string[]) => {
-                let target = type.join('');
-                if (~str_8.indexOf(target)) {
-                    fType.contentType = key;
-                }
-            });
-        }
+    const fileTypesReverse: any = swapKeyValue(fileTypeMap);
+    const identifiedMimeType: string = fileTypeMap[mimeType] ?? '';
 
-        const fileTypesReverse: any = swapKeyValue(fileTypeMap);
+    // check if isZip
+    if (arrayBuffer[0] === 0x50 && arrayBuffer[1] === 0x4b && arrayBuffer[2] === 0x03 && arrayBuffer[3] === 0x04) {
+        fType.isZip = true;
+    }
 
-        // check if isZip
-        if (arrayBuffer[0] === 0x50 && arrayBuffer[1] === 0x4b && arrayBuffer[2] === 0x03 && arrayBuffer[3] === 0x04) {
-            fType.isZip = true;
-        }
-
-        if (fType.contentType == '') {
-            // emit debug data
-            console.log(`(!) header [${str_8}] has not been identified, trying something else...`);
-            // No match, it may be an xls file in html format
-            let arr_start_16 = getSliceArrTo16(arrayBuffer, 50, 150).join('');
-            let xlsHtmlTarget = ['6f', '66', '66', '69', '63', '65', '3a', '65', '78', '63', '65', '6c'];
-            // Determine whether it is xls through the first 50-150 positions
-            if (~arr_start_16.indexOf(xlsHtmlTarget.join(''))) {
-                fType.simpleType = 'xls';
-            } else if (mimeType == fileTypesReverse['fb2'] || fType.extension === 'fb2' || fType.extension === 'fbz') {
-                // this is FB2 maybe
-                fType.contentType = 'fb2';
-                fType.simpleType = 'ebook';
-            } else if (mimeType == fileTypesReverse['mobi'] || fType.extension === 'mobi') {
-                // looks like a kindle ebook
-                fType.contentType = 'mobi';
-                fType.simpleType = 'ebook';
+    if (
+        identifiedMimeType === 'avif' ||
+        identifiedMimeType === 'bmp' ||
+        identifiedMimeType === 'gif' ||
+        identifiedMimeType === 'ico' ||
+        identifiedMimeType === 'jpg' ||
+        identifiedMimeType === 'png' ||
+        // result == 'svg' ||
+        identifiedMimeType === 'tiff' ||
+        identifiedMimeType === 'webp'
+    ) {
+        fType.simpleType = 'image';
+    } else if (identifiedMimeType === 'pdf') {
+        fType.simpleType = 'pdf';
+    } else if (
+        mimeType === fileTypesReverse['fb2'] ||
+        mimeType === fileTypesReverse['fb3'] ||
+        fType.extension === 'fb2' ||
+        fType.extension === 'fb3' ||
+        fType.extension === 'fbz'
+    ) {
+        // this is FB2 maybe
+        fType.contentType = 'fb2';
+        fType.simpleType = 'ebook';
+    } else if (mimeType == fileTypesReverse['mobi'] || fType.extension === 'mobi') {
+        // looks like a kindle ebook
+        fType.contentType = 'mobi';
+        fType.simpleType = 'ebook';
+    } else {
+        try {
+            const str_8 = getSliceArrTo16(arrayBuffer, 0, 8).join('');
+            // first match
+            for (let key in formatMap) {
+                formatMap[key].forEach((type: string[]) => {
+                    let target = type.join('');
+                    if (~str_8.indexOf(target)) {
+                        fType.contentType = key;
+                    }
+                });
             }
-            // still nothing
-            if (fType.contentType == '')
-                throw new Error(`(!) still unable to identiify the file type with header: ${arr_start_16}`);
-        } else if (fType.contentType == 'file2007') {
+        } catch (e) {
+            throw new Error(`failed to decode array buffer: ${e}`);
+        }
+        if (fType.contentType === 'file2007') {
             // fix for EPUB
             if (mimeType == fileTypesReverse['epub']) {
                 fType.contentType = 'epub';
@@ -251,25 +263,21 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
             } else {
                 fType.simpleType = fType.extension;
             }
-        } else if (fType.contentType == 'pdf') {
-            fType.simpleType = 'pdf';
         } else if (fType.contentType == 'file2003') {
             fType.simpleType = fType.extension;
-        } else if (
-            fType.contentType == 'avif' ||
-            fType.contentType == 'bmp' ||
-            fType.contentType == 'gif' ||
-            fType.contentType == 'ico' ||
-            fType.contentType == 'jpg' ||
-            fType.contentType == 'png' ||
-            // result == 'svg' ||
-            fType.contentType == 'tiff' ||
-            fType.contentType == 'webp'
-        ) {
-            fType.simpleType = 'image';
         }
-    } catch (e) {
-        console.log(e);
+        // No match, it may be an xls file in html format
+        let arr_start_16 = getSliceArrTo16(arrayBuffer, 50, 150).join('');
+        let xlsHtmlTarget = ['6f', '66', '66', '69', '63', '65', '3a', '65', '78', '63', '65', '6c'];
+        // Determine whether it is xls through the first 50-150 positions
+        if (~arr_start_16.indexOf(xlsHtmlTarget.join(''))) {
+            fType.simpleType = 'xls';
+        }
+        // still nothing
+        if (fType.contentType === '')
+            throw new Error(`unable to identiify the file of MIME type: [${mimeType}], file name: [${fileName}], header: [${arr_start_16}]`);
+        else
+            console.debug(`file identified as: ${fType.simpleType} [${fType.contentType}]`);
     }
 
     // console.log('getFileType', fileName, mimeType, fType);

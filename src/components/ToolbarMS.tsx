@@ -8,9 +8,11 @@ import {
     TbFileUnknown,
     TbZoomIn,
     TbZoomOut,
+    TbZoomOutArea,
     TbZoomReset
 } from 'react-icons/tb';
 import { ToolbarMSProps } from '../definitions';
+import { Tooltip } from 'react-tooltip';
 
 /**
  * Description placeholder
@@ -51,20 +53,38 @@ export default function ToolbarMS(props: ToolbarMSProps) {
             <div className='controls'>
                 {zoom && (
                     <div className='zoom-controls'>
-                        <TbZoomReset title={t('resetView')} onClick={() => onZoom(1)} />
-                        <TbZoomOut title={t('zoomOut')} onClick={() => onZoom(zoomLevel - 0.1)} />
+                        <TbZoomReset
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('resetView')}
+                            data-tooltip-place='bottom'
+                            onClick={() => onZoom(1)}
+                        />
+                        <TbZoomOut
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('zoomOut')}
+                            data-tooltip-place='bottom'
+                            onClick={() => onZoom(zoomLevel - 0.1)}
+                        />
                         <div className='zoom-level'>{Math.trunc(zoomLevel * 100)}%</div>
-                        <TbZoomIn title={t('zoomIn')} onClick={() => onZoom(zoomLevel + 0.1)} />
+                        <TbZoomIn
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('zoomIn')}
+                            data-tooltip-place='bottom'
+                            onClick={() => onZoom(zoomLevel + 0.1)}
+                        />
                     </div>
                 )}
                 {showDownloadButton && (
                     <TbCloudDownload
+                        data-tooltip-id='toolbar-tooltip'
+                        data-tooltip-content={t('downloadFile')}
+                        data-tooltip-place='bottom'
                         className={`download${disabled ? ' disabled' : ''}`}
-                        title={t('downloadFile')}
                         onClick={handleDownload}
                     />
                 )}
             </div>
+            <Tooltip id='toolbar-tooltip' />
         </div>
     );
 }

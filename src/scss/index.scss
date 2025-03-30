@@ -52,14 +52,17 @@ div:not(span):where(.doc-viewer),
 .button-toolbar {
     @apply bg-gray-200 dark:bg-gray-700;
 }
-.button-toolbar-hover {
+.button-toolbar-hover:hover {
     @apply text-gray-100 bg-gray-500 dark:bg-gray-300 dark:text-gray-800;
 }
 .toolbar-background {
     @apply bg-gray-200 dark:bg-gray-700;
 }
+.border-toolbar {
+    @apply border-gray-400 dark:border-gray-500;
+}
 .border-primary {
-    @apply border-gray-500 dark:border-gray-200;
+    @apply border-gray-900 dark:border-gray-200;
 }
 
 /********************/
@@ -168,10 +171,11 @@ div:not(span):where(.doc-viewer),
             }
 
             .file-name {
-                @apply absolute right-0 left-0 top-0 sm:left-auto rounded-t-none sm:rounded-t-md
-                        sm:top-[5%] sm:right-[5%] py-1 px-2 rounded-b-md opacity-70 z-10 text-sm;
+                @apply absolute right-0 left-0 top-0 sm:left-auto rounded-t-none sm:rounded-t-md border border-solid
+                        sm:top-[5%] sm:right-[5%] py-1 px-2 rounded-b-md opacity-70 z-10 text-sm shadow-lg;
                 @extend .toolbar-background;
                 @extend .text-primary;
+                @extend .border-primary;
             }
 
             .canvas {
@@ -192,58 +196,36 @@ div:not(span):where(.doc-viewer),
             }
 
             .footer {
-                @apply absolute left-0 bottom-0 sm:bottom-[5%] right-0
-                        flex flex-col items-center justify-center;
+                @apply absolute left-0 bottom-0 right-0 flex flex-col items-center justify-center;
 
                 &:not(.no-navbar) {
-                    @apply gap-y-4 bottom-2;
+                    @apply gap-y-3;
                 }
 
                 .box {
-                    @apply opacity-85 rounded-none w-full sm:w-auto sm:rounded-lg border border-solid px-1 sm:px-2 py-1 sm:py-2 shadow-md;
-                    @extend .toolbar-background;
-                    @extend .border-primary;
+                    @apply overflow-hidden w-full [&>*]:select-none shadow-lg;
 
                     .toolbar {
-                        @apply gap-y-2 flex flex-col items-center;
+                        @apply grid grid-cols-1 grid-rows-2 space-y-0 shadow-md opacity-95;
                         @extend .text-primary;
+                        @extend .toolbar-background;
 
                         .attributes {
-                            @apply w-full block text-center relative font-thin text-xs;
-
-                            & > * {
-                                @apply select-none;
-                            }
-
-                            span:last-child,
-                            span:first-child {
-                                @apply absolute top-0;
-                            }
-
-                            span:last-child {
-                                @apply right-1;
-                            }
-
-                            span:first-child {
-                                @apply left-0;
-                            }
+                            @apply flex items-center justify-between font-thin text-xs px-1 sm:px-2 md:px-4 py-0;
                         }
 
                         ul {
-                            @apply flex items-center justify-center gap-x-2 px-2 sm:px-4;
+                            @apply flex items-center justify-center gap-x-2 px-2 sm:px-4 pb-1;
 
                             li {
                                 @apply inline-flex items-center justify-center p-1
                                         rounded-full gap-x-2 cursor-pointer transition-colors duration-300;
                                 @extend .button-toolbar;
+                                @extend .button-toolbar-hover;
 
                                 svg {
-                                    @apply w-7 h-7;
+                                    @apply w-5 h-5;
                                 }
-                            }
-
-                            li:hover {
-                                @extend .button-toolbar-hover;
                             }
 
                             li.empty {
@@ -297,14 +279,15 @@ div:not(span):where(.doc-viewer),
             @apply relative flex flex-col items-center justify-start w-full h-full;
 
             .file-name {
-                @apply absolute right-0 left-0 bottom-0 sm:left-auto rounded-none sm:rounded-md
-                        sm:bottom-[5%] sm:right-[5%] py-1 px-2 opacity-70 z-10 text-sm;
+                @apply absolute right-0 left-0 bottom-0 sm:left-auto rounded-none sm:rounded-md border border-solid
+                        sm:bottom-[5%] sm:right-[5%] py-1 px-2 opacity-70 z-10 text-sm shadow-lg;
                 @extend .toolbar-background;
                 @extend .text-primary;
+                @extend .border-primary;
             }
 
             .outer-container {
-                @apply w-full flex m-0 p-0 items-center justify-center;
+                @apply w-full flex m-0 p-0 items-center justify-center z-30;
 
                 &:not(.sidebar-open) .sidebar-container {
                     @apply -translate-x-52;
@@ -316,15 +299,19 @@ div:not(span):where(.doc-viewer),
 
                 .sidebar-container {
                     @apply w-52 absolute left-0 top-8 bottom-0 z-20
-                                ease-in-out transition-transform duration-700 border-solid border-0
-                                border-t border-r border-gray-600 flex flex-col items-center justify-start;
+                            ease-in-out transition-transform duration-700 border-solid border-0
+                            border-t border-r flex flex-col items-center justify-start;
 
                     .sidebar-content {
-                        @apply overflow-auto w-full bg-gray-400 shadow-lg h-full;
+                        @apply overflow-auto w-full shadow-lg h-full;
+                        @extend .toolbar-background;
+                        @extend .text-primary;
                     }
 
                     .toolbar-sidebar {
-                        @apply w-full h-8 bg-gray-500 border-solid border-0 border-b;
+                        @apply w-full h-8 border-solid border-0 border-b;
+                        @extend .toolbar-background;
+                        @extend .text-primary;
                     }
 
                     .sidebar-resizer {
@@ -345,11 +332,11 @@ div:not(span):where(.doc-viewer),
 
                         &:hover,
                         &.selected {
-                            @apply shadow-lg scale-110 opacity-100;
+                            @apply shadow-lg scale-105 opacity-100;
                         }
 
                         &.selected {
-                            @apply scale-110;
+                            @apply scale-105;
                         }
                     }
                 }
@@ -373,11 +360,13 @@ div:not(span):where(.doc-viewer),
                 .findbar,
                 .secondary-toolbar,
                 .editor-params-toolbar {
-                    @apply relative bg-gray-300 shadow-lg overflow-hidden;
+                    @apply relative shadow-lg;
+                    @extend .toolbar-background;
+                    @extend .text-primary;
                 }
 
                 .toolbar-container {
-                    @apply w-full flex items-center;
+                    @apply w-full flex items-center opacity-95 absolute top-0 left-0 right-0 py-2;
 
                     .toolbar-viewer {
                         @apply inline-flex w-full items-center justify-between text-base h-8;
@@ -398,9 +387,10 @@ div:not(span):where(.doc-viewer),
 
                             input[type='number'],
                             select {
-                                @apply rounded bg-gray-200 border-solid border outline-none focus:outline-none
-                                            text-base py-0 leading-4;
-                                @extend .border-primary;
+                                @apply rounded border-solid border outline-none focus:outline-none text-base py-1 px-2 leading-4;
+                                @extend .border-toolbar;
+                                @extend .toolbar-background;
+                                @extend .text-primary;
                             }
 
                             .toolbar-button-spacer {
@@ -439,7 +429,7 @@ div:not(span):where(.doc-viewer),
 
             /***** VIEWER CONTAINER *****/
             .viewer-container {
-                @apply overflow-auto w-full h-full block;
+                @apply overflow-auto w-full h-full block z-0 pt-6;
 
                 .page {
                     @apply relative my-8 mx-auto;
@@ -472,7 +462,9 @@ div:not(span):where(.doc-viewer),
         .epub-document {
             .toolbar {
                 @apply flex justify-between items-center w-full box-border
-                        py-2 px-3 text-gray-50 shadow-lg;
+                        py-2 px-3 shadow-lg opacity-95 absolute left-0 top-0 right-0 z-30;
+                @extend .toolbar-background;
+                @extend .text-primary;
 
                 .file-name {
                     @apply inline-flex gap-x-2 items-center justify-center;
@@ -486,14 +478,14 @@ div:not(span):where(.doc-viewer),
                     @apply gap-x-1 inline-flex items-center justify-end select-none;
 
                     svg {
-                        @apply cursor-pointer rounded p-1 hover:bg-opacity-50 h-5 w-5
-                                transition-colors duration-300;
+                        @apply cursor-pointer rounded p-1 h-5 w-5 transition-colors duration-300;
+                        @extend .button-toolbar-hover;
                     }
 
                     .zoom-controls {
                         @apply pr-3 mr-3 border-0 border-dashed border-r inline-flex items-center
                                 gap-3;
-                        @extend .border-primary;
+                        @extend .border-toolbar;
 
                         .zoom-level {
                             @apply min-w-11 text-center;
@@ -516,7 +508,7 @@ div:not(span):where(.doc-viewer),
 
             .scroll {
                 @apply w-full h-full block text-center overflow-y-scroll overflow-x-auto
-                        pt-3 pb-8 box-border;
+                        pt-16 pb-8 box-border;
 
                 .wrapper {
                     @apply bg-gray-50 my-0 mx-auto box-border p-0 flex;
@@ -841,17 +833,17 @@ div:not(span):where(.doc-viewer),
                 }
             }
 
-            .toolbar {
-                @apply bg-blue-700;
+            // .toolbar {
+            //     @apply bg-blue-700;
 
-                svg {
-                    @apply hover:bg-blue-900;
-                }
-            }
+            //     svg {
+            //         @apply hover:bg-blue-900;
+            //     }
+            // }
         }
 
         /*************************/
-        /****** STYLESHEEETS *****/
+        /****** SPREADSHEETS *****/
         /*************************/
         .wbsheets-document {
             @apply relative flex flex-col items-start justify-start w-full h-full overflow-hidden;
@@ -867,7 +859,7 @@ div:not(span):where(.doc-viewer),
                 li {
                     @apply border-solid border border-t-gray-500 flex items-center justify-center
                         border-gray-500 bg-gradient-to-b from-gray-400 to-gray-200
-                         relative z-0 rounded-b-md shadow-md px-4 py-0;
+                        relative z-0 rounded-b-md shadow-md px-4 py-0;
 
                     &.selected {
                         @apply bg-none bg-white border-t-white;
@@ -883,13 +875,13 @@ div:not(span):where(.doc-viewer),
                 }
             }
 
-            .toolbar {
-                @apply bg-green-700;
+            // .toolbar {
+            //     @apply bg-green-700;
 
-                svg {
-                    @apply hover:bg-green-900;
-                }
-            }
+            //     svg {
+            //         @apply hover:bg-green-900;
+            //     }
+            // }
         }
 
         /************************/
@@ -899,19 +891,19 @@ div:not(span):where(.doc-viewer),
             @apply relative flex flex-col items-start justify-start w-full h-full
             overflow-hidden;
 
-            .toolbar {
-                @apply bg-yellow-700;
+            // .toolbar {
+            //     @apply bg-yellow-700;
 
-                svg {
-                    @apply hover:bg-yellow-900;
-                }
-            }
+            //     svg {
+            //         @apply hover:bg-yellow-900;
+            //     }
+            // }
 
             .sidebar {
-                @apply w-52 h-full absolute -left-56 top-11 bottom-0 z-20
-                        bg-black opacity-90 transition-all duration-300 p-0
-                        flex flex-col items-center text-gray-300
-                        overflow-hidden px-1 shadow-lg;
+                @apply w-52 absolute -left-56 top-11 bottom-0 z-20 opacity-95 transition-all duration-300 p-0
+                    flex flex-col items-start justify-start overflow-hidden px-1 shadow-lg;
+                    @extend .toolbar-background;
+                    @extend .text-primary;
 
                 &.visible {
                     @apply translate-x-56;
@@ -926,7 +918,7 @@ div:not(span):where(.doc-viewer),
                 }
 
                 .content {
-                    @apply w-full h-full overflow-x-auto overflow-y-scroll py-1 scrollbar-none;
+                    @apply w-full grow overflow-x-auto overflow-y-scroll py-1 scrollbar-none;
 
                     .item {
                         @apply pl-2;
@@ -940,7 +932,6 @@ div:not(span):where(.doc-viewer),
                         @apply text-gray-300 hover:text-gray-400 no-underline visited:text-gray-300
                                 text-xs inline-flex items-center justify-start gap-x-2;
                     }
-
                 }
             }
 
@@ -949,15 +940,15 @@ div:not(span):where(.doc-viewer),
 
                 .scroll {
                     @apply mr-8 h-full overflow-y-scroll overflow-x-auto
-                            pt-3 pb-8 box-border scrollbar-none;
+                            pt-16 pb-8 box-border scrollbar-none;
 
-                        iframe {
-                            @apply w-10/12 max-w-5xl border-none p-0 my-0 mx-auto block bg-white;
-                        }
+                    iframe {
+                        @apply w-10/12 max-w-5xl border-none p-0 my-0 mx-auto block bg-white;
+                    }
                 }
 
                 .progress-bar-container {
-                    @apply h-full w-8 z-10 py-3 box-border flex items-center justify-center float-right;
+                    @apply h-full w-8 z-10 pt-14 pb-3 box-border flex items-center justify-center float-right;
 
                     .progress-bar-bg {
                         @apply h-full w-2 bg-black p-1 rounded-full;

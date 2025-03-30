@@ -14,6 +14,7 @@ import {
     TbZoomOut
 } from 'react-icons/tb';
 import { PDFToolbarProps } from '../../definitions';
+import { Tooltip } from 'react-tooltip';
 
 /**
  * PDF Viewer toolbar
@@ -152,17 +153,21 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
     };
 
     const onZoomIn = (e: any) => {
-        let newValue = Math.round((scaleOut + SCALE_STEP) * 100) + '%';
-        setScale('customValue');
-        setCustomValue(newValue);
-        onZoomSearch(`${scaleOut + SCALE_STEP}`);
+        const newValue = Math.round((scaleOut + SCALE_STEP) * 100);
+        if(newValue < 600) {
+            setScale('customValue');
+            setCustomValue(newValue + '%');
+            onZoomSearch(`${scaleOut + SCALE_STEP}`);
+        }
     };
 
     const onZoomOut = (e: any) => {
-        let newValue = Math.round((scaleOut - SCALE_STEP) * 100) + '%';
-        setScale('customValue');
-        setCustomValue(newValue);
-        onZoomSearch(`${scaleOut - SCALE_STEP}`);
+        const newValue = Math.round((scaleOut - SCALE_STEP) * 100);
+        if(newValue > 0) {
+            setScale('customValue');
+            setCustomValue(newValue + '%');
+            onZoomSearch(`${scaleOut - SCALE_STEP}`);
+        }
     };
 
     const onRotateClock = (e: any) => {
@@ -242,8 +247,10 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                 <div className='toolbar-viewer'>
                     <div className='toolbar-viewer-left'>
                         <TbLayoutSidebarLeftExpand
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('sidebarToggle')}
+                            data-tooltip-place='bottom'
                             className='toolbar-button sidebar-toggle'
-                            title={t('sidebarToggle')}
                             onClick={onShowSidebar}
                         />
                         <div className='toolbar-button-spacer'></div>
@@ -251,15 +258,19 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                             <span data-l10n-id="findbar_label">Find</span>
                         </button> */}
                         <TbArrowLeft
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('previous')}
+                            data-tooltip-place='bottom'
                             className={`toolbar-button previous${pageNo == 1 ? ' disabled' : ''}`}
-                            title={t('previous')}
                             onClick={onPagePrev}
                         />
                         <div className='pagination'>
                             <input
                                 ref={inputRef as any}
                                 type='number'
-                                title={t('pageNumber')}
+                                data-tooltip-id='toolbar-tooltip'
+                                data-tooltip-content={t('pageNumber')}
+                                data-tooltip-place='bottom'
                                 value={pageNo}
                                 min='1'
                                 autoComplete='off'
@@ -270,19 +281,28 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                             <span className='num-pages'>/ {pdfDocument?.numPages || 0}</span>
                         </div>
                         <TbArrowRight
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('next')}
+                            data-tooltip-place='bottom'
                             className={`toolbar-button next${!pdfDocument || pageNo >= pdfDocument.numPages ? ' disabled' : ''}`}
-                            title={t('next')}
                             onClick={onPageNext}
                         />
                     </div>
                     <div className='toolbar-viewer-middle'>
                         <TbZoomOut
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('zoomOut')}
+                            data-tooltip-place='bottom'
                             className={`toolbar-button zoomOut${scaleOut === MIN_SCALE ? ' disabled' : ''}`}
-                            title={t('zoomOut')}
                             onClick={onZoomOut}
                         />
                         <span className='scale-select-container dropdown-toolbar-button'>
-                            <select title={t('scaleSelect')} onChange={onZoomChange} value={scale}>
+                            <select
+                                data-tooltip-id='toolbar-tooltip'
+                                data-tooltip-content={t('scaleSelect')}
+                                data-tooltip-place='bottom'
+                                onChange={onZoomChange}
+                                value={scale}>
                                 <option title='' value='auto'>
                                     {t('pageAutoOption')}
                                 </option>
@@ -325,32 +345,47 @@ export default forwardRef((props: PDFToolbarProps, ref) => {
                             </select>
                         </span>
                         <TbZoomIn
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('zoomIn')}
+                            data-tooltip-place='bottom'
                             className={`toolbar-button zoomIn${scaleOut === MAX_SCALE ? ' disabled' : ''}`}
-                            title={t('zoomIn')}
                             onClick={onZoomIn}
                         />
                     </div>
                     <div className='toolbar-viewer-right'>
-                        <TbPrinter className='toolbar-button print' title={t('print')} onClick={onPrint} />
+                        <TbPrinter
+                            className='toolbar-button print'
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('print')}
+                            data-tooltip-place='bottom'
+                            onClick={onPrint}
+                        />
                         {downloadVisible && (
                             <TbDownload
+                                data-tooltip-id='toolbar-tooltip'
+                                data-tooltip-content={t('downloadFile')}
+                                data-tooltip-place='bottom'
                                 className='toolbar-button download'
-                                title={t('downloadFile')}
                                 onClick={onDownload}
                             />
                         )}
                         <TbRotate2
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('pageRotateCcw')}
+                            data-tooltip-place='bottom'
                             className='toolbar-button page-rotate-ccw'
-                            title={t('pageRotateCcw')}
                             onClick={onRotateAntiClock}
                         />
                         <TbRotateClockwise2
+                            data-tooltip-id='toolbar-tooltip'
+                            data-tooltip-content={t('pageRotateCw')}
+                            data-tooltip-place='bottom'
                             className='toolbar-button pageRotateCw'
-                            title={t('pageRotateCw')}
                             onClick={onRotateClock}
                         />
                     </div>
                 </div>
+                <Tooltip id='toolbar-tooltip' />
             </div>
             <div className='sidebar-container' ref={sidebarContainerRef as any}>
                 {/* <div className='toolbar-sidebar'>

@@ -20,7 +20,7 @@ export default (pdfDocument: any, container: any) => {
                     serialDrawPage(pagePromiseArr);
                 })
                 .catch(err => {
-                    console.log('(!) error while preparing document:', err);
+                    throw new Error(`error while preparing document: ${err}`);
                 });
         }
         const getRenderTask = (page: any) => {

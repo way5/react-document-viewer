@@ -507,6 +507,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@floating-ui/core@npm:^1.6.0":
+  version: 1.6.9
+  resolution: "@floating-ui/core@npm:1.6.9"
+  dependencies:
+    "@floating-ui/utils": "npm:^0.2.9"
+  checksum: 10c0/77debdfc26bc36c6f5ae1f26ab3c15468215738b3f5682af4e1915602fa21ba33ad210273f31c9d2da1c531409929e1afb1138b1608c6b54a0f5853ee84c340d
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.6.1":
+  version: 1.6.13
+  resolution: "@floating-ui/dom@npm:1.6.13"
+  dependencies:
+    "@floating-ui/core": "npm:^1.6.0"
+    "@floating-ui/utils": "npm:^0.2.9"
+  checksum: 10c0/272242d2eb6238ffcee0cb1f3c66e0eafae804d5d7b449db5ecf904bc37d31ad96cf575a9e650b93c1190f64f49a684b1559d10e05ed3ec210628b19116991a9
+  languageName: node
+  linkType: hard
+
+"@floating-ui/utils@npm:^0.2.9":
+  version: 0.2.9
+  resolution: "@floating-ui/utils@npm:0.2.9"
+  checksum: 10c0/48bbed10f91cb7863a796cc0d0e917c78d11aeb89f98d03fc38d79e7eb792224a79f538ed8a2d5d5584511d4ca6354ef35f1712659fd569868e342df4398ad6f
+  languageName: node
+  linkType: hard
+
 "@handsontable/pikaday@npm:^1.0.0":
   version: 1.0.0
   resolution: "@handsontable/pikaday@npm:1.0.0"
@@ -514,12 +540,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@handsontable/react@npm:^15.1.0":
-  version: 15.1.0
-  resolution: "@handsontable/react@npm:15.1.0"
+"@handsontable/react-wrapper@npm:^15.2.0":
+  version: 15.2.0
+  resolution: "@handsontable/react-wrapper@npm:15.2.0"
   peerDependencies:
     handsontable: ">=15.0.0"
-  checksum: 10c0/a7a84c487203b4e270dddc0ddc24c5b2fc988dc71f42e998d104e832864b2eff26f2c6e1b23530b4bd16059b20719f1e1db7c4e0ac8f54c6251c77e4576fa4b9
+  checksum: 10c0/0c2d95b9ee4e8f08e992ec618eb50ce519356746881c74d94e44a66837ba1703f207ffbd76a1cd722ab0a44cf86d3a85f336dbb41e1c0424f2d5b5f6f54fb7fc
   languageName: node
   linkType: hard
 
@@ -1538,6 +1564,13 @@ __metadata:
   version: 3.0.0
   resolution: "chownr@npm:3.0.0"
   checksum: 10c0/43925b87700f7e3893296c8e9c56cc58f926411cce3a6e5898136daaf08f08b9a8eb76d37d3267e707d0dcc17aed2e2ebdf5848c0c3ce95cf910a919935c1b10
+  languageName: node
+  linkType: hard
+
+"classnames@npm:^2.3.0":
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: 10c0/afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
   languageName: node
   linkType: hard
 
@@ -2621,9 +2654,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handsontable@npm:^15.1.0":
-  version: 15.1.0
-  resolution: "handsontable@npm:15.1.0"
+"handsontable@npm:^15.2.0":
+  version: 15.2.0
+  resolution: "handsontable@npm:15.2.0"
   dependencies:
     "@handsontable/pikaday": "npm:^1.0.0"
     core-js: "npm:^3.37.0"
@@ -2634,7 +2667,7 @@ __metadata:
   dependenciesMeta:
     hyperformula:
       optional: true
-  checksum: 10c0/ddbcd2d816be4e42eeee7c53bf58dfd548266796f48d35511f16d4d5b3c5082d00366586cb32bbd39e08cff5a96209e80c6fe135eb647aea20ef5f4cc4d4b329
+  checksum: 10c0/22cfae30f723881c411b5730e6bc47ae19daaa43e42d21b72e8224b73b6352365101c71b823eb560209fc84a5f09a96698e4e7f0ff8d50098b53feeecb0f56ff
   languageName: node
   linkType: hard
 
@@ -4114,7 +4147,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-document-viewer@workspace:."
   dependencies:
-    "@handsontable/react": "npm:^15.1.0"
+    "@handsontable/react-wrapper": "npm:^15.2.0"
     "@tailwindcss/forms": "npm:^0.5.10"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@types/node": "npm:^22.13.4"
@@ -4130,7 +4163,7 @@ __metadata:
     fflate: "npm:^0.8.2"
     foliate-js: "https://github.com/johnfactotum/foliate-js.git"
     globals: "npm:^16.0.0"
-    handsontable: "npm:^15.1.0"
+    handsontable: "npm:^15.2.0"
     html-to-react: "npm:^1.7.0"
     i18next: "npm:^24.2.2"
     i18next-browser-languagedetector: "npm:^8.0.4"
@@ -4146,6 +4179,7 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-i18next: "npm:^15.4.1"
     react-icons: "npm:^5.5.0"
+    react-tooltip: "npm:^5.28.0"
     sass-embedded: "npm:^1.85.0"
     tailwindcss: "npm:^3.4.17"
     tailwindcss-animated: "npm:^2.0.0"
@@ -4208,6 +4242,19 @@ __metadata:
   version: 0.14.2
   resolution: "react-refresh@npm:0.14.2"
   checksum: 10c0/875b72ef56b147a131e33f2abd6ec059d1989854b3ff438898e4f9310bfcc73acff709445b7ba843318a953cb9424bcc2c05af2b3d80011cee28f25aef3e2ebb
+  languageName: node
+  linkType: hard
+
+"react-tooltip@npm:^5.28.0":
+  version: 5.28.0
+  resolution: "react-tooltip@npm:5.28.0"
+  dependencies:
+    "@floating-ui/dom": "npm:^1.6.1"
+    classnames: "npm:^2.3.0"
+  peerDependencies:
+    react: ">=16.14.0"
+    react-dom: ">=16.14.0"
+  checksum: 10c0/817909584adf4d84d70768e41c7fdf66bf9affd980499742a2da54378e5c8be53a0867bf72bdfb441fa4aa35c79847585990b6e31c91e6647e789ba68e9b08a2
   languageName: node
   linkType: hard
 

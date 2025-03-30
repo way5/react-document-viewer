@@ -1,9 +1,10 @@
 import './scss/index.scss';
+import 'react-tooltip/dist/react-tooltip.css';
 import ReactDocumentViewer from './ReactDocumentViewer';
 
 window.ReactDocumentViewer = ReactDocumentViewer;
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env._ENV === 'development') {
     window.addEventListener('load', () => {
         window.ReactDocumentViewer = new ReactDocumentViewer({
             rootElement: document.getElementById('root'),
