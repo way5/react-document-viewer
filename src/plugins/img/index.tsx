@@ -11,6 +11,7 @@ import {
 } from '../../definitions';
 import { useTranslation } from 'react-i18next';
 import { _getBlobUrlFromBuffer, basename } from '../../utils';
+// import { files } from 'jszip';
 
 /**
  * Description placeholder
@@ -71,7 +72,10 @@ export default (props: ViewerPluginProps) => {
         setOnHideError = f => {},
         errorMessage = m => {},
         // setFileOpen = () => {},
-        noNavbar = false
+        noNavbar = false,
+        navbarThumbnailWidth = undefined,
+        navbarThumbnailHeight = undefined,
+        navbarThumbnailSpace = undefined
     } = props;
 
     const initialState: ImageViewerCoreState = {
@@ -91,7 +95,7 @@ export default (props: ViewerPluginProps) => {
         startLoading: false
     };
 
-    const [imageElement, setImageElement] = useState<HTMLImageElement>();
+    const [imageElements, setImageElements] = useState<{[key:number]: HTMLImageElement}>();
     const viewerCore = React.useRef<HTMLDivElement>(null);
     const currentIndex = React.useRef<number>(0);
     const [fileName, setFileName] = React.useState<string>('');
@@ -178,7 +182,7 @@ export default (props: ViewerPluginProps) => {
         const image = new Image();
         image.onload = () => {
             loadImgSuccess(image.width, image.height, true);
-            setImageElement(image);
+            setImageElements(prevState => {return {...prevState, [activeIndex]: image};});
         };
         // error
         image.onerror = () => {
@@ -551,7 +555,8 @@ export default (props: ViewerPluginProps) => {
     return (
         <div className='image-viewer' ref={viewerCore}>
             <ImageViewerCanvas
-                image={imageElement}
+                images={imageElements}
+                activeIndex={state.activeIndex}
                 fileName={fileName}
                 width={state.width}
                 height={state.height}
@@ -570,8 +575,12 @@ export default (props: ViewerPluginProps) => {
                 <div className={'footer' + (!showNavbar ? ' no-navbar' : '')}>
                     {showNavbar && (
                         <ImageViewerNavigation
-                            files={props.files || []}
+                            images={imageElements}
+                            imagesTotal={filesTotal}
                             activeIndex={state.activeIndex}
+                            thumbWidth={navbarThumbnailWidth}
+                            thumbHeight={navbarThumbnailHeight}
+                            thumbSpace={navbarThumbnailSpace}
                             onChangeImg={handleChangeImg}
                             fileName={fileName}
                         />

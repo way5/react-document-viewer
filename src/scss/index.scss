@@ -206,7 +206,7 @@ div:not(span):where(.doc-viewer),
                     @apply overflow-hidden w-full [&>*]:select-none shadow-lg;
 
                     .toolbar {
-                        @apply grid grid-cols-1 grid-rows-2 space-y-0 shadow-md opacity-95;
+                        @apply grid grid-cols-1 grid-rows-2 space-y-0 shadow-md opacity-95 pb-2;
                         @extend .text-primary;
                         @extend .toolbar-background;
 
@@ -215,7 +215,7 @@ div:not(span):where(.doc-viewer),
                         }
 
                         ul {
-                            @apply flex items-center justify-center gap-x-2 px-2 sm:px-4 pb-1;
+                            @apply flex items-center justify-center gap-x-2 px-2 sm:px-4;
 
                             li {
                                 @apply inline-flex items-center justify-center p-1
@@ -236,21 +236,31 @@ div:not(span):where(.doc-viewer),
                 }
 
                 .navbar {
-                    @apply overflow-x-hidden w-full px-2 sm:px-4 box-border select-none;
+                    @apply overflow-x-auto w-full flex items-center justify-start scrollbar-none;
+
+                    &.drag {
+                        @apply cursor-grabbing;
+                    }
 
                     .list {
-                        @apply gap-x-2 flex items-center justify-center;
+                        @apply inline-flex;
 
                         li {
-                            @apply inline-block cursor-pointer box-border;
+                            @apply flex cursor-pointer box-border select-none border border-solid;
+                            @extend .border-primary;
 
                             img {
-                                @apply w-10 h-auto opacity-50 border border-solid;
-                                @extend .border-primary;
+                                @apply opacity-50 select-none;
                             }
 
                             &.active > img {
                                 opacity: 1;
+                            }
+
+                            .placeholder {
+                                @apply flex items-center justify-center min-w-10;
+                                @extend .toolbar-background;
+                                @extend .text-primary;
                             }
                         }
 

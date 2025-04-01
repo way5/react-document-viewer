@@ -21,13 +21,13 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
     });
 
     useEffect(() => {
-        if (props.image) {
+        if (props.images) {
             const canvas = document.querySelector('div.canvas') as HTMLDivElement;
             if (canvas) {
                 if (canvas.children.length > 0) {
                     canvas.removeChild(canvas.children[0]);
                 }
-                const img = props.image;
+                const img = props.images[props.activeIndex];
                 const imgStyle = `width:${props.width}px;height:${props.height}px; transform: translateX(${props.left !== null ? props.left + 'px' : 'aoto'}) translateY(${props.top}px) rotate(${props.rotate}deg) scaleX(${props.scaleX}) scaleY(${props.scaleY})`;
                 img.setAttribute('class', (props.drag ? 'draggable' : '') + (isMouseDown.current ? ' drag' : ''));
                 img.setAttribute('style', imgStyle);
@@ -39,7 +39,7 @@ export default function ImageViewerCanvas(props: ImageViewerCanvasProps) {
             }
         }
     }, [
-        props.image,
+        props.images,
         props.width,
         props.height,
         props.top,

@@ -39,7 +39,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         files: [],
         disablePlugins: [],
         changeHandler: () => {},
-        showLoader: (s: boolean) => {}
+        showLoader: (s: boolean) => {},
     };
 
     const p = Object.assign(defs, props);
@@ -51,7 +51,7 @@ const _AllViewers = (props: UnifiedViewerProps) => {
         allowOpenFile,
         allowDownloadFile,
         showFileName,
-        disablePlugins
+        disablePlugins,
     } = p;
 
     let pdfWorker = props.pdfWorkerUrl;
@@ -204,6 +204,9 @@ const _AllViewers = (props: UnifiedViewerProps) => {
                     customToolbar={props.customToolbar}
                     zoomSpeed={props.zoomSpeed}
                     noNavbar={props.noNavbar}
+                    navbarThumbnailHeight={props.navbarThumbnailHeight}
+                    navbarThumbnailWidth={props.navbarThumbnailWidth}
+                    navbarThumbnailSpace={props.navbarThumbnailSpace}
                     noFooter={props.noFooter}
                     disableKeyboardSupport={props.disableKeyboardSupport}
                     noResetZoomAfterChange={props.noResetZoomAfterChange}

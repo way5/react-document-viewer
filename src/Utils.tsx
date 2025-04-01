@@ -253,7 +253,7 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
                 });
             }
         } catch (e) {
-            throw new Error(`failed to decode array buffer: ${e}`);
+            console.error(`failed to decode array buffer: ${e}`);
         }
         if (fType.contentType === 'file2007') {
             // fix for EPUB
@@ -275,7 +275,7 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
         }
         // still nothing
         if (fType.contentType === '')
-            throw new Error(`unable to identiify the file of MIME type: [${mimeType}], file name: [${fileName}], header: [${arr_start_16}]`);
+            console.error(`unable to identiify the file of MIME type: [${mimeType}], file name: [${fileName}], header: [${arr_start_16}]`);
         else
             console.debug(`file identified as: ${fType.simpleType} [${fType.contentType}]`);
     }

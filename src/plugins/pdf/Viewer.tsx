@@ -118,7 +118,7 @@ export const usePdf = (props: PDFViewerProps) => {
                     }
                 },
                 e => {
-                    throw new Error(`page load failed: ${e}`);
+                    console.error(`page load failed: ${e}`);
                     if (typeof onPageLoadFailRef.current === 'function') {
                         onPageLoadFailRef.current();
                     }
