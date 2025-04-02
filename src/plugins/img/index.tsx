@@ -201,6 +201,7 @@ export default (props: ViewerPluginProps) => {
             const imageUrl = _getBlobUrlFromBuffer(fileBuffer, fileType.extension);
             image.src = imageUrl;
         }
+        image.alt = fileName;
 
         function loadImgSuccess(imgWidth: number, imgHeight: number, success: boolean) {
             if (currentActiveIndex !== currentIndex.current) {

@@ -1,16 +1,16 @@
-<p align="center"> 
+<p align="center">
 
-![ReactDocViewer Logo](./doc/logo.png) 
+![ReactDocViewer Logo](./doc/logo.png)
 
 </p>
 
-![React Document Viewer Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fway5%2Freact-document-viewer%2Frefs%2Fheads%2Fdev%2Fpackage.json&query=%24.version&label=ReactDocViewer:&color=%23F86071)
+![React Document Viewer Version](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fway5%2Freact-document-viewer%2Frefs%2Fheads%2Fmaster%2Fpackage.json&query=%24.version&label=ReactDocViewer:&color=%23F86071)
 
 ### + INTRO
 
 Accepted document formats:
 
-- docx 
+- docx
 - xls, xlsx
 - pdf
 - epub

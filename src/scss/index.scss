@@ -236,21 +236,37 @@ div:not(span):where(.doc-viewer),
                 }
 
                 .navbar {
-                    @apply overflow-x-auto w-full flex items-center justify-start scrollbar-none;
+                    @apply w-full scrollbar-none relative;
 
-                    &.drag {
-                        @apply cursor-grabbing;
+                    .navbar-goto-first {
+                        @apply left-4;
                     }
+
+                    .navbar-goto-last {
+                        @apply right-4;
+                    }
+
+                    .navbar-goto-first,
+                    .navbar-goto-last {
+                        @apply absolute top-[calc(50%-theme('height.4'))] h-8 w-8 rounded-full border-2 border-solid cursor-pointer flex items-center justify-center
+                                [&:not(:disabled)]:active:scale-95 disabled:cursor-not-allowed z-10;
+                        @extend .border-primary;
+                        @extend .text-primary;
+                        @extend .button-toolbar;
+                    }
+
+                    .wrapper {
+                        @apply w-full h-full overflow-x-scroll flex items-center justify-start ;
 
                     .list {
                         @apply inline-flex;
 
                         li {
-                            @apply flex cursor-pointer box-border select-none border border-solid;
-                            @extend .border-primary;
+                            @apply flex cursor-pointer select-none;
 
                             img {
-                                @apply opacity-50 select-none;
+                                @apply opacity-50 select-none box-border border border-solid;
+                                @extend .border-primary;
                             }
 
                             &.active > img {
@@ -258,9 +274,10 @@ div:not(span):where(.doc-viewer),
                             }
 
                             .placeholder {
-                                @apply flex items-center justify-center min-w-10;
+                                @apply flex items-center justify-center min-w-10 box-border border border-solid;
                                 @extend .toolbar-background;
                                 @extend .text-primary;
+                                @extend .border-primary;
                             }
                         }
 
@@ -278,6 +295,7 @@ div:not(span):where(.doc-viewer),
                             transition-property: margin;
                         }
                     }
+                }
                 }
             }
         }
