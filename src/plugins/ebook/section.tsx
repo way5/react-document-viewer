@@ -1,5 +1,4 @@
 import React from 'react';
-import { TbEyeClosed } from 'react-icons/tb';
 
 /**
  * Description placeholder
@@ -106,13 +105,13 @@ dl::first-child
                     )
                         .then(x => (x ? window.open(href, '_blank')?.focus() : null))
                         .catch(e => {
-                            throw new Error(`failed to dispatch 'external-link': ${e}`);
+                            console.error(`failed to dispatch 'external-link': ${e}`);
                         });
                 } else {
                     Promise.resolve(dispatchEvent(new CustomEvent('link', { detail: { a, href }, cancelable: true })))
                         .then(x => (x ? this.props.resolveNavigation(href) : null))
                         .catch(e => {
-                            throw new Error(`failed to dispatch 'link': ${e}`);
+                            console.error(`failed to dispatch 'link': ${e}`);
                         });
                 }
             });

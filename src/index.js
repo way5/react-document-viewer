@@ -11,9 +11,13 @@ if (process.env.NODE_ENV === 'development') {
             // files: [],
             files: [
                 { src: '/docs/test.jpg', name: '', type: '' },
-                { src: '/docs/test.webp', name: 'Image #2', type: '' }
+                { src: '/docs/test.webp', name: 'Image #2', type: '' },
             ],
             downloadInNewWindow: false,
+            noNavbar: false,
+            navbarThumbnailWidth: 50,
+            navbarThumbnailHeight: 30,
+            navbarThumbnailSpace: 30,
             // disablePlugins: ["pdf"],
             // locale: 'es',
             // allowOpenFile: true,
@@ -27,7 +31,6 @@ if (process.env.NODE_ENV === 'development') {
             // rotatable: false,
             // scalable: false,
             // noImgDetails: true,
-            noNavbar: false
             // noToolbar: true,
             // noFooter: true,
             // allowLoop: false,

@@ -53,6 +53,6 @@ export default function DownloadFile(props: DownloadFileProps) {
         req.onabort = (e: ProgressEvent) => onAbort && onAbort(e);
         req.send();
     } catch (e) {
-        throw new Error(`unable to download: ${files[activeIndex]}`);
+        console.error(`unable to download: ${files[activeIndex]}`);
     }
 }

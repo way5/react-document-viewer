@@ -1,6 +1,6 @@
 {
     "name": "react-document-viewer",
-    "version": "2.3.0",
+    "version": "2.3.2",
     "description": "React-based component which provides epub,mobi,pdf,xls,xlsx,docx and image viewer capabilities for your browser",
     "main": "src/index.js",
     "author": "Sergey Ko <u306060@gmail.com>",

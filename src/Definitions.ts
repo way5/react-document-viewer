@@ -132,7 +132,8 @@ export const ImageViewerDefaultToolbar: ImageViewerToolbarConfig[] = [
 export interface ImageViewerCanvasProps {
     fileName?: string;
     // imgSrc: string;
-    image: HTMLImageElement | undefined;
+    activeIndex: number;
+    images: {[key: number]: HTMLImageElement} | undefined;
     width: number;
     height: number;
     top: number;
@@ -184,8 +185,12 @@ export interface ImageViewerCoreState {
 }
 
 export interface ImageViewerNavProps {
-    files: FileDescriptor[];
-    activeIndex?: number;
+    images: {[key: number]: HTMLImageElement} | undefined;
+    imagesTotal: number;
+    thumbWidth?: number;
+    thumbHeight?: number;
+    thumbSpace?: number;
+    activeIndex: number;
     onChangeImg: (index: number) => void;
     fileName?: string;
 }
@@ -276,6 +281,10 @@ interface CommonProps {
     noImgDetails?: boolean;
     // no render navbar
     noNavbar?: boolean;
+    // navbar thumbnail parameters
+    navbarThumbnailWidth?: number;
+    navbarThumbnailHeight?: number;
+    navbarThumbnailSpace?: number;
     // no render toolbar
     noToolbar?: boolean;
     // no render footer
@@ -338,6 +347,10 @@ export interface ViewerPluginProps extends CommonProps {
     // Error handlers
     setOnShowError?: Dispatch<any>;
     setOnHideError?: Dispatch<any>;
+    // thumbnail parameters
+    navbarThumbnailWidth?: number;
+    navbarThumbnailHeight?: number;
+    navbarThumbnailSpace?: number;
 }
 
 interface UnifiedViewerProps extends CommonProps {

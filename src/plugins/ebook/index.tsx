@@ -208,7 +208,7 @@ export default (props: ViewerPluginProps) => {
                 const { MOBI } = await import('foliate-js/mobi.js');
                 const fflate = await import('fflate');
                 book = await new MOBI({ unzlib: fflate.unzlibSync }).open(new Blob([data]));
-            } else throw new Error('(!) unknown file type');
+            } else console.error('(!) unknown file type');
         } catch (e) {
             errorMessage(`(!) error loading document: ${e}`);
             showError(true);
