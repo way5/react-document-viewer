@@ -151,6 +151,7 @@ export default (props: ViewerPluginProps) => {
                 viewportRowRenderingOffset={'auto'}
                 fillHandle={true}
                 contextMenu={true}
+                nestedRows={false}
                 width={'100%'}
                 height={'100%'}
             />
