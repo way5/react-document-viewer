@@ -61,6 +61,7 @@ export default defineConfig(({ command, mode }) => ({
         minify: !isProduction ? false : 'terser',
         cssMinify: !isProduction ? false : 'terser',
         assetsDir: '',
+        cssCodeSplit: false,
         reportCompressedSize: false,
         copyPublicDir: false,
         chunkSizeWarningLimit: 1000,
@@ -86,11 +87,10 @@ export default defineConfig(({ command, mode }) => ({
                 //             .toString();
                 //     }
                 // },
-                // assetFileNames: (a) => {
-                //     if (a.name === 'index.scss') return 'doc_viewer.scss';
-                //     else if (a.name === 'index.js') return 'doc_viewer.js';
-                //     else return a.name;
-                // },
+                assetFileNames: a => {
+                    if (a.names.includes('style.css')) return 'doc.css';
+                    else return a.names[0];
+                },
                 entryFileNames: 'doc_viewer.js'
             },
             onLog(level, log, handler) {
