@@ -1,9 +1,8 @@
 import path from 'node:path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import sassDts from 'vite-plugin-sass-dts';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-// const env = loadEnv(mode, process.cwd(), "");
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -28,7 +27,7 @@ export default defineConfig(({ command, mode }) => ({
                 {
                     src: './src/scss/index.scss',
                     dest: '',
-                    rename: (name, extension, fullPath) => `doc_viewer.${extension}`
+                    rename: (name, extension, fullPath) => `doc.${extension}`
                 },
                 {
                     src: './node_modules/pdfjs-dist/build/pdf.worker.mjs',
