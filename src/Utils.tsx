@@ -264,7 +264,10 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
                 fType.simpleType = fType.extension;
             }
         } else if (fType.contentType == 'file2003') {
-            fType.simpleType = fType.extension;
+            fType.simpleType = fType.extension ?? fileTypeMap[mimeType];
+            if(fType.simpleType === 'undefined' || fType.simpleType === '') {
+                console.error(`failed to identify simpleType of [${fType.contentType}]`);
+            }
         }
         // No match, it may be an xls file in html format
         let arr_start_16 = getSliceArrTo16(arrayBuffer, 50, 150).join('');

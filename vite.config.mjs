@@ -104,8 +104,5 @@ export default defineConfig(({ command, mode }) => ({
         alias: {
             lib: path.resolve(__dirname, 'lib')
         }
-    },
-    define: {
-        'process.env': process.env
     }
 }));
