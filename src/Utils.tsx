@@ -261,10 +261,10 @@ export function getFileType(arrayBuffer: Uint8Array, fileName: string, mimeType:
                 fType.contentType = 'epub';
                 fType.simpleType = 'ebook';
             } else {
-                fType.simpleType = fType.extension;
+                fType.simpleType = fType.extension || fileTypeMap[mimeType];
             }
         } else if (fType.contentType == 'file2003') {
-            fType.simpleType = fType.extension ?? fileTypeMap[mimeType];
+            fType.simpleType = fType.extension || fileTypeMap[mimeType];
             if(fType.simpleType === 'undefined' || fType.simpleType === '') {
                 console.error(`failed to identify simpleType of [${fType.contentType}]`);
             }
