@@ -1,9 +1,8 @@
 import path from 'node:path';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import sassDts from 'vite-plugin-sass-dts';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
-// const env = loadEnv(mode, process.cwd(), "");
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -28,7 +27,7 @@ export default defineConfig(({ command, mode }) => ({
                 {
                     src: './src/scss/index.scss',
                     dest: '',
-                    rename: (name, extension, fullPath) => `doc_viewer.${extension}`
+                    rename: (name, extension, fullPath) => `doc.${extension}`
                 },
                 {
                     src: './node_modules/pdfjs-dist/build/pdf.worker.mjs',
@@ -61,6 +60,7 @@ export default defineConfig(({ command, mode }) => ({
         minify: !isProduction ? false : 'terser',
         cssMinify: !isProduction ? false : 'terser',
         assetsDir: '',
+        cssCodeSplit: false,
         reportCompressedSize: false,
         copyPublicDir: false,
         chunkSizeWarningLimit: 1000,
@@ -86,11 +86,10 @@ export default defineConfig(({ command, mode }) => ({
                 //             .toString();
                 //     }
                 // },
-                // assetFileNames: (a) => {
-                //     if (a.name === 'index.scss') return 'doc_viewer.scss';
-                //     else if (a.name === 'index.js') return 'doc_viewer.js';
-                //     else return a.name;
-                // },
+                assetFileNames: a => {
+                    if (a.names.includes('style.css')) return 'doc.css';
+                    else return a.names[0];
+                },
                 entryFileNames: 'doc_viewer.js'
             },
             onLog(level, log, handler) {
@@ -105,8 +104,5 @@ export default defineConfig(({ command, mode }) => ({
         alias: {
             lib: path.resolve(__dirname, 'lib')
         }
-    },
-    define: {
-        'process.env': process.env
     }
 }));

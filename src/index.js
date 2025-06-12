@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'development') {
             rootElement: document.getElementById('root'),
             // files: [],
             files: [
-                { src: '/docs/test.jpg', name: '', type: '' },
+                { src: '/docs/test.xls', name: '', type: '' },
                 { src: '/docs/test.webp', name: 'Image #2', type: '' },
             ],
             downloadInNewWindow: false,
